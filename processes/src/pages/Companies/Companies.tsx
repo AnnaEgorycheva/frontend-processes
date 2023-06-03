@@ -1,5 +1,5 @@
 import { Button, Form, Input, Layout, List, message } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const data = [
@@ -37,14 +37,21 @@ const data = [
     },
 ];
 
+interface ICompany {
+    name: string,
+    id: number,
+}
+
 const Companies: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const [ companies, setCompanies ] = useState<ICompany[]>(data);
 
     const onSearchCompany = useCallback(() => {
         const result = form.getFieldValue('company');
         if (result) {
-            console.log(result);
+            const resultSearch = companies.filter(item => item.name.includes(result));
+            setCompanies(resultSearch);
         } else {
             message.info('Для корректного поиска введите название компании!')
         }
@@ -81,7 +88,7 @@ const Companies: React.FC = () => {
                         Компании
                     </div>
             }
-                dataSource={data}
+                dataSource={companies}
                 pagination={{
                     pageSize: 10,
                 }}

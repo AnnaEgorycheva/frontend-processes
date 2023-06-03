@@ -9,7 +9,6 @@ interface IProps {
 
 const MainHeader: React.FC<IProps> = () => {
   const location = useLocation();
-  console.log(location.pathname.split('/'));
   
   return (
     <Header style={{ padding: 0 }}>

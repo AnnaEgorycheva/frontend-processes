@@ -1,11 +1,11 @@
 import { Button, Form, Input, Layout, List, message } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const data = [
     {
         name: 'Иванов Иван Иванович',
-        group: '100110',
+        group: '100111',
         id: 1,
     },
     {
@@ -80,26 +80,41 @@ const data = [
     },
 ];
 
+interface IStudent {
+    name: string,
+    id: number,
+    group: string,
+}
+
 const Students: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const [ students, setStudents ] = useState<IStudent[]>(data);
 
     const onSearchName = useCallback(() => {
         const result = form.getFieldValue('username');
         if (result) {
-            console.log(result);
+            const resultSearch = students.filter(item => item.name.includes(result));
+            setStudents(resultSearch);
         } else {
-            message.info('Для корректного поиска введите ФИО!')
+            message.info('Для корректного поиска введите ФИО!');
         }
     }, []);
 
     const onSearchGroup = useCallback(() => {
         const result = form.getFieldValue('group');
         if (result) {
-            console.log(result);
+            const resultSearch = students.filter(item => item.group.includes(result));
+            setStudents(resultSearch);
         } else {
-            message.info('Для корректного поиска введите номер группы!')
+            message.info('Для корректного поиска введите номер группы!');
         }
+    }, []);
+
+    const onClear = useCallback(() => {
+        setStudents(data);
+        form.setFieldValue('username', '');
+        form.setFieldValue('group', '');
     }, []);
 
     const onClick = useCallback((key: number) => {
@@ -136,6 +151,11 @@ const Students: React.FC = () => {
                         Найти
                     </Button>   
                 </Form.Item>
+                <Form.Item>
+                    <Button title='Сбросить фильтр' onClick={onClear}>
+                        Сбросить фильтр
+                    </Button>   
+                </Form.Item>
             </Form>
             <List
                 itemLayout="horizontal"
@@ -145,7 +165,7 @@ const Students: React.FC = () => {
                         <div>Группа</div>
                     </div>
             }
-                dataSource={data}
+                dataSource={students}
                 pagination={{
                     pageSize: 10,
                 }}
