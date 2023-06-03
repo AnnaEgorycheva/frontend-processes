@@ -1,3 +1,6 @@
+import Companies from 'pages/Companies/Companies';
+import Student from 'pages/Student/Student';
+import Students from 'pages/Students/Students';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -10,15 +13,19 @@ const RoutesPage: React.FC = () => {
         />
         <Route
             path="students"
-            element={<>students</>}
+            element={<Students/>}
         />
         <Route
             path="students/:id"
-            element={<>student1</>}
+            element={<Student/>}
         />
         <Route
             path="companies"
-            element={<>companies</>}
+            element={<Companies/>}
+        />
+        <Route
+            path="companies/:id"
+            element={<>company</>}
         />
     </Routes>
   );
