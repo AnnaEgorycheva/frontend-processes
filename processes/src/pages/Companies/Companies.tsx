@@ -57,6 +57,11 @@ const Companies: React.FC = () => {
         }
     }, []);
 
+    const onClear = useCallback(() => {
+        setCompanies(data);
+        form.setFieldValue('company', '');
+    }, []);
+
     const onClick = useCallback((key: number) => {
         navigate(`/companies/${key}`);
     }, []);
@@ -78,6 +83,11 @@ const Companies: React.FC = () => {
                 <Form.Item>
                     <Button type="primary" title='Найти' onClick={onSearchCompany}>
                         Найти
+                    </Button>   
+                </Form.Item>
+                <Form.Item>
+                    <Button title='Сбросить фильтр' onClick={onClear}>
+                        Сбросить фильтр
                     </Button>   
                 </Form.Item>
             </Form>
