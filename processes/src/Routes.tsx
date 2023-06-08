@@ -1,4 +1,5 @@
 import Companies from 'pages/Companies/Companies';
+import Company from 'pages/Company/Company';
 import Student from 'pages/Student/Student';
 import Students from 'pages/Students/Students';
 import React from 'react';
@@ -25,7 +26,7 @@ const RoutesPage: React.FC = () => {
         />
         <Route
             path="companies/:id"
-            element={<>company</>}
+            element={<Company/>}
         />
     </Routes>
   );
