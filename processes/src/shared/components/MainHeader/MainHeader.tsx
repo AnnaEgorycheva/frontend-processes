@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/es/layout/layout';
 import { Link, useLocation } from 'react-router-dom';
-import { Col, Row, Tabs } from 'antd';
+import { Avatar, Col, Row, Tabs } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 interface IProps {
   userName?: string;
@@ -21,7 +22,9 @@ const MainHeader: React.FC<IProps> = () => {
                 <Link to={location.pathname.split('/')[1]} style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Назад</Link>        
             </Col>
             <Col flex='none'>
-                <div style={{ color: 'white', marginRight: 20 }}>user</div>
+                <Link to='profile'>
+                    <Avatar size="large" style={{borderColor: '#ffffff', marginInline: 20, cursor: 'pointer' }} icon={<UserOutlined />} onClick={()=>{}}/>
+                </Link>
             </Col>
         </Row>
     </Header>

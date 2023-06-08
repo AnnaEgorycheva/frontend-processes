@@ -170,7 +170,7 @@ const Students: React.FC = () => {
                     pageSize: 10,
                 }}
                 renderItem={(item) => (
-                    <List.Item style={{ paddingInline: 50 }} onClick={() => {onClick(item.id)}}>
+                    <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.id)}}>
                         <div>{item.name}</div>
                         <div>{item.group}</div>
                     </List.Item>

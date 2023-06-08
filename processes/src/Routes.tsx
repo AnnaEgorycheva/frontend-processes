@@ -28,6 +28,10 @@ const RoutesPage: React.FC = () => {
             path="companies/:id"
             element={<Company/>}
         />
+        <Route
+            path="profile"
+            element={<>profile</>}
+        />
     </Routes>
   );
 };

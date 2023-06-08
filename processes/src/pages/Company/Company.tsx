@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, Table, Typography } from 'antd';
 import { useLocation } from 'react-router-dom';
 
@@ -38,16 +38,6 @@ const user = {
 const Company: React.FC = () => {
     const location = useLocation();
     const id = location.pathname.split('/')[2];
-    const [ numberColumn, setNumberColumn ] = useState<number>(1);
-
-    useEffect(() => {
-        if (numberColumn === 1 && user.role === 'school') {
-            setNumberColumn(3);
-        } else if (numberColumn === 1 && user.role === 'student') {
-            setNumberColumn(2);
-        }
-    })
-
     return (
         <>
             <Card style={{ margin: 30 }}>
@@ -56,7 +46,7 @@ const Company: React.FC = () => {
                 <Title level={5} style={{ marginTop: 0 }}>Адрес: {data.address}</Title>
                 <Title level={5} style={{ marginTop: 0 }}>Контакт: {data.contacts}</Title>
             </Card>
-            <Title level={4} style={{ marginTop: 0, marginLeft: 30 }}>Актуальные позиции</Title>
+            <Title level={5} style={{ marginTop: 0, marginLeft: 30 }}>Актуальные позиции</Title>
             <Table 
                 dataSource={position} 
                 pagination={{
