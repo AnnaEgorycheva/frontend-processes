@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/es/layout/layout';
 import { Link, useLocation } from 'react-router-dom';
 import { Avatar, Col, Row, Tabs } from 'antd';
-import { BellOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, BellOutlined, UserOutlined } from '@ant-design/icons';
 
 interface IProps {
   userName?: string;
@@ -15,11 +15,15 @@ const MainHeader: React.FC<IProps> = () => {
     <Header style={{ padding: 0 }}>
         <Row wrap={false}>
             <Col flex='auto'>
-                <Link to='students' style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Студенты</Link>
-                <Link to='companies' style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Компании</Link>
-                <Link to='companies' style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Позиции</Link>
-                <Link to='companies' style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Мои заявки</Link>
-                <Link to={location.pathname.split('/')[1]} style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Назад</Link>        
+                {location.pathname.split('/').length === 2 ? 
+                  <>
+                    <Link to='students' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Студенты</Link>
+                    <Link to='companies' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Компании</Link>
+                    <Link to='companies' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Позиции</Link>
+                    <Link to='applications' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Заявки</Link>
+                  </>
+                : null}
+                {location.pathname.split('/').length === 3 ? <Link to={location.pathname.split('/')[1]} style={{marginLeft: 20, color: 'white', fontWeight: 'bold' }}><ArrowLeftOutlined/> Назад</Link> : null}       
             </Col>
             <Col flex='none'>
                 <Avatar size="large" style={{ background: '#001529', cursor: 'pointer' }} icon={<BellOutlined />} onClick={()=>{}}/>

@@ -1,3 +1,4 @@
+import Application from 'pages/Application/Application';
 import Companies from 'pages/Companies/Companies';
 import Company from 'pages/Company/Company';
 import Student from 'pages/Student/Student';
@@ -31,6 +32,14 @@ const RoutesPage: React.FC = () => {
         <Route
             path="profile"
             element={<>profile</>}
+        />
+        <Route
+            path="applications"
+            element={<>applications</>}
+        />
+        <Route
+            path="applications/:id"
+            element={<Application/>}
         />
     </Routes>
   );
