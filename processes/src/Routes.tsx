@@ -40,7 +40,12 @@ const RoutesPage: React.FC = () => {
         <Route
             path="applications/:id"
             element={<Application/>}
-        />
+        /> 
+        <Route path='/school/' element={<>main 2</>}>
+          <Route index element={<>/positions</>}></Route>
+          <Route path='positions' element={<>positions</>}></Route>
+          <Route path='positions/:id' element={<>positions/:id</>}></Route>
+        </Route>
     </Routes>
   );
 };
