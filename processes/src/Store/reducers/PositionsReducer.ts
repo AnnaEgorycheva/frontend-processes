@@ -1,12 +1,5 @@
 import type {InferActionsTypes} from '../store';
-
-type PositionType = {
-    id: number
-    name: string
-    description: string
-    places: number
-    companyName: string
-}
+import type {PositionType} from '../../Types/types';
 
 let initialState = {
     positions: [
@@ -15,36 +8,37 @@ let initialState = {
             name: 'Front-end разработчик',
             description: 'Какое-то описание',
             places: 4,
-            companyName: 'НТР'
+            companyName: 'НТР',
+            applicationsNumber: 10
         },
         {
             id: 2, 
             name: 'IOS разработчик',
             description: 'Какое-то описание',
             places: 1,
-            companyName: 'red_mad_robot'
+            companyName: 'red_mad_robot',
+            applicationsNumber: 4
         },
         {
-            id: 1, 
+            id: 3, 
             name: 'IOS разработчик',
             description: 'Какое-то описание',
             places: 1,
-            companyName: 'Спортмастер'
+            companyName: 'Спортмастер',
+            applicationsNumber: 1
         },
         {
-            id: 1, 
+            id: 4, 
             name: 'Аналитик',
             description: 'Какое-то описание',
             places: 3,
-            companyName: 'Спортмастер'
+            companyName: 'Спортмастер',
+            applicationsNumber: 5
         },
     ] as Array<PositionType>
 }
 
-export type InitialStateType = typeof initialState
-type ActionsType = InferActionsTypes<typeof actions>
-
-const positionsForSchoolReducer = (state = initialState, action: ActionsType): InitialStateType => {
+const positionsReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'SET_POSITIONS':
             return {
@@ -56,7 +50,7 @@ const positionsForSchoolReducer = (state = initialState, action: ActionsType): I
     }
 }
 
-export const actions = {
+export const positionsReducerActions = {
     setPositions: (positions: Array<PositionType>) => (
         {
             type: 'SET_POSITIONS', 
@@ -64,4 +58,7 @@ export const actions = {
         } as const)
 }
 
-export default positionsForSchoolReducer;
+export type InitialStateType = typeof initialState
+type ActionsType = InferActionsTypes<typeof positionsReducerActions>
+
+export default positionsReducer;

@@ -1,10 +1,13 @@
 import {legacy_createStore as createStore, applyMiddleware, combineReducers, compose} from "redux";
 import thunkMiddleware from "redux-thunk";
-import positionsForSchoolReducer from "./reducers/PositionsForSchoolReducer";
-
+import positionsReducer from "./reducers/PositionsReducer";
+import creatingNewPositionReducer from "./reducers/CreatingNewPositionReducer";
+import positionReducer from "./reducers/PositionReducer";
 
 let rootReducer = combineReducers({
-    positionsForSchool : positionsForSchoolReducer
+    positions : positionsReducer,
+    creatingNewPosition : creatingNewPositionReducer,
+    position: positionReducer
 })
 
 type RootReducerType = typeof rootReducer; 
