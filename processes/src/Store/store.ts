@@ -3,11 +3,13 @@ import thunkMiddleware from "redux-thunk";
 import positionsReducer from "./reducers/PositionsReducer";
 import creatingNewPositionReducer from "./reducers/CreatingNewPositionReducer";
 import positionReducer from "./reducers/PositionReducer";
+import applicationsReducer from "./reducers/ApplicationsReducer";
 
 let rootReducer = combineReducers({
     positions : positionsReducer,
     creatingNewPosition : creatingNewPositionReducer,
-    position: positionReducer
+    position: positionReducer,
+    applications: applicationsReducer
 })
 
 type RootReducerType = typeof rootReducer; 

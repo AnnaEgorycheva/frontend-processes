@@ -16,3 +16,16 @@ export type StudentType = {
     role: string
     email: string
 }
+
+export type ApplicationType = {
+    applicationId: number | string
+    positionName: string
+    companyName : string
+    status: string
+    user: {
+        id: string | number
+        lastName: string
+        patronym?: string
+        firstName: string
+    }
+}

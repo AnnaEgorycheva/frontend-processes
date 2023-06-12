@@ -1,4 +1,4 @@
 export const user: any = {
     role: 'company',
-    name: 'НТР'
+    name: 'Спортмастер Лаб'
 }
