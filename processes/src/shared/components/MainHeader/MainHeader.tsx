@@ -19,7 +19,7 @@ const MainHeader: React.FC<IProps> = () => {
                   <>
                     <Link to='students' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Студенты</Link>
                     <Link to='companies' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Компании</Link>
-                    <Link to='companies' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Позиции</Link>
+                    <Link to='positions' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Позиции</Link>
                     <Link to='applications' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Заявки</Link>
                   </>
                 : null}

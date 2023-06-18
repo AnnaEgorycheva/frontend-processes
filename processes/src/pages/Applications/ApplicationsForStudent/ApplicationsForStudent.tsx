@@ -23,7 +23,7 @@ const ApplicationsForStudent: React.FC<PropsType> = (props) => {
                 }
                     dataSource={applications}
                     renderItem={(item) => (
-                        <NavLink to={'/positions/' + item.applicationId}>
+                        <NavLink to={'/applications/' + item.applicationId}>
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}>
                                 <Col span={4}>{item.positionName}</Col>
                                 <Col span={4}>{item.companyName}</Col>
