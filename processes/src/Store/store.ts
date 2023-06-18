@@ -4,12 +4,14 @@ import positionsReducer from "./reducers/PositionsReducer";
 import creatingNewPositionReducer from "./reducers/CreatingNewPositionReducer";
 import positionReducer from "./reducers/PositionReducer";
 import applicationsReducer from "./reducers/ApplicationsReducer";
+import authReducer from "./reducers/AuthReducer";
 
 let rootReducer = combineReducers({
     positions : positionsReducer,
     creatingNewPosition : creatingNewPositionReducer,
     position: positionReducer,
-    applications: applicationsReducer
+    applications: applicationsReducer,
+    auth: authReducer
 })
 
 type RootReducerType = typeof rootReducer; 
