@@ -1,3 +1,13 @@
+export type UserDtoType = {
+    userId: string,
+    firstName: string,
+    lastName: string,
+    patronym?: string | null,
+    role: string,
+    email: string
+}
+
+
 export type PositionType = {
     id: number | string
     name: string
@@ -29,3 +39,4 @@ export type ApplicationType = {
         firstName: string
     }
 }
+

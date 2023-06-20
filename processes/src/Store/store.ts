@@ -1,5 +1,5 @@
-import {legacy_createStore as createStore, applyMiddleware, combineReducers, compose} from "redux";
-import thunkMiddleware from "redux-thunk";
+import {legacy_createStore as createStore, applyMiddleware, combineReducers, compose, Action} from "redux";
+import thunkMiddleware, { ThunkAction } from "redux-thunk";
 import positionsReducer from "./reducers/PositionsReducer";
 import creatingNewPositionReducer from "./reducers/CreatingNewPositionReducer";
 import positionReducer from "./reducers/PositionReducer";
@@ -18,6 +18,7 @@ type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
 
 export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
+export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateType, unknown, A>
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

@@ -2,7 +2,7 @@ import Application from 'pages/Application/Application';
 import ApplicationsPage from 'pages/Applications/ApplicationsPage';
 import Companies from 'pages/Companies/Companies';
 import Company from 'pages/Company/Company';
-import LoginPage from 'pages/Login/LoginPage';
+import LoginPageContainer from 'pages/Login/LoginPageContainer';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
 import Student from 'pages/Student/Student';
@@ -23,7 +23,7 @@ const RoutesPage: React.FC = () => {
         <Route path="applications/:id" element={<Application/>}/> 
         <Route path='positions' element={<PositionsPage/>}></Route>
         <Route path='positions/:id' element={<PositionPage/>}></Route>
-        <Route path='login' element={<LoginPage/>}></Route>
+        <Route path='login' element={<LoginPageContainer/>}></Route>
     </Routes>
   );
 };

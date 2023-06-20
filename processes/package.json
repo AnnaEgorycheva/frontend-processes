@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.2.4",
     "@types/react-leaflet": "^3.0.0",
     "antd": "^5.5.2",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
