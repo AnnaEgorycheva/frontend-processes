@@ -1,15 +1,18 @@
 import axios from "axios";
 import { ResultCodesEnum } from "./api";
 
-// const instance = axios.create({
-//     baseURL: 'https://hits-user-service.onrender.com/',
-//     headers: {
-//         'Content-Type': 'application/json',
-//     }
-// });
-
-const instance = axios.create({
-    baseURL: 'https://hits-user-service.onrender.com/'
+const instanceWithoutAuth = axios.create({
+    baseURL: 'https://hits-user-service.onrender.com/',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+const instanceWithAuth = axios.create({
+    baseURL: 'https://hits-user-service.onrender.com/',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+    }
 });
 
 export const userAPI = {
@@ -18,9 +21,7 @@ export const userAPI = {
             email: email,
             password: password
         }
-        return instance.post(`authenticate`, body, {headers: {
-                 'Content-Type': 'application/json',
-            }})
+        return instanceWithoutAuth.post(`authenticate`, body)
             .then(response => {
                 console.log(response)
                 if (response.status === ResultCodesEnum.OK) {
@@ -32,12 +33,7 @@ export const userAPI = {
             });
     },
     getUsersByEmail(email: string | null) {
-        return instance.get(`users/${email}`, {
-            headers: {
-                'Authorization': localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            }
-        })
+        return instanceWithAuth.get(`users/${email}`)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {
                         return response.data
@@ -45,16 +41,11 @@ export const userAPI = {
             })
     },
     getUsersByRole(role: 'STUDENT' | 'SCHOOL' | 'COMPANY') {
-        return instance.get(`users/roles/${role}`, {
-            headers: {
-                'Authorization': localStorage.getItem('token'),
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.status === ResultCodesEnum.OK) {
-                    return response.data
-                }
-        })
+        return instanceWithAuth.get(`users/roles/${role}`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
     }
 }
