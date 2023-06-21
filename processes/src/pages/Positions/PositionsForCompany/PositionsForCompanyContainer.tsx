@@ -7,6 +7,7 @@ import {compose} from 'redux';
 import PositionsForCompany from './PositionsForCompany';
 import AddingNewPositionButton from './AddingNewPositionButton';
 import { Layout } from 'antd';
+import { withAuthRedirect } from 'HOC/withAuthRedirect';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type positionsActions = typeof positionsReducerActions
@@ -42,5 +43,5 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionsReducerActions, ...creatingNewPositionReducerActions}),
+    connect(mapStateToProps, {...positionsReducerActions, ...creatingNewPositionReducerActions}), withAuthRedirect
 )(PositionsForCompanyContainer)

@@ -1,19 +1,33 @@
-import type {InferActionsTypes} from '../store';
+import type {BaseThunkType, InferActionsTypes} from '../store';
+import type {UserDtoType} from '../../Types/types';
+import { userAPI } from 'API/user-api';
 
 let initialState = {
+    user: {} as UserDtoType,
     isAuth: false,
+    token: '' as string | null | undefined,
     loginFormData: {
-        login: '' as undefined | string,
-        password: '' as undefined | string
+        email: '' as string | null ,
+        password: '' as string | null 
     } 
 }
 
-const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
+const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
+        case 'SET_USER_DATA':
+            return {
+                ...state,
+                user: action.user
+            }
         case 'SET_IS_AUTH':
             return {
                 ...state,
-                isAuth: !state.isAuth
+                isAuth: action.isAuth
+            }
+        case 'SET_TOKEN':
+            return {
+                ...state,
+                token: `Bearer ${action.token}` 
             }
         case 'SET_LOGIN_FORM_DATA':
             return {
@@ -24,7 +38,7 @@ const authReducer = (state = initialState, action: ActionsType): InitialStateTyp
             return {
                 ...state,
                 loginFormData : {
-                    login: '',
+                    email: '',
                     password: ''
                 }
             }
@@ -33,21 +47,131 @@ const authReducer = (state = initialState, action: ActionsType): InitialStateTyp
     }
 }
 
-export const authReducerActions = {
-    setIsAuth: () => ({
-        type: 'SET_IS_AUTH'
-    } as const),
-    setLoginFormData: (formData: LoginDataFormType) => ({
+export const setUserData = (user: UserDtoType) => {
+    return {
+        type: 'SET_USER_DATA',
+        user }
+};
+export const setIsAuth = (isAuth: boolean) => {
+    return {
+        type: 'SET_IS_AUTH',
+        isAuth }
+};
+export const setToken = (token: string) => {
+    return {
+        type: 'SET_TOKEN',
+        token }
+};
+export const setLoginFormData = (formData: LoginDataFormType) => {
+    return {
         type: 'SET_LOGIN_FORM_DATA',
-        payload: formData
-    } as const),
-    clearLoginFormData: () => ({
-        type: 'CLEAR_LOGIN_FORM_DATA',
-    } as const),
+        payload: formData }
+};
+export const clearLoginFormData = () => {
+    return { type: 'CLEAR_LOGIN_FORM_DATA'}
+};
+
+export const getUserData = (email: string | null)=> async (dispatch: any) => {
+    let userData = await userAPI.getUsersByEmail(email)
+    dispatch(setUserData(userData))
 }
+
+// export const login = (loginData: LoginDataFormType) => async (dispatch: any) => {
+//     let data = await userAPI.authenticate(loginData.email, loginData.password)
+//     let token = data.jwtToken
+//     dispatch(setToken(token))
+//     localStorage.setItem('token', `Bearer ${token}`)
+//     dispatch(getUserData(loginData.email))
+//     dispatch(setIsAuth(true))
+//     dispatch(clearLoginFormData())
+// }
+export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
+    userAPI.authenticate(loginData.email, loginData.password)
+    .then(data => {
+        let token = data.jwtToken
+        dispatch(setToken(token))
+        localStorage.setItem('token', `Bearer ${token}`)
+        dispatch(setIsAuth(true))
+        dispatch(clearLoginFormData())
+    })
+    .then(() => {
+        userAPI.getUsersByEmail(loginData.email)
+        .then(userData => {
+            dispatch(setUserData(userData))
+        })
+    })
+}
+
+export const logout = () => async (dispatch: any) => {
+    dispatch(setUserData({
+        userId: '',
+        firstName: '',
+        lastName: '',
+        patronym: '',
+        role: '',
+        email: ''
+    }))
+    dispatch(setIsAuth(false))
+    dispatch(setToken(''))
+    localStorage.setItem('token', '')
+}
+
+// export const authReducerActions = {
+//     setUserData: (user: UserDtoType) => ({
+//         type: 'SET_USER_DATA',
+//         user
+//     } as const),
+//     setIsAuth: (isAuth: boolean) => ({
+//         type: 'SET_IS_AUTH',
+//         isAuth
+//     } as const),
+//     setToken: (token: string) => ({
+//         type: 'SET_TOKEN',
+//         token
+//     } as const),
+//     setLoginFormData: (formData: LoginDataFormType) => ({
+//         type: 'SET_LOGIN_FORM_DATA',
+//         payload: formData
+//     } as const),
+//     clearLoginFormData: () => ({
+//         type: 'CLEAR_LOGIN_FORM_DATA',
+//     } as const),
+// }
+
+// export const getUserData = (email: string | null): ThunkType => async (dispatch) => {
+//     let userData = await userAPI.getUsersByEmail(email)
+//     dispatch(authReducerActions.setUserData(userData))
+// }
+
+// export const login = (loginData: LoginDataFormType): ThunkType => async (dispatch) => {
+//     let data = await userAPI.authenticate(loginData.email, loginData.password)
+//     let token = data.jwtToken
+//     dispatch(getUserData(loginData.email))
+//     dispatch(authReducerActions.setIsAuth(true))
+//     dispatch(authReducerActions.setToken(token))
+//     localStorage.setItem('token', `Bearer ${token}`)
+// }
+
+// export const logout = (): ThunkType => async (dispatch: any) => {
+//     dispatch(authReducerActions.setUserData({
+//         userId: '',
+//         firstName: '',
+//         lastName: '',
+//         patronym: '',
+//         role: '',
+//         email: ''
+//     }))
+//     dispatch(authReducerActions.setIsAuth(false))
+//     dispatch(authReducerActions.setToken(''))
+//     localStorage.setItem('token', '')
+// }
+
+export default authReducer;
 
 export type InitialStateType = typeof initialState
 export type LoginDataFormType = typeof initialState.loginFormData
-type ActionsType = InferActionsTypes<typeof authReducerActions>
-
-export default authReducer;
+// type ActionsType = InferActionsTypes<typeof authReducerActions>
+type ActionsType = InferActionsTypes<typeof setUserData & typeof setIsAuth & 
+                                     typeof setToken & typeof setLoginFormData & 
+                                     typeof clearLoginFormData>
+type ThunkType = BaseThunkType<ActionsType>
