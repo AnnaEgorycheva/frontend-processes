@@ -28,5 +28,5 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionsReducerActions}), withAuthRedirect
+    connect(mapStateToProps, {...positionsReducerActions})
 )(PositionsListForSchoolAndStudentContainer)

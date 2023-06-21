@@ -1,6 +1,7 @@
 import type {BaseThunkType, InferActionsTypes} from '../store';
 import type {UserDtoType} from '../../Types/types';
 import { userAPI } from 'API/user-api';
+import { useNavigate } from 'react-router-dom';
 
 let initialState = {
     user: {} as UserDtoType,
@@ -76,28 +77,27 @@ export const getUserData = (email: string | null)=> async (dispatch: any) => {
     dispatch(setUserData(userData))
 }
 
-// export const login = (loginData: LoginDataFormType) => async (dispatch: any) => {
-//     let data = await userAPI.authenticate(loginData.email, loginData.password)
-//     let token = data.jwtToken
-//     dispatch(setToken(token))
-//     localStorage.setItem('token', `Bearer ${token}`)
-//     dispatch(getUserData(loginData.email))
-//     dispatch(setIsAuth(true))
-//     dispatch(clearLoginFormData())
-// }
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     userAPI.authenticate(loginData.email, loginData.password)
     .then(data => {
         let token = data.jwtToken
         dispatch(setToken(token))
         localStorage.setItem('token', `Bearer ${token}`)
-        dispatch(setIsAuth(true))
         dispatch(clearLoginFormData())
     })
     .then(() => {
         userAPI.getUsersByEmail(loginData.email)
         .then(userData => {
             dispatch(setUserData(userData))
+            dispatch(setIsAuth(true))
+            return userData.role
+        })
+        .then((role) => {
+            switch (role) {
+                case 'STUDENT': window.history.pushState(null, '', "companies"); break
+                case 'SCHOOL': window.history.pushState(null, '', "students"); break
+                case 'COMPANY': window.history.pushState(null, '', "positions"); break
+            }
         })
     })
 }

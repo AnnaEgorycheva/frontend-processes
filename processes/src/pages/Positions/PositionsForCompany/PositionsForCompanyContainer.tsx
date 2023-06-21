@@ -43,5 +43,5 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionsReducerActions, ...creatingNewPositionReducerActions}), withAuthRedirect
+    connect(mapStateToProps, {...positionsReducerActions, ...creatingNewPositionReducerActions})
 )(PositionsForCompanyContainer)

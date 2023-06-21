@@ -7,9 +7,9 @@ const RightMenu: React.FC = () => {
 
     return (
         <Menu mode="horizontal" theme="dark" style={{ fontWeight: 'bold' }}>
-            <Menu.Item key="explore">
+            <Menu.Item key="notifications">
                 <Avatar size="large" 
-                        style={{borderColor: '#ffffff', background: '#001529', cursor: 'pointer' }} 
+                        style={{fontSize: '24px', borderColor: '#ffffff', background: '#001529', cursor: 'pointer' }} 
                         icon={<BellOutlined />} onClick={()=>{}}
                 />
             </Menu.Item>
@@ -18,7 +18,7 @@ const RightMenu: React.FC = () => {
                 <>
                     <Avatar size="large" 
                             style={{ borderColor: '#ffffff', background: '#001529', marginRight: 20, cursor: 'pointer' }} 
-                            icon={<UserOutlined />} onClick={()=>{}}
+                            icon={<UserOutlined />} onClick={()=>{} }
                     />
                 </>
                 }
