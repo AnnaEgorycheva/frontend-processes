@@ -4,6 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import PositionsListForSchoolAndStudent from './PositionsListForSchoolAndStudent';
+import { withAuthRedirect } from 'HOC/withAuthRedirect';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type ActionsType = InferActionsTypes<typeof positionsReducerActions>
@@ -27,5 +28,5 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionsReducerActions}),
+    connect(mapStateToProps, {...positionsReducerActions}), withAuthRedirect
 )(PositionsListForSchoolAndStudentContainer)

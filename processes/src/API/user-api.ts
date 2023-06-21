@@ -23,7 +23,6 @@ export const userAPI = {
         }
         return instanceWithoutAuth.post(`authenticate`, body)
             .then(response => {
-                console.log(response)
                 if (response.status === ResultCodesEnum.OK) {
                         return response.data
                     }
