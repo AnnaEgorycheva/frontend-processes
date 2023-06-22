@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 let initialState = {
     user: {} as UserDtoType,
     isAuth: false,
-    token: '' as string | null | undefined,
     loginFormData: {
         email: '' as string | null ,
         password: '' as string | null 
@@ -24,11 +23,6 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
             return {
                 ...state,
                 isAuth: action.isAuth
-            }
-        case 'SET_TOKEN':
-            return {
-                ...state,
-                token: `Bearer ${action.token}` 
             }
         case 'SET_LOGIN_FORM_DATA':
             return {
@@ -81,7 +75,6 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     userAPI.authenticate(loginData.email, loginData.password)
     .then(data => {
         let token = data.jwtToken
-        dispatch(setToken(token))
         localStorage.setItem('token', `Bearer ${token}`)
         dispatch(clearLoginFormData())
     })
@@ -112,8 +105,8 @@ export const logout = () => async (dispatch: any) => {
         email: ''
     }))
     dispatch(setIsAuth(false))
-    dispatch(setToken(''))
     localStorage.setItem('token', '')
+    window.history.pushState(null, '', "login")
 }
 
 // export const authReducerActions = {

@@ -14,7 +14,6 @@ const Navbar: React.FC = () => {
     const location = useLocation()
     const isAuth = useSelector(selectIsAuth)
     const userRole = useSelector(selectUserRole)
-    // const userRole = user.role
     const RightMenuItems = {
         isAuthItems: [
             {
@@ -68,7 +67,6 @@ const Navbar: React.FC = () => {
     }
 
     let rightMenuItems: MenuProps['items'] = [], leftMenuItems: MenuProps['items'] = []
-    rightMenuItems = isAuth ?  RightMenuItems.isAuthItems : RightMenuItems.notIsAuthItems
     if (isAuth) {
         switch (userRole) {
             case 'STUDENT': leftMenuItems = LeftMenuItems.isAuthItems.studentsItems; break
@@ -78,6 +76,7 @@ const Navbar: React.FC = () => {
     } else {
         leftMenuItems = LeftMenuItems.notIsAuthItems
     }
+    rightMenuItems = isAuth ?  RightMenuItems.isAuthItems : RightMenuItems.notIsAuthItems
 
     return (
         <Header style={{ padding: 0 }} >
