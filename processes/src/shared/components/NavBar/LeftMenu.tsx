@@ -1,40 +1,119 @@
-import { Avatar, Menu } from "antd";
+import { Avatar, Menu, MenuProps } from "antd";
 import React from "react";
 import { ArrowLeftOutlined, BellOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
-const LeftMenu: React.FC = () => {
+type PropsType = {
+    isAuth: boolean,
+    userRole: string,
+    onClick: any,
+    keys: any
+}
+
+const LeftMenu: React.FC<PropsType> = (props) => {
+    const LeftMenuItems = {
+        isAuthItems: {
+            studentsItems: [
+                {
+                    label: (
+                        <Link to='companies'>
+                            Компании
+                        </Link>
+                    ),
+                    key: 'companies',
+                },
+                {
+                    label: (
+                        <Link to='positions'>
+                            Позиции
+                        </Link>
+                    ),
+                    key: 'positions',
+                },
+                {
+                    label: (
+                        <Link to='applications'>
+                            Мои заявки
+                        </Link>
+                    ),
+                    key: 'applications',
+                }
+            ] as MenuProps['items'],
+            schoolItems: [
+                {
+                    label: (
+                        <Link to='students'>
+                            Студенты
+                        </Link>
+                    ),
+                    key: 'students',
+                },
+                {
+                    label: (
+                        <Link to='companies'>
+                            Компании
+                        </Link>
+                    ),
+                    key: 'companies',
+                },
+                {
+                    label: (
+                        <Link to='positions'>
+                            Позиции
+                        </Link>
+                    ),
+                    key: 'positions',
+                },
+            ] as MenuProps['items'],
+            companyItems: [
+                {
+                    label: (
+                        <Link to='positions'>
+                            Позиции
+                        </Link>
+                    ),
+                    key: 'positions',
+                },
+                {
+                    label: (
+                        <Link to='students'>
+                            Студенты
+                        </Link>
+                    ),
+                    key: 'students',
+                },
+                {
+                    label: (
+                        <Link to='applications'>
+                            Мои заявки
+                        </Link>
+                    ),
+                    key: 'applications',
+                }
+            ] as MenuProps['items']
+        },
+        notIsAuthItems: [] as MenuProps['items']
+    }
+
+    let leftMenuItems: MenuProps['items'] = []
+    if (props.isAuth) {
+        switch (props.userRole) {
+            case 'STUDENT': leftMenuItems = LeftMenuItems.isAuthItems.studentsItems; break
+            case 'SCHOOL': leftMenuItems = LeftMenuItems.isAuthItems.schoolItems; break
+            case 'COMPANY': leftMenuItems = LeftMenuItems.isAuthItems.companyItems; break
+        }
+    } else {
+        leftMenuItems = LeftMenuItems.notIsAuthItems
+    }
 
     return (
-        <Menu mode="horizontal" theme="dark" style={{ fontWeight: 'bold' }}>
-            <Menu.Item key="students">
-                <Link to='students'>
-                    Студенты
-                </Link>
-            </Menu.Item>
-            <Menu.Item key="companies">
-                <Link to='companies'>
-                    Компании
-                </Link>
-            </Menu.Item>
-            <Menu.Item key="positions">
-                <Link to='positions'>
-                    Позиции
-                </Link>
-            </Menu.Item>
-            <Menu.Item key="applications">
-                <Link to='applications'>
-                    Заявки
-                </Link>
-            </Menu.Item>
-        </Menu>
+        <>
+            { 
+                leftMenuItems?.length !== 0 
+                && <Menu onClick={props.onClick} selectedKeys={props.keys} mode="horizontal" theme="dark" items={leftMenuItems} />
+            }
+        </>
     )
 }
 
 export default LeftMenu;
-{/* <>
-                    <Link to='students' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Студенты</Link>
-                    <Link to='companies' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Компании</Link>
-                    <Link to='positions' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Позиции</Link>
-                    <Link to='applications' style={{ marginLeft: 20, color: 'white', fontWeight: 'bold' }}>Заявки</Link>
-                  </> */}

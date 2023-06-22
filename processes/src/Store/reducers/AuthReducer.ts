@@ -66,9 +66,10 @@ export const clearLoginFormData = () => {
     return { type: 'CLEAR_LOGIN_FORM_DATA'}
 };
 
-export const getUserData = (email: string | null)=> async (dispatch: any) => {
+export const getUserDataByEmailWhileInitializing = (email: string | null)=> async (dispatch: any) => {
     let userData = await userAPI.getUsersByEmail(email)
     dispatch(setUserData(userData))
+    dispatch(setIsAuth(true))
 }
 
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
@@ -83,6 +84,7 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
         .then(userData => {
             dispatch(setUserData(userData))
             dispatch(setIsAuth(true))
+            localStorage.setItem('email', userData.email)
             return userData.role
         })
         .then((role) => {
@@ -95,7 +97,7 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     })
 }
 
-export const logout = () => async (dispatch: any) => {
+export const logout = () => (dispatch: any) => {
     dispatch(setUserData({
         userId: '',
         firstName: '',
@@ -106,6 +108,7 @@ export const logout = () => async (dispatch: any) => {
     }))
     dispatch(setIsAuth(false))
     localStorage.setItem('token', '')
+    localStorage.setItem('email', '')
     window.history.pushState(null, '', "login")
 }
 
