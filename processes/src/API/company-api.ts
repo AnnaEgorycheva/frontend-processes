@@ -5,7 +5,7 @@ const instanceWithAuth = axios.create({
     baseURL: 'https://company-service-6bc8.onrender.com/',
     headers: {
         'Content-Type': 'application/json',
-        //'Authorization': localStorage.getItem('token')
+        'Authorization': localStorage.getItem('token')
     }
 });
 
