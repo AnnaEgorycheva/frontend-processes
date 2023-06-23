@@ -3,6 +3,8 @@ import React, { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import StudentForCompany from './components/StudentForCompany';
 import StudentForSchool from './components/StudentForSchool';
+import { useSelector } from 'react-redux';
+import { selectUserRole } from 'Store/selectors/AuthSelector';
 
 const data = [
     {
@@ -82,14 +84,11 @@ const data = [
     },
 ];
 
-const user = {
-    role: 'school',
-};
-
 const Student: React.FC = () => {
     const location = useLocation();
+    const role = useSelector(selectUserRole);
     return (
-        <>{user.role === 'company' ? <StudentForCompany id={location.pathname.split('/')[2]}/> : <StudentForSchool id={location.pathname.split('/')[2]}/>}</>
+        <>{role === 'COMPANY' ? <StudentForCompany id={location.pathname.split('/')[2]}/> : <StudentForSchool id={location.pathname.split('/')[2]}/>}</>
     )
 };
 

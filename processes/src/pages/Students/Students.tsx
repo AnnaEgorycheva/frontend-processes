@@ -1,123 +1,55 @@
+import { companyAPI } from 'API/company-api';
+import { userAPI } from 'API/user-api';
+import { IStudent } from 'Types/types';
 import { Button, Form, Input, Layout, List, message } from 'antd';
-import React, { useCallback, useState } from 'react';
+import Item from 'antd/es/list/Item';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const data = [
-    {
-        name: 'Иванов Иван Иванович',
-        group: '100111',
-        id: 1,
-    },
-    {
-        name: 'Петрова Полина Петровна',
-        group: '100110',
-        id: 33,
-    },
-    {
-        name: 'Петрова Полина',
-        group: '100110',
-        id: 1888,
-    },
-    {
-        name: 'Иванов Иван Иванович',
-        group: '100110',
-        id: 17,
-    },
-    {
-        name: 'Петрова Полина Петровна',
-        group: '100110',
-        id: 188,
-    },
-    {
-        name: 'Петрова Полина',
-        group: '100110',
-        id: 16,
-    },
-    {
-        name: 'Иванов Иван Иванович',
-        group: '100110',
-        id: 15,
-    },
-    {
-        name: 'Петрова Полина Петровна',
-        group: '100110',
-        id: 14,
-    },
-    {
-        name: 'Петрова Полина',
-        group: '100110',
-        id: 13,
-    },
-    {
-        name: 'Иванов Иван Иванович',
-        group: '100110',
-        id: 12,
-    },
-    {
-        name: 'Петрова Полина Петровна',
-        group: '100110',
-        id: 656,
-    },
-    {
-        name: 'Петрова Полина',
-        group: '100110',
-        id: 454,
-    },
-    {
-        name: 'Иванов Иван Иванович',
-        group: '100110',
-        id: 35,
-    },
-    {
-        name: 'Петрова Полина Петровна',
-        group: '100110',
-        id: 5,
-    },
-    {
-        name: 'Петрова Полина',
-        group: '100110',
-        id: 2,
-    },
-];
-
-interface IStudent {
-    name: string,
-    id: number,
-    group: string,
-}
 
 const Students: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const [ students, setStudents ] = useState<IStudent[]>(data);
+    const [ students, setStudents ] = useState<IStudent[]>();
+
+    useEffect(() => {
+        if (students === undefined) {
+            api();
+        }
+    }, []);
+
+    const api = useCallback( async () => {
+        const result = await userAPI.getUsersByRole('STUDENT');
+        setStudents(result);
+    }, []);
 
     const onSearchName = useCallback(() => {
         const result = form.getFieldValue('username');
         if (result) {
-            const resultSearch = students.filter(item => item.name.includes(result));
-            setStudents(resultSearch);
+            console.log(result);
+            const resultSearch = students?.filter(item => (`${item.lastName} ${item.firstName} ${item.patronym}`).includes(result));
+            setStudents(resultSearch ?? []);
         } else {
             message.info('Для корректного поиска введите ФИО!');
         }
     }, []);
 
     const onSearchGroup = useCallback(() => {
-        const result = form.getFieldValue('group');
-        if (result) {
-            const resultSearch = students.filter(item => item.group.includes(result));
-            setStudents(resultSearch);
-        } else {
-            message.info('Для корректного поиска введите номер группы!');
-        }
+        // const result = form.getFieldValue('group');
+        // if (result) {
+        //     const resultSearch = students?.filter(item => item.group.includes(result));
+        //     setStudents(resultSearch);
+        // } else {
+        //     message.info('Для корректного поиска введите номер группы!');
+        // }
     }, []);
 
     const onClear = useCallback(() => {
-        setStudents(data);
+        api();
         form.setFieldValue('username', '');
         form.setFieldValue('group', '');
     }, []);
 
-    const onClick = useCallback((key: number) => {
+    const onClick = useCallback((key: string) => {
         navigate(`/students/${key}`);
     }, []);
 
@@ -170,9 +102,9 @@ const Students: React.FC = () => {
                     pageSize: 10,
                 }}
                 renderItem={(item) => (
-                    <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.id)}}>
-                        <div>{item.name}</div>
-                        <div>{item.group}</div>
+                    <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.userId)}}>
+                        <div>{item.lastName} {item.firstName} {item.patronym}</div>
+                        <div>группа</div>
                     </List.Item>
                 )}
             />

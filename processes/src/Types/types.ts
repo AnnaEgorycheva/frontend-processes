@@ -62,3 +62,12 @@ export interface IPosition {
     intershipPositionName: string,
     intershipPositionCount: number,
 }
+
+export interface IStudent {
+    email: string,
+    firstName: string,
+    lastName: string,
+    patronym: string,
+    role: string,
+    userId: string,
+};
