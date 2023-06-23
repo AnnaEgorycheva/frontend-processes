@@ -7,3 +7,7 @@ export const selectIsAuth = (state: AppStateType) => {
 export const selectUserRole = (state: AppStateType) => {
     return state.auth.user.role
 }
+
+export const selectUserEmail = (state: AppStateType) => {
+    return state.auth.user.email
+}

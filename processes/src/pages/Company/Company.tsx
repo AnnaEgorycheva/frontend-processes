@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Spin, Table, Typography } from 'antd';
 import { useLocation } from 'react-router-dom';
 import { companyAPI } from 'API/company-api';
@@ -18,14 +18,16 @@ const Company: React.FC = () => {
 
     useEffect(() => {
         if (company === undefined) {
-            setTimeout(async () => {
-                const result = await companyAPI.getCompany(id);
-                setCompany(result);
-
-                const resultPosition = await companyAPI.getCompanyIntershipPositions(id);
-                setPosition(resultPosition.intershipPositions);
-            }, 3);
+            api();
         }
+    }, []);
+
+    const api = useCallback( async () => {
+        const result = await companyAPI.getCompany(id);
+        setCompany(result);
+
+        const resultPosition = await companyAPI.getCompanyIntershipPositions(id);
+        setPosition(resultPosition.intershipPositions);
     }, []);
     
     return (

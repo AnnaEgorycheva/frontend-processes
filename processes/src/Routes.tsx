@@ -7,6 +7,7 @@ import Company from 'pages/Company/Company';
 import LoginPageContainer from 'pages/Login/LoginPageContainer';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
+import Profile from 'pages/Profile/Profile';
 import Student from 'pages/Student/Student';
 import Students from 'pages/Students/Students';
 import React, { ReactElement, ReactNode } from 'react';
@@ -47,7 +48,7 @@ const RoutesPage: React.FC = () => {
                 element={ isAuth ? <Company/> : <Navigate to={'/login'}/> }
           />
           <Route path="profile" 
-                element={ isAuth ? <>profile</> : <Navigate to={'/login'}/> }
+                element={ isAuth ? <Profile/> : <Navigate to={'/login'}/> }
           />
           <Route path="applications" 
                 element={ isAuth ? <ApplicationsPage/> : <Navigate to={'/login'}/> }
