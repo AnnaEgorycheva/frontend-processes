@@ -33,7 +33,11 @@ export const getAllPositions = () => (dispatch: any) => {
         })
 }
 
-export const getAllCompanyPositions = () => (dispatch: any) => {
+export const getAllCompanyPositions = (companyId: string | number = 3) => (dispatch: any) => {
+    companyAPI.getCompanyIntershipPositions(companyId)
+        .then(data => {
+            dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+        })
 
 }
 

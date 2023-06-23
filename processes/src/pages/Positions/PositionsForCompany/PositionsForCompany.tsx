@@ -1,6 +1,6 @@
 import { Col, List } from 'antd';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { PositionType, IntershipPositionType } from 'Types/types';
 
 type PropsType = {
@@ -8,6 +8,11 @@ type PropsType = {
 }
 
 const PositionsForCompany: React.FC<PropsType> = (props) => {
+    const navigate = useNavigate();
+    const onItemClick = useCallback((positionId: string) => {
+        navigate(`/positions/${positionId}`);
+    }, []);
+
     let positions = props.positions
     return (
         <>
@@ -22,13 +27,12 @@ const PositionsForCompany: React.FC<PropsType> = (props) => {
                 }
                     dataSource={positions}
                     renderItem={(item) => (
-                        <NavLink to={'/positions/' + item.intershipPositionId}>
-                            <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }} onClick={() => {}}>
-                                <Col span={4}>{item.intershipPositionName}</Col>
-                                <Col span={4}>{item.intershipPositionCount}</Col>
-                                <Col span={4} style={{ textAlign: 'end'}}>0</Col>
-                            </List.Item>
-                        </NavLink>
+                        <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }} 
+                                   onClick={() => {onItemClick(item.intershipPositionId)}}>
+                            <Col span={4}>{item.intershipPositionName}</Col>
+                            <Col span={4}>{item.intershipPositionCount}</Col>
+                            <Col span={4} style={{ textAlign: 'end'}}>0</Col>
+                        </List.Item> 
                     )}
                 />
         </>

@@ -40,6 +40,15 @@ export const companyAPI = {
                     }
             })
     },
+    createIntershipPosition(companyId: string | number, intershipPositionName: string | null, intershipPositionDescription: string | null, intershipPositionCount: string | number) {
+        const body = {
+            companyId: companyId,
+            intershipPositionName: intershipPositionName,
+            intershipPositionDescription: intershipPositionDescription,
+            intershipPositionCount: intershipPositionCount
+        }
+        return instanceWithAuth.post('api/intershipPosition/create', body)
+    },
     getIntershipPositions() {
         return instanceWithAuth.get('api/intershipPositions')
             .then(response => {
@@ -49,7 +58,7 @@ export const companyAPI = {
                     }
             })
     },
-    getCompanyIntershipPositions(id: string | null) {
+    getCompanyIntershipPositions(id: number | string | null) {
         return instanceWithAuth.get(`/api/company/${id}/intershipPositions`)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {

@@ -85,7 +85,7 @@ const LeftMenu: React.FC<PropsType> = (props) => {
                 {
                     label: (
                         <Link to='applications'>
-                            Мои заявки
+                            Заявки
                         </Link>
                     ),
                     key: 'applications',

@@ -15,6 +15,13 @@ export type IntershipPositionType = {
     intershipPositionCount: number | string,
 }
 
+export type IntersipPositionCreationType = {
+    companyId: number | string,
+    intershipPositionName: string,
+    intershipPositionDescription: string,
+    intershipPositionCount: number | string
+}
+
 export type PositionType = {
     id: number | string
     name: string

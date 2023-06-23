@@ -34,10 +34,9 @@ const Navbar: React.FC = () => {
     return (
         <Header style={{ padding: 0 }} >
             <Row wrap={false} align="middle" style={{ justifyContent: "space-between" }}>
-                <Title level={4} style={{ marginInline: 20, marginTop: 0, marginBottom: 0, float: "left" }}>
-                    <Link to='/' style={{ color: 'white', fontWeight: 'bold' }}>
-                        HITS
-                    </Link>
+                <Title level={4} 
+                        style={{ marginInline: 20, marginTop: 0, marginBottom: 0, float: "left", color: 'white'}}>
+                    HITS
                 </Title>
                 <Col flex='auto'>
                     <LeftMenu onClick={onClick} keys={[current]} isAuth={isAuth} userRole={userRole}/>

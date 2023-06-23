@@ -1,4 +1,7 @@
+import { companyAPI } from 'API/company-api';
 import type {InferActionsTypes} from '../store';
+import {IntersipPositionCreationType} from '../../Types/types'
+import { positionsReducerActions } from './PositionsReducer';
 
 let initialState = {
     isModalOpened: false,
@@ -49,6 +52,21 @@ export const creatingNewPositionReducerActions = {
         type: 'CLEAR_NEW_POSITION_DATA'
     })
 }
+
+export const createNewCompanyPosition = (newPositionToCreate: IntersipPositionCreationType) => (dispatch: any) => {
+    companyAPI.createIntershipPosition(
+        newPositionToCreate.companyId, newPositionToCreate.intershipPositionName, 
+        newPositionToCreate.intershipPositionDescription, newPositionToCreate.intershipPositionCount)
+        .then(() => {
+            dispatch(creatingNewPositionReducerActions.clearNewPositionData)
+            companyAPI.getCompanyIntershipPositions(newPositionToCreate.companyId)
+            .then(data => {
+                dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+            })
+        })
+
+}
+
 
 export type InitialStateType = typeof initialState
 export type NewPositionType = typeof initialState.newPosition
