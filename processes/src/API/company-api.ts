@@ -8,15 +8,13 @@ const instanceWithAuth = axios.create({
         'Authorization': localStorage.getItem('token')
     }
 });
-
 export const companyAPI = {
-    getCompanies() {
-        return instanceWithAuth.get('/api/companies')
-            .then(response => {
+    async getCompanies() {
+        return await instanceWithAuth.get('/api/companies')
+            .then(async response => {
                 if (response.status === ResultCodesEnum.OK) {
-                    console.log(response.data);
-                        return response.data
-                    }
+                        return await response.data
+                    } 
             })
     },
     getCompany(id: string | null) {
@@ -38,6 +36,33 @@ export const companyAPI = {
         return instanceWithAuth.put(`/api/company/edit/${id}`, body)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
+    getIntershipPositions() {
+        return instanceWithAuth.get('api/intershipPositions')
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                    console.log(response.data);
+                        return response.data
+                    }
+            })
+    },
+    getCompanyIntershipPositions(id: string | null) {
+        return instanceWithAuth.get(`/api/company/${id}/intershipPositions`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                    console.log(response.data);
+                        return response.data
+                    }
+            })
+    },
+    getIntershipPositionInfo(id: string | null) {
+        return instanceWithAuth.get(`/api/intershipPosition/info/${id}`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                    console.log(response.data);
                         return response.data
                     }
             })

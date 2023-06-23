@@ -40,3 +40,18 @@ export type ApplicationType = {
     }
 }
 
+export interface ICompany {
+    companyName: string,
+    companyId: number,
+    companyDescription: string,
+    companyContacts: string,
+    companyAddress: string,
+}
+
+export interface IPosition {
+    intershipPositionId: string,
+    companyId: number,
+    companyName: string,
+    intershipPositionName: string,
+    intershipPositionCount: number,
+}
