@@ -1,21 +1,30 @@
-import { positionsReducerActions } from 'Store/reducers/PositionsReducer';
+import { getAllPositions, positionsReducerActions } from 'Store/reducers/PositionsReducer';
 import { AppStateType, InferActionsTypes } from 'Store/store';
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import PositionsListForSchoolAndStudent from './PositionsListForSchoolAndStudent';
 import { withAuthRedirect } from 'HOC/withAuthRedirect';
+import { Spin } from 'antd';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
-type ActionsType = InferActionsTypes<typeof positionsReducerActions>
+type DispatchPropsType = {
+    getAllPositions: () => Promise<any>
+}
 
-type PropsType = MapPropsType & ActionsType;
+type PropsType = MapPropsType & DispatchPropsType;
 
 class PositionsListForSchoolAndStudentContainer extends React.Component<PropsType> {
+    componentDidMount(): void {
+        this.props.getAllPositions()   
+    }
+
     render() {
         return (
             <>
-                <PositionsListForSchoolAndStudent positions={this.props.positions.positions}/>
+                <Spin spinning={this.props.positions === undefined}>
+                    <PositionsListForSchoolAndStudent positions={this.props.positions.positions}/>
+                </Spin>
             </>
         )
     }
@@ -28,5 +37,5 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionsReducerActions})
+    connect(mapStateToProps, {getAllPositions})
 )(PositionsListForSchoolAndStudentContainer)

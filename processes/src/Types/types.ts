@@ -7,6 +7,13 @@ export type UserDtoType = {
     email: string
 }
 
+export type IntershipPositionType = {
+    intershipPositionId: string,
+    companyId: number | string,
+    companyName: string,
+    intershipPositionName: string,
+    intershipPositionCount: number | string,
+}
 
 export type PositionType = {
     id: number | string

@@ -1,15 +1,14 @@
-import { Col, Layout, List, Row } from 'antd';
+import { Col, List } from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { user } from '../user';
-import { PositionType } from 'Types/types';
+import { PositionType, IntershipPositionType } from 'Types/types';
 
 type PropsType = {
-    positions: Array<PositionType>
+    positions: Array<IntershipPositionType>
 }
 
 const PositionsForCompany: React.FC<PropsType> = (props) => {
-    let positions = props.positions.filter(position => position.companyName === user.name)
+    let positions = props.positions
     return (
         <>
             <List
@@ -23,11 +22,11 @@ const PositionsForCompany: React.FC<PropsType> = (props) => {
                 }
                     dataSource={positions}
                     renderItem={(item) => (
-                        <NavLink to={'/positions/' + item.id}>
+                        <NavLink to={'/positions/' + item.intershipPositionId}>
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }} onClick={() => {}}>
-                                <Col span={4}>{item.name}</Col>
-                                <Col span={4}>{item.places}</Col>
-                                <Col span={4} style={{ textAlign: 'end'}}>{item.applicationsNumber}</Col>
+                                <Col span={4}>{item.intershipPositionName}</Col>
+                                <Col span={4}>{item.intershipPositionCount}</Col>
+                                <Col span={4} style={{ textAlign: 'end'}}>0</Col>
                             </List.Item>
                         </NavLink>
                     )}

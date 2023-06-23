@@ -1,41 +1,9 @@
 import type {InferActionsTypes} from '../store';
-import type {PositionType} from '../../Types/types';
+import type {PositionType, IntershipPositionType} from '../../Types/types';
+import { companyAPI } from 'API/company-api';
 
 let initialState = {
-    positions: [
-        {
-            id: 1, 
-            name: 'Front-end разработчик',
-            description: 'Какое-то описание',
-            places: 4,
-            companyName: 'НТР',
-            applicationsNumber: 10
-        },
-        {
-            id: 2, 
-            name: 'IOS разработчик',
-            description: 'Какое-то описание',
-            places: 1,
-            companyName: 'red_mad_robot',
-            applicationsNumber: 4
-        },
-        {
-            id: 3, 
-            name: 'IOS разработчик',
-            description: 'Какое-то описание',
-            places: 1,
-            companyName: 'Спортмастер',
-            applicationsNumber: 1
-        },
-        {
-            id: 4, 
-            name: 'Аналитик',
-            description: 'Какое-то описание',
-            places: 3,
-            companyName: 'Спортмастер',
-            applicationsNumber: 5
-        },
-    ] as Array<PositionType>
+    positions: [] as Array<IntershipPositionType>
 }
 
 const positionsReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -51,11 +19,22 @@ const positionsReducer = (state = initialState, action: ActionsType): InitialSta
 }
 
 export const positionsReducerActions = {
-    setPositions: (positions: Array<PositionType>) => (
+    setPositions: (positions: Array<IntershipPositionType>) => (
         {
             type: 'SET_POSITIONS', 
             positions
         } as const)
+}
+
+export const getAllPositions = () => (dispatch: any) => {
+    companyAPI.getIntershipPositions()
+        .then(data => {
+            dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+        })
+}
+
+export const getAllCompanyPositions = () => (dispatch: any) => {
+
 }
 
 export type InitialStateType = typeof initialState

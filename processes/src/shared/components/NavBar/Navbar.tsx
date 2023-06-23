@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
     const location = useLocation()
     const [current, setCurrent] = useState(location.pathname.split('/')[1])
     const onClick: MenuProps['onClick'] = (e) => {
-        if(e.key !== 'notifications')
+        if(e.key !== 'notifications' && e.key !== 'login')
             setCurrent(e.key);
     };
 
