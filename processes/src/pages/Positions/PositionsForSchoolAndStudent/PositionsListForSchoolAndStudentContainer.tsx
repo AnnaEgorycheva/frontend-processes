@@ -22,7 +22,7 @@ class PositionsListForSchoolAndStudentContainer extends React.Component<PropsTyp
     render() {
         return (
             <>
-                <Spin spinning={this.props.positions === undefined}>
+                <Spin spinning={this.props.isPositionsFetching}>
                     <PositionsListForSchoolAndStudent positions={this.props.positions.positions}/>
                 </Spin>
             </>
@@ -32,7 +32,8 @@ class PositionsListForSchoolAndStudentContainer extends React.Component<PropsTyp
 
 let mapStateToProps = (state: AppStateType) => {
     return {
-        positions: state.positions
+        positions: state.positions,
+        isPositionsFetching: state.positions.isPositionsFetching
     }
 }
 

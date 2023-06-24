@@ -1,4 +1,4 @@
-import { getPositionInfo, deletePosition, positionReducerActions } from 'Store/reducers/PositionReducer';
+import { getPositionInfo, deletePosition, positionReducerActions, updatePositionInfo } from 'Store/reducers/PositionReducer';
 import { AppStateType, InferActionsTypes } from 'Store/store';
 import { Card, Layout, Spin } from 'antd';
 import React from 'react';
@@ -34,9 +34,10 @@ class PositionForCompanyContainer extends React.Component<PropsType> {
                             <PositionInfoForCompany positionInfo={this.props.positionInfo}/>
                         </Spin>
                         <PositionControlButtons 
-                            position={this.props.positionInfo}
+                            currentPosition={this.props.positionInfo}
                             onChangeValues={this.props.setUpdatedPositionInfo}
                             onDeletePositionBtnClick={this.onDeletePositionBtnClick}
+                            updatePosition={this.props.updatePositionInfo}
                         />
                     </Card>
                 </Layout>
@@ -56,7 +57,8 @@ let mapStateToProps = (state: AppStateType)  => {
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchType = {
     getPositionInfo: (positionId: string | null) => Promise<any>,
-    deletePosition: (positionId: string) => Promise<any>
+    deletePosition: (positionId: string) => Promise<any>,
+    updatePositionInfo: (positionId: string) => Promise<any>
 }
 type ActionsType = InferActionsTypes<typeof positionReducerActions>
 type OwnPropsType = {
@@ -73,5 +75,5 @@ type PropsType = MapPropsType & any & DispatchType & OwnPropsType;
 
 export default compose<React.ComponentType>(
     connect(mapStateToProps, 
-        {...positionReducerActions, getPositionInfo, deletePosition}), withRouter
+        {...positionReducerActions, getPositionInfo, deletePosition, updatePositionInfo}), withRouter
 )(PositionForCompanyContainer)

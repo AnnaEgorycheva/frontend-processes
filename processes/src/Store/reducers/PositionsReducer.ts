@@ -3,7 +3,8 @@ import type {PositionType, IntershipPositionType} from '../../Types/types';
 import { companyAPI } from 'API/company-api';
 
 let initialState = {
-    positions: [] as Array<IntershipPositionType>
+    positions: [] as Array<IntershipPositionType>,
+    isPositionsFetching: false as boolean
 }
 
 const positionsReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -12,6 +13,11 @@ const positionsReducer = (state = initialState, action: ActionsType): InitialSta
             return {
                 ...state,
                 positions : action.positions
+            };
+        case 'SET_IS_POSITIONS_FETCHING':
+            return {
+                ...state,
+                isPositionsFetching : action.isFetching
             };
         default:
             return state;
@@ -23,20 +29,29 @@ export const positionsReducerActions = {
         {
             type: 'SET_POSITIONS', 
             positions
+        } as const),
+    setIsPositionsFetching: (isFetching: boolean) => (
+        {
+            type: 'SET_IS_POSITIONS_FETCHING', 
+            isFetching
         } as const)
 }
 
 export const getAllPositions = () => (dispatch: any) => {
+    dispatch(positionsReducerActions.setIsPositionsFetching(true))
     companyAPI.getIntershipPositions()
         .then(data => {
             dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+            dispatch(positionsReducerActions.setIsPositionsFetching(false))
         })
 }
 
 export const getAllCompanyPositions = (companyId: string | number = 3) => (dispatch: any) => {
+    dispatch(positionsReducerActions.setIsPositionsFetching(true))
     companyAPI.getCompanyIntershipPositions(companyId)
         .then(data => {
             dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+            dispatch(positionsReducerActions.setIsPositionsFetching(false))
         })
 
 }

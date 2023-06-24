@@ -28,7 +28,7 @@ class PositionsForCompanyContainer extends React.Component<PropsType> {
         return (
             <>
                 <Layout style={{ marginInline: 50, marginTop: 50 }}>
-                    <Spin spinning={this.props.positions.length === 0}>
+                    <Spin spinning={this.props.isPositionsFetching}>
                         <PositionsForCompany 
                             positions={this.props.positions.positions} 
                         />
@@ -48,7 +48,8 @@ class PositionsForCompanyContainer extends React.Component<PropsType> {
 let mapStateToProps = (state: AppStateType) => {
     return {
         positions: state.positions,
-        newPosition : state.creatingNewPosition.newPosition
+        newPosition : state.creatingNewPosition.newPosition,
+        isPositionsFetching: state.positions.isPositionsFetching
     }
 }
 

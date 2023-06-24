@@ -1,5 +1,5 @@
 import type {InferActionsTypes} from '../store';
-import type {PositionType, StudentType, IntershipPositionType} from '../../Types/types';
+import type {PositionType, StudentType, IntershipPositionType, IntersipPositionCreationType} from '../../Types/types';
 import { companyAPI } from 'API/company-api';
 import { ResultCodesEnum } from 'API/api';
 
@@ -34,14 +34,12 @@ let initialState = {
     ] as Array<StudentType>,
     isStudentAppliedAnApplication: true,
     updatedPositionInfo: {
-        id: '',
-        name: '',
-        description: '',
-        skills: '',
-        places: null,
-        companyName: '',
-        applicationsNumber: null
-    }as PositionType
+        companyId: null,
+        intershipPositionName: '',
+        intershipPositionDescription: '',
+        intershipPositionskills: '',
+        intershipPositionCount: '' 
+    } as IntersipPositionCreationType
 }
 
 const positionReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -71,6 +69,17 @@ const positionReducer = (state = initialState, action: ActionsType): InitialStat
                 ...state,
                 updatedPositionInfo: action.newInfoAboutPosition
             };
+        case 'CLEAR_UPDATED_POSITION_INFO':
+            return {
+                ...state,
+                updatedPositionInfo : {
+                    companyId: null,
+                    intershipPositionName: '',
+                    intershipPositionDescription: '',
+                    intershipPositionskills: '',
+                    intershipPositionCount: ''
+                }
+            }
         default:
             return state;
     }
@@ -93,9 +102,12 @@ export const positionReducerActions = {
         type: 'SET_IS_STUDENT_APPLIED_AN_APPLICATION',
         isApplied
     } as const),
-    setUpdatedPositionInfo: (newInfoAboutPosition: PositionType) => ({
+    setUpdatedPositionInfo: (newInfoAboutPosition: IntersipPositionCreationType) => ({
         type: 'SET_UPDATED_POSITION_INFO',
         newInfoAboutPosition: newInfoAboutPosition
+    } as const),
+    clearUpdatedPositionInfo: () => ({
+        type: 'CLEAR_UPDATED_POSITION_INFO'
     } as const),
 }
 
@@ -104,6 +116,16 @@ export const getPositionInfo = (positionId: string | null) => (dispatch: any) =>
     companyAPI.getIntershipPositionInfo(positionId)
         .then(data => {
             dispatch(positionReducerActions.setPositionInfo(data))
+            return data
+        })
+        .then(data => {
+            dispatch(positionReducerActions.setUpdatedPositionInfo({
+                companyId: data.companyId,
+                intershipPositionName: data.intershipPositionName,
+                intershipPositionDescription: data.intershipPositionDescription,
+                intershipPositionskills: '',
+                intershipPositionCount: data.intershipPositionCount
+            }))
             dispatch(positionReducerActions.setPositionInfoIsFetching(false))
         })
 }
@@ -113,6 +135,32 @@ export const deletePosition = (positionId: string) => (dispatch: any) => {
         .then(responseStatus => {
             if (responseStatus === ResultCodesEnum.OK) {
             }
+        })
+}
+
+export const updatePositionInfo = (positionId: string) => (dispatch: any, getState: any) => {
+    const updatedPosition = getState().position.updatedPositionInfo
+    companyAPI.putIntershipPosition(
+        positionId, updatedPosition.companyId, updatedPosition.intershipPositionName,
+        updatedPosition.intershipPositionDescription ,updatedPosition.intershipPositionCount)
+        .then(() => {
+            dispatch(positionReducerActions.clearUpdatedPositionInfo())
+            dispatch(positionReducerActions.setPositionInfoIsFetching(true))
+            companyAPI.getIntershipPositionInfo(positionId)
+                .then(data => {
+                    dispatch(positionReducerActions.setPositionInfo(data))
+                    return data
+                })
+                .then(data => {
+                    dispatch(positionReducerActions.setUpdatedPositionInfo({
+                        companyId: data.companyId,
+                        intershipPositionName: data.intershipPositionName,
+                        intershipPositionDescription: data.intershipPositionDescription,
+                        intershipPositionskills: '',
+                        intershipPositionCount: data.intershipPositionCount
+                    }))
+                    dispatch(positionReducerActions.setPositionInfoIsFetching(false))
+                })
         })
 }
 

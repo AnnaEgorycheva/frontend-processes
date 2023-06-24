@@ -1,20 +1,18 @@
 import { Button, Col, Form, Input, Modal, Row, Space, Typography } from 'antd';
 import React, { useState } from 'react';
-import { PositionType } from 'Types/types';
+import { checkIfUndefined } from 'shared/functions/Functions';
+import { IntershipPositionType, IntersipPositionCreationType} from 'Types/types';
 
 type PropsType = {
-    position: PositionType,
-    onChangeValues: (updatedPosition: PositionType) => void,
-    onDeletePositionBtnClick: () => void
+    currentPosition: IntershipPositionType,
+    onChangeValues: (updatedPosition: IntersipPositionCreationType) => void,
+    onDeletePositionBtnClick: () => void,
+    updatePosition: (positionId: string) => Promise<any>
 }
 
 const PositionControlButtons: React.FC<PropsType> = (props) => {
+    const currentPosition = props.currentPosition
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [submittable, setSubmittable] = React.useState(false);
-
-    const [form] = Form.useForm();
-    const values = Form.useWatch([], form);
-
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -25,18 +23,34 @@ const PositionControlButtons: React.FC<PropsType> = (props) => {
         setIsModalOpen(false);
     };
 
+    const [form] = Form.useForm();
+    const values = Form.useWatch([], form);
+    const [submittable, setSubmittable] = React.useState(false);
+    const onReset = () => {
+        form.resetFields();
+    };
+    const updatePosition = () => {
+        props.updatePosition(currentPosition.intershipPositionId)
+        setIsModalOpen(false)
+    }
+
     React.useEffect(() => {
         form.validateFields({ validateOnly: true })
         .then(
           () => {setSubmittable(true);},
           () => {setSubmittable(false);},
-        );
-        // props.onChangeValues({
-        //     name: values.name === undefined ? '' : values.name,
-        //     description: values.description === undefined ? '' : values.description,
-        //     skills: values.skills === undefined ? '' : values.skills,
-        //     places: values.places === undefined ? '' : values.places
-        // } )
+        )
+        .then(() => {
+            if(!!values){
+                props.onChangeValues({
+                    companyId: currentPosition.companyId,
+                    intershipPositionName: checkIfUndefined(values.intershipPositionName),
+                    intershipPositionDescription: checkIfUndefined(values.intershipPositionDescription),
+                    intershipPositionskills: '',
+                    intershipPositionCount: checkIfUndefined(values.intershipPositionCount),
+                })
+            }
+        });
     }, [values]);
 
     return (
@@ -61,24 +75,27 @@ const PositionControlButtons: React.FC<PropsType> = (props) => {
                 footer={[]}
             >
                 <Form form={form} name="validateOnly" layout="vertical" autoComplete="off">
-                    <Form.Item name="name" label="Название позиции" initialValue={props.position.name} rules={[{ required: true, message: 'Введите название позиции' }]}>
+                    <Form.Item name="intershipPositionName" label="Название позиции" initialValue={currentPosition.intershipPositionName} rules={[{ required: true, message: 'Введите название позиции' }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="description" label="Описание" initialValue={props.position.description}>
+                    <Form.Item name="intershipPositionDescription" label="Описание" initialValue={currentPosition.intershipPositionDescription}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="skills" label="Навыки" initialValue={props.position.skills}>
+                    {/* <Form.Item name="skills" label="Навыки" initialValue={props.position.skills}>
                         <Input />
-                    </Form.Item>
-                    <Form.Item name="places" label="Количество мест" initialValue={props.position.places}>
+                    </Form.Item> */}
+                    <Form.Item name="intershipPositionCount" label="Количество мест" initialValue={currentPosition.intershipPositionCount}>
                         <Input />
                     </Form.Item>
                     <Form.Item>
-                    <Space>
-                        <Button type="primary" htmlType="submit" disabled={!submittable}>
-                             Редактировать
+                        <Button type="primary" htmlType="submit" disabled={!submittable} style={{marginRight: 15}}
+                                onClick={() => {updatePosition()}}
+                            >
+                                Редактировать
                         </Button>
-                    </Space>
+                        <Button htmlType="button" onClick={onReset}>
+                            Очистить поля формы
+                        </Button>
                     </Form.Item>
                 </Form>
             </Modal>
