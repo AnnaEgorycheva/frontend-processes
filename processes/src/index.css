@@ -18,6 +18,7 @@ svg {
 
 .ant-menu-dark.ant-menu-horizontal >.ant-menu-item-selected,
 .ant-menu-horizontal >.ant-menu-submenu-selected,
-.ant-menu-horizontal >.ant-menu-submenu.ant-menu-submenu-horizontal.ant-menu-submenu-open.ant-menu-submenu-active.ant-menu-submenu-selected >.ant-menu-submenu-item-selected {
+.ant-menu.ant-menu-horizontal >.ant-menu-submenu.ant-menu-submenu-horizontal.ant-menu-submenu-selected .ant-menu-item-selected {
   background-color: #001529 !important
 }
+/* .ant-menu-horizontal >.ant-menu-submenu.ant-menu-submenu-horizontal.ant-menu-submenu-open.ant-menu-submenu-active.ant-menu-submenu-selected >.ant-menu-submenu-item-selected */

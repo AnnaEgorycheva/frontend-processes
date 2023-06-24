@@ -16,10 +16,11 @@ export type IntershipPositionType = {
 }
 
 export type IntersipPositionCreationType = {
-    companyId: number | string,
-    intershipPositionName: string,
-    intershipPositionDescription: string,
-    intershipPositionCount: number | string
+    companyId: number | string | null,
+    intershipPositionName: string | null,
+    intershipPositionDescription: string | null,
+    intershipPositionskills?: string | undefined | null,
+    intershipPositionCount: number | string | null
 }
 
 export type PositionType = {

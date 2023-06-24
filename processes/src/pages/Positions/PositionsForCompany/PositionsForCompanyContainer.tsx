@@ -7,12 +7,11 @@ import {compose} from 'redux';
 import PositionsForCompany from './PositionsForCompany';
 import AddingNewPositionButton from './AddingNewPositionButton';
 import { Layout, Spin } from 'antd';
-import { IntersipPositionCreationType } from 'Types/types';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
     getAllCompanyPositions: () => Promise<any>
-    createNewCompanyPosition: (newPositionToCreate: IntersipPositionCreationType) => Promise<any>
+    createNewCompanyPosition: () => Promise<any>
 }
 
 type creatingNewPositionActions = typeof creatingNewPositionReducerActions

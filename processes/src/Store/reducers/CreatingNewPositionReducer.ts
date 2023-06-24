@@ -4,35 +4,32 @@ import {IntersipPositionCreationType} from '../../Types/types'
 import { positionsReducerActions } from './PositionsReducer';
 
 let initialState = {
-    isModalOpened: false,
     newPosition: {
-        name: '' as undefined | string,
-        description: '' as undefined | string,
-        skills: '' as undefined | string,
-        places: '' as undefined | string
-    } 
+        companyId: 3,
+        intershipPositionName: '',
+        intershipPositionDescription: '',
+        intershipPositionskills: '',
+        intershipPositionCount: ''
+    } as IntersipPositionCreationType
 }
 
 const creatingNewPositionReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
-        case 'TOGGLE_IS_MODAL_OPENED':
-            return {
-                ...state,
-                isModalOpened: !state.isModalOpened
-            }
-        case 'SET_NEW_POSITION':
+        case 'SET_NEW_POSITION': {
             return {
                 ...state,
                 newPosition: action.payload
             }
+        }
         case 'CLEAR_NEW_POSITION_DATA':
             return {
                 ...state,
                 newPosition : {
-                    name: '',
-                    description: '',
-                    skills: '',
-                    places: ''
+                    companyId: 3,
+                    intershipPositionName: '',
+                    intershipPositionDescription: '',
+                    intershipPositionskills: '',
+                    intershipPositionCount: ''
                 }
             }
         default:
@@ -41,10 +38,7 @@ const creatingNewPositionReducer = (state = initialState, action: any): InitialS
 }
 
 export const creatingNewPositionReducerActions = {
-    toggleIsModalOpened: () => ({
-        type: 'TOGGLE_IS_MODAL_OPENED'
-    } as const),
-    setNewPosition: (newPosition: NewPositionType) => ({
+    setNewPosition: (newPosition: IntersipPositionCreationType) => ({
         type: 'SET_NEW_POSITION',
         payload: newPosition
     } as const),
@@ -53,12 +47,27 @@ export const creatingNewPositionReducerActions = {
     })
 }
 
-export const createNewCompanyPosition = (newPositionToCreate: IntersipPositionCreationType) => (dispatch: any) => {
+// export const createNewCompanyPosition = (newPositionToCreate: IntersipPositionCreationType) => (dispatch: any) => {
+//     companyAPI.createIntershipPosition(
+//         newPositionToCreate.companyId, newPositionToCreate.intershipPositionName, 
+//         newPositionToCreate.intershipPositionDescription, newPositionToCreate.intershipPositionCount)
+//         .then(() => {
+//             dispatch(creatingNewPositionReducerActions.clearNewPositionData())
+//             companyAPI.getCompanyIntershipPositions(newPositionToCreate.companyId)
+//             .then(data => {
+//                 dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+//             })
+//         })
+
+// }
+
+export const createNewCompanyPosition = () => (dispatch: any, getState: any) => {
+    const newPositionToCreate = getState().creatingNewPosition.newPosition
     companyAPI.createIntershipPosition(
         newPositionToCreate.companyId, newPositionToCreate.intershipPositionName, 
         newPositionToCreate.intershipPositionDescription, newPositionToCreate.intershipPositionCount)
         .then(() => {
-            dispatch(creatingNewPositionReducerActions.clearNewPositionData)
+            dispatch(creatingNewPositionReducerActions.clearNewPositionData())
             companyAPI.getCompanyIntershipPositions(newPositionToCreate.companyId)
             .then(data => {
                 dispatch(positionsReducerActions.setPositions(data.intershipPositions))

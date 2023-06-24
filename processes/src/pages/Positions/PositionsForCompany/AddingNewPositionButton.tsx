@@ -1,21 +1,17 @@
-import { NewPositionType } from 'Store/reducers/CreatingNewPositionReducer';
 import { IntersipPositionCreationType } from 'Types/types';
 import { Button, Form, Input, Modal, Space } from 'antd';
 import React, { useState } from 'react';
+import { checkIfUndefined } from 'shared/functions/Functions';
 
 type PropsType = {
-    newPosition: NewPositionType,
-    onChangeValues: (position : NewPositionType) => void,
+    newPosition: IntersipPositionCreationType,
+    onChangeValues: (position : IntersipPositionCreationType) => void,
     clearForm: () => void,
-    createNewCompanyPosition: (newPositionToCreate: IntersipPositionCreationType) => Promise<any>
+    createNewCompanyPosition: () => Promise<any>
 }
 
 const AddingNewPositionButton: React.FC<PropsType> = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [submittable, setSubmittable] = React.useState(false);
-
-    const [form] = Form.useForm();
-    const values = Form.useWatch([], form);
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -23,37 +19,43 @@ const AddingNewPositionButton: React.FC<PropsType> = (props) => {
         setIsModalOpen(false);
     };
     const handleCancel = () => {
-        props.clearForm()
+        form.resetFields();
         setIsModalOpen(false);
     };
 
+    const [form] = Form.useForm();
+    const values = Form.useWatch([], form);
+    const [submittable, setSubmittable] = React.useState(false);
+    const onReset = () => {
+        form.resetFields();
+    };
     const createNewPosition = () => {
-        props.createNewCompanyPosition({
-            companyId: 3,
-            intershipPositionName: values.intershipPositionName === undefined ? '' : values.intershipPositionName,
-            intershipPositionDescription: values.intershipPositionDescription === undefined ? '' : values.intershipPositionDescription,
-            intershipPositionCount: values.intershipPositionCount === undefined ? '' : values.intershipPositionCount,
-        })
+        props.createNewCompanyPosition()
+        form.resetFields();
         setIsModalOpen(false);
     }
-
     React.useEffect(() => {
         form.validateFields({ validateOnly: true })
         .then(
           () => {setSubmittable(true);},
           () => {setSubmittable(false);},
-        );
-        // props.onChangeValues({
-        //     name: values.name === undefined ? '' : values.name,
-        //     description: values.description === undefined ? '' : values.description,
-        //     skills: values.skills === undefined ? '' : values.skills,
-        //     places: values.places === undefined ? '' : values.places
-        // } )
-      }, [values]);
+        )
+        .then(() => {
+            if(!!values){
+                props.onChangeValues({
+                    companyId: 3,
+                    intershipPositionName: checkIfUndefined(values.intershipPositionName),
+                    intershipPositionDescription: checkIfUndefined(values.intershipPositionDescription),
+                    intershipPositionskills: '',
+                    intershipPositionCount: checkIfUndefined(values.intershipPositionCount),
+                })
+            }
+        });
+    }, [values]);
 
     return (
         <>
-            <Space wrap style={{ paddingInline: 50, paddingTop: 75}}>
+            <Space wrap style={{ paddingInline: 50, paddingTop: 50}}>
                  <Button type="primary" onClick={showModal}>Добавить новую позицию</Button>
             </Space>
             <Modal 
@@ -66,24 +68,26 @@ const AddingNewPositionButton: React.FC<PropsType> = (props) => {
                 footer={[]}
                 >
                 <Form form={form} name="validateOnly" layout="vertical" autoComplete="off">
-                    <Form.Item name="intershipPositionName" label="Название" initialValue={props.newPosition.name} rules={[{ required: true, message: 'Введите название позиции' }]}>
+                    <Form.Item name="intershipPositionName" label="Название" rules={[{ required: true, message: 'Введите название позиции' }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="intershipPositionDescription" label="Описание" initialValue={props.newPosition.description}>
+                    <Form.Item name="intershipPositionDescription" label="Описание" >
                         <Input />
                     </Form.Item>
-                    {/* <Form.Item name="skills" label="Навыки" initialValue={props.newPosition.skills}>
+                    {/* <Form.Item name="skills" label="Навыки" >
                         <Input />
                     </Form.Item> */}
-                    <Form.Item name="intershipPositionCount" label="Количество мест" initialValue={props.newPosition.places}>
+                    <Form.Item name="intershipPositionCount" label="Количество мест" >
                         <Input />
                     </Form.Item>
                     <Form.Item>
-                        <Space>
-                        <Button type="primary" htmlType="button" disabled={!submittable} onClick={() => {createNewPosition()}}>
-                             Создать
+                        <Button type="primary" htmlType="submit" disabled={!submittable} style={{marginRight: 15}}
+                                onClick={() => {createNewPosition()}}>
+                            Создать
                         </Button>
-                        </Space>
+                        <Button htmlType="button" onClick={onReset}>
+                            Очистить поля формы
+                        </Button>
                     </Form.Item>
                 </Form>
             </Modal>

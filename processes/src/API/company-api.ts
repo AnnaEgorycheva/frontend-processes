@@ -40,7 +40,8 @@ export const companyAPI = {
                     }
             })
     },
-    createIntershipPosition(companyId: string | number, intershipPositionName: string | null, intershipPositionDescription: string | null, intershipPositionCount: string | number) {
+    createIntershipPosition(companyId: string | number | null, intershipPositionName: string | null, 
+        intershipPositionDescription: string | null, intershipPositionCount: string | number | null) {
         const body = {
             companyId: companyId,
             intershipPositionName: intershipPositionName,
