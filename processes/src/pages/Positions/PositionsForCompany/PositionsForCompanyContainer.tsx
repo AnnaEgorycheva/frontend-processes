@@ -28,7 +28,7 @@ class PositionsForCompanyContainer extends React.Component<PropsType> {
         return (
             <>
                 <Layout style={{ marginInline: 50, marginTop: 50 }}>
-                    <Spin spinning={this.props.positions === undefined}>
+                    <Spin spinning={this.props.positions.length === 0}>
                         <PositionsForCompany 
                             positions={this.props.positions.positions} 
                         />

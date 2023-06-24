@@ -72,9 +72,30 @@ export const companyAPI = {
         return instanceWithAuth.get(`/api/intershipPosition/info/${id}`)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {
-                    console.log(response.data);
                         return response.data
                     }
             })
+    },
+    putIntershipPosition(id: string, 
+                         companyId: number | string, name: string, 
+                         description: string | null, count: number | string) {
+        const body = {
+            companyId: companyId,
+            intershipPositionName: name,
+            intershipPositionDescription: description,
+            intershipPositionCount: count
+          }
+        return instanceWithAuth.put(`/api/intershipPosition/edit/${id}`, body)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
+    deleteIntershipPosition(id: string) {
+        return instanceWithAuth.delete(`/api/intershipPosition/delete/${id}`)
+        .then(response => {
+            return response.status
+        })
     },
 }

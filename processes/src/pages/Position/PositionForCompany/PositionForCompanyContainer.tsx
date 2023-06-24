@@ -1,15 +1,28 @@
-import { positionReducerActions } from 'Store/reducers/PositionReducer';
+import { getPositionInfo, deletePosition, positionReducerActions } from 'Store/reducers/PositionReducer';
 import { AppStateType, InferActionsTypes } from 'Store/store';
-import { Card, Layout } from 'antd';
+import { Card, Layout, Spin } from 'antd';
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import PositionInfoForCompany from './PositionInfoForCompany';
 import PositionControlButtons from './PositionControlButtons';
+import withRouter from 'HOC/withRouter';
+import { companyAPI } from 'API/company-api';
+import { ResultCodesEnum } from 'API/api';
 
 class PositionForCompanyContainer extends React.Component<PropsType> {
     componentDidMount(): void {
-        console.log(this.props)
+        this.props.getPositionInfo(this.props.router.params.id)
+    }
+
+    onDeletePositionBtnClick = () => {
+        companyAPI.deleteIntershipPosition(this.props.router.params.id)
+            .then(responseStatus => {
+                if (responseStatus === ResultCodesEnum.OK) {
+                    this.props.router.navigate("/positions")
+                }
+            })
+        // this.props.deletePosition(this.props.router.params.id)
     }
 
     render() {
@@ -17,10 +30,13 @@ class PositionForCompanyContainer extends React.Component<PropsType> {
             <>
                 <Layout style={{ marginInline: 50, marginTop: 50 }}>
                     <Card style={{ margin: 20 }}>
-                        <PositionInfoForCompany positionInfo={this.props.positionInfo}/>
+                        <Spin spinning={this.props.positionInfoIsFetching}>
+                            <PositionInfoForCompany positionInfo={this.props.positionInfo}/>
+                        </Spin>
                         <PositionControlButtons 
                             position={this.props.positionInfo}
                             onChangeValues={this.props.setUpdatedPositionInfo}
+                            onDeletePositionBtnClick={this.onDeletePositionBtnClick}
                         />
                     </Card>
                 </Layout>
@@ -32,15 +48,30 @@ class PositionForCompanyContainer extends React.Component<PropsType> {
 let mapStateToProps = (state: AppStateType)  => {
     return {
         positionInfo: state.position.positionInfo,
+        positionInfoIsFetching: state.position.positionInfoIsFetching,
         updatedPosition: state.position.updatedPositionInfo
     }
 }
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
+type DispatchType = {
+    getPositionInfo: (positionId: string | null) => Promise<any>,
+    deletePosition: (positionId: string) => Promise<any>
+}
 type ActionsType = InferActionsTypes<typeof positionReducerActions>
+type OwnPropsType = {
+    router: {
+        location: {},
+        navigate: Function,
+        params: {
+            id: string | null
+        }
+    },
+}
 
-type PropsType = MapPropsType & any;
+type PropsType = MapPropsType & any & DispatchType & OwnPropsType;
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionReducerActions}),
+    connect(mapStateToProps, 
+        {...positionReducerActions, getPositionInfo, deletePosition}), withRouter
 )(PositionForCompanyContainer)

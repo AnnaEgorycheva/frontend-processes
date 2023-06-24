@@ -4,7 +4,8 @@ import { PositionType } from 'Types/types';
 
 type PropsType = {
     position: PositionType,
-    onChangeValues: (updatedPosition: PositionType) => void
+    onChangeValues: (updatedPosition: PositionType) => void,
+    onDeletePositionBtnClick: () => void
 }
 
 const PositionControlButtons: React.FC<PropsType> = (props) => {
@@ -45,7 +46,7 @@ const PositionControlButtons: React.FC<PropsType> = (props) => {
                     <Button style={{marginRight: 10}} type="primary" onClick={showModal}>
                         Редактировать
                     </Button>
-                    <Button type="primary" danger>
+                    <Button type="primary" danger onClick={() => {props.onDeletePositionBtnClick()}}>
                         Удалить
                     </Button>
                 </Col>
