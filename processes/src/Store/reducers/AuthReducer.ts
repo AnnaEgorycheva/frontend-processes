@@ -1,7 +1,6 @@
 import type {BaseThunkType, InferActionsTypes} from '../store';
 import type {UserDtoType} from '../../Types/types';
 import { userAPI } from 'API/user-api';
-import { useNavigate } from 'react-router-dom';
 
 let initialState = {
     user: {} as UserDtoType,
@@ -9,7 +8,8 @@ let initialState = {
     loginFormData: {
         email: '' as string | null ,
         password: '' as string | null 
-    } 
+    },
+    isAuthSuccess: false as boolean 
 }
 
 const authReducer = (state = initialState, action: any): InitialStateType => {
@@ -65,6 +65,9 @@ export const setLoginFormData = (formData: LoginDataFormType) => {
 export const clearLoginFormData = () => {
     return { type: 'CLEAR_LOGIN_FORM_DATA'}
 };
+export const setisAuthSuccess = (isSuccess: boolean) => {
+    return { type: 'SET_IS_AUTH_SUCCESS', isSuccess}
+};
 
 export const getUserDataByEmailWhileInitializing = (email: string | null)=> async (dispatch: any) => {
     let userData = await userAPI.getUsersByEmail(email)
@@ -73,6 +76,7 @@ export const getUserDataByEmailWhileInitializing = (email: string | null)=> asyn
 }
 
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
+    dispatch(setisAuthSuccess(false))
     userAPI.authenticate(loginData.email, loginData.password)
     .then(data => {
         let token = data.jwtToken
@@ -85,15 +89,17 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
             dispatch(setUserData(userData))
             dispatch(setIsAuth(true))
             localStorage.setItem('email', userData.email)
-            return userData.role
+            // dispatch(setisAuthSuccess(true))
+            // return userData.role
         })
-        .then((role) => {
-            switch (role) {
-                case 'STUDENT': window.history.pushState(null, '', "companies"); break
-                case 'SCHOOL': window.history.pushState(null, '', "students"); break
-                case 'COMPANY': window.history.pushState(null, '', "positions"); break
-            }
-        })
+        .then(() => dispatch(setisAuthSuccess(true)))
+        // .then((role) => {
+        //     switch (role) {
+        //         case 'STUDENT': window.history.pushState(null, '', "companies"); break
+        //         case 'SCHOOL': window.history.pushState(null, '', "students"); break
+        //         case 'COMPANY': window.history.pushState(null, '', "positions"); break
+        //     }
+        // })
     })
 }
 

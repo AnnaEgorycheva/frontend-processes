@@ -2,14 +2,13 @@ import { Col, List} from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ApplicationType } from '../../../Types/types';
-import { user } from 'pages/Positions/user';
 
 type PropsType = {
     applications: Array<ApplicationType>
 }
 
 const ApplicationsForCompany: React.FC<PropsType> = (props) => {
-    let applications = props.applications.filter(application => application.companyName === user.name)
+    let applications = props.applications.filter(application => application.companyName === 'НТР')
     return (
         <>
             <List

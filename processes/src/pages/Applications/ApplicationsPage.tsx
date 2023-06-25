@@ -1,13 +1,15 @@
 import React from 'react';
-import { user } from '../Positions/user';
 import ApplicationsForStudentContainer from './ApplicationsForStudent/ApplicationsForStudentContainer';
 import ApplicationsForCompanyContainer from './ApplicationsForCompany/ApplicationsForCompanyContainer';
+import { useSelector } from 'react-redux';
+import { selectUserRole } from 'Store/selectors/AuthSelector';
 
 const ApplicationsPage: React.FC = () => {
+  const userRole = useSelector(selectUserRole)
   return (
     <>
       {
-        user.role === 'company'
+        userRole === 'COMPANY'
         ? <ApplicationsForCompanyContainer/>
         : <ApplicationsForStudentContainer/>
       }

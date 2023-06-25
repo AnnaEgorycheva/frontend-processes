@@ -2,11 +2,7 @@ import { Button, Card, Form, Input, Layout, Space } from "antd";
 import Title from "antd/es/typography/Title";
 import React from "react";
 import {LoginDataFormType} from '../../Store/reducers/AuthReducer'
-
-const checkAValue = (value: any) => {
-    let returnedValue = typeof value === undefined ? '' : value
-    return returnedValue
-}
+import { checkIfUndefined } from "shared/functions/Functions";
 
 type PropsType = {
     loginFormData: LoginDataFormType,
@@ -21,10 +17,10 @@ const LoginPage: React.FC<PropsType> = (props) => {
     const [form] = Form.useForm();
     const values = Form.useWatch([], form);
     React.useEffect(() => {
-        if (values !== undefined) {
+        if (!!values) {
             props.onChangeFormValues({
-                email: checkAValue(values.email),
-                password : checkAValue(values.password)
+                email: checkIfUndefined(values.email),
+                password : checkIfUndefined(values.password)
             })
         }
         form.validateFields({ validateOnly: true }).then(
@@ -32,6 +28,7 @@ const LoginPage: React.FC<PropsType> = (props) => {
           () => { setSubmittable(false); },
         );
     }, [values]);
+    
     const onFinish = () => {
         props.login(values);
     };
