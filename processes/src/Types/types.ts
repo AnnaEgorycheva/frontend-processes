@@ -1,3 +1,40 @@
+export type PracticePeriod = {
+    id: string | null,
+    startDate: string,
+    endDate: string,
+    practiceOrder: string | null,
+    practicePeriodName: string | null 
+}
+export type PracticePeriodInfo = {
+    id: string | null,
+    practicePeriodName: string | null 
+}
+export type PracticePeriodCreateUpdate = {
+    startDate: string,
+    endDate: string,
+    practiceOrder: string | null,
+    practicePeriodName: string | null 
+}
+
+export type PracticeProfile = {
+    practiceProfileId: string | null,
+    userId: string | null,
+    companyId: string | null,
+    position: string | null,
+    characteristic: string | null,
+    practiceDiary: string | null,
+    practicePeriodId: string | null
+}
+export type PracticePeriodAndStudentPracticeProfile = {
+    practicePeriodName: string | null,
+    practiceProfileId: string | null
+}
+export type PracticeProfileUpdateDto = {
+    position: string | null,
+    characteristic: string | null,
+    practiceDiary: string | null,
+}
+
 export type UserDtoType = {
     userId: string,
     firstName: string,
@@ -15,7 +52,6 @@ export type IntershipPositionType = {
     intershipPositionDescription?: string | null,
     intershipPositionCount: number | string,
 }
-
 export type IntersipPositionCreationType = {
     companyId: number | string | null,
     intershipPositionName: string | null,
@@ -23,7 +59,6 @@ export type IntersipPositionCreationType = {
     intershipPositionskills?: string | undefined | null,
     intershipPositionCount: number | string | null
 }
-
 export type PositionType = {
     id: number | string
     name: string

@@ -1,6 +1,5 @@
-import { Avatar, Menu, MenuProps } from "antd";
+import { Menu, MenuProps } from "antd";
 import React from "react";
-import { ArrowLeftOutlined, BellOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 type PropsType = {
