@@ -1,4 +1,3 @@
-import { withAuthRedirect } from 'HOC/withAuthRedirect';
 import { selectIsAuth } from 'Store/selectors/AuthSelector';
 import Application from 'pages/Application/Application';
 import ApplicationsPage from 'pages/Applications/ApplicationsPage';
@@ -7,30 +6,22 @@ import Company from 'pages/Company/Company';
 import LoginPageContainer from 'pages/Login/LoginPageContainer';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
+import PracticePeriodPage from 'pages/PracticePeriod/PracticePeriodPage';
+import PracticePeriodsPage from 'pages/PracticePeriods/PracticePeriodsPage';
+import PracticeProfilePage from 'pages/PracticeProfile/PracticeProfilePage';
+import PracticeProfilesPage from 'pages/PracticeProfiles/PracticeProfilesPage';
 import Profile from 'pages/Profile/Profile';
 import Student from 'pages/Student/Student';
 import Students from 'pages/Students/Students';
-import React, { ReactElement, ReactNode } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import {Navigate, Route, Routes } from 'react-router-dom';
+
 
 const RoutesPage: React.FC = () => {
   const isAuth = useSelector(selectIsAuth)
 
   return (
-    // <Routes>
-    //     <Route path="/" element={<>main</>}/>
-    //     <Route path="students" element={<Students/>}/>
-    //     <Route path="students/:id" element={<Student/>}/>
-    //     <Route path="companies" element={<Companies/>}/>
-    //     <Route path="companies/:id" element={<Company/>}/>
-    //     <Route path="profile" element={<>profile</>}/>
-    //     <Route path="applications" element={<ApplicationsPage/>}/>
-    //     <Route path="applications/:id" element={<Application/>}/> 
-    //     <Route path='positions' element={<PositionsPage/>}></Route>
-    //     <Route path='positions/:id' element={<PositionPage/>}></Route> 
-    //     <Route path='login' element={<LoginPageContainer/>}></Route>
-    //   </Routes>
       <Routes>
           <Route path="/" 
                 element={ isAuth ? <>main</> : <Navigate to={'/login'}/> }
@@ -61,7 +52,19 @@ const RoutesPage: React.FC = () => {
           />
           <Route path='positions/:id' 
                 element={ isAuth ? <PositionPage/> : <Navigate to={'/login'}/> }
-          /> 
+          />
+          <Route path='practicePeriods' 
+                element={ isAuth ? <PracticePeriodsPage/> : <Navigate to={'/login'}/> }
+          />
+          <Route path='practicePeriods/:id' 
+                element={ isAuth ? <PracticePeriodPage/> : <Navigate to={'/login'}/> }
+          />
+          <Route path='practiceProfiles' 
+                element={ isAuth ? <PracticeProfilesPage/> : <Navigate to={'/login'}/> }
+          />
+          <Route path='practiceProfiles/:id' 
+                element={ isAuth ? <PracticeProfilePage/> : <Navigate to={'/login'}/> }
+          />   
           <Route path='login'
                 element={<LoginPageContainer/>}
           />

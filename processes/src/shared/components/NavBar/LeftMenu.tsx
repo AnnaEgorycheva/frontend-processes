@@ -37,7 +37,15 @@ const LeftMenu: React.FC<PropsType> = (props) => {
                         </Link>
                     ),
                     key: 'applications',
-                }
+                },
+                {
+                    label: (
+                        <Link to='practiceProfiles'>
+                            Практика
+                        </Link>
+                    ),
+                    key: 'practiceProfiles',
+                },
             ] as MenuProps['items'],
             schoolItems: [
                 {
@@ -63,6 +71,14 @@ const LeftMenu: React.FC<PropsType> = (props) => {
                         </Link>
                     ),
                     key: 'positions',
+                },
+                {
+                    label: (
+                        <Link to='practicePeriods'>
+                            Практика
+                        </Link>
+                    ),
+                    key: 'practicePeriods',
                 },
             ] as MenuProps['items'],
             companyItems: [
