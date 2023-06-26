@@ -1,4 +1,3 @@
-import { user } from 'pages/Positions/user';
 import React, { useState } from 'react';
 import {StudentType} from '../../../Types/types'
 import Title from 'antd/es/typography/Title';

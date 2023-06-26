@@ -12,16 +12,16 @@ const instanceWithAuth = axios.create({
 export const practiceServiceAPI = {
     // PracticePeriod
     createNewPracticePeriod(
-        startDate: Date, endDate: Date,
+        startDate: string, endDate: string,
         practiceOrder: string | null, practicePeriodName: string | null
     ) {
         const body = {
-            startDate: String(startDate),
-            endDate: String(endDate),
+            startDate: startDate,
+            endDate: endDate,
             practiceOrder: practiceOrder,
             practicePeriodName: practicePeriodName
         }
-        return instanceWithAuth.post(`api/practicePeriod/create`)
+        return instanceWithAuth.post(`api/practicePeriod/create`, body)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {
                         return response.data
