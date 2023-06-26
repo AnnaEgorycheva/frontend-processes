@@ -36,10 +36,6 @@ class LoginPageContainer extends React.Component<PropsType> {
                              clearForm={this.props.clearForm}
                              login={this.props.login}/> 
               }
-              {/* <LoginPage loginFormData={this.props.loginFormData}
-                         onChangeFormValues={this.props.onChangeValues}
-                         clearForm={this.props.clearForm}
-                         login={this.props.login}/>  */}
             </>
         )
     }

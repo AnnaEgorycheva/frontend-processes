@@ -14,7 +14,7 @@ const NavigationAfterLogin: React.FC = () => {
         }
     }
     return (
-        <Navigate to={{pathname}} replace={true}/>
+        <Navigate to={{pathname}}/>
     )
 }
 

@@ -37,6 +37,11 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
                     password: ''
                 }
             }
+        case 'SET_IS_AUTH_SUCCESS':
+            return {
+                ...state,
+                isAuthSuccess: action.isSuccess
+            }
         default:
             return state
     }
@@ -65,7 +70,7 @@ export const setLoginFormData = (formData: LoginDataFormType) => {
 export const clearLoginFormData = () => {
     return { type: 'CLEAR_LOGIN_FORM_DATA'}
 };
-export const setisAuthSuccess = (isSuccess: boolean) => {
+export const setIsAuthSuccess = (isSuccess: boolean) => {
     return { type: 'SET_IS_AUTH_SUCCESS', isSuccess}
 };
 
@@ -76,7 +81,7 @@ export const getUserDataByEmailWhileInitializing = (email: string | null)=> asyn
 }
 
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
-    dispatch(setisAuthSuccess(false))
+    dispatch(setIsAuthSuccess(false))
     userAPI.authenticate(loginData.email, loginData.password)
     .then(data => {
         let token = data.jwtToken
@@ -89,17 +94,8 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
             dispatch(setUserData(userData))
             dispatch(setIsAuth(true))
             localStorage.setItem('email', userData.email)
-            // dispatch(setisAuthSuccess(true))
-            // return userData.role
         })
-        .then(() => dispatch(setisAuthSuccess(true)))
-        // .then((role) => {
-        //     switch (role) {
-        //         case 'STUDENT': window.history.pushState(null, '', "companies"); break
-        //         case 'SCHOOL': window.history.pushState(null, '', "students"); break
-        //         case 'COMPANY': window.history.pushState(null, '', "positions"); break
-        //     }
-        // })
+        .then(() => dispatch(setIsAuthSuccess(true)))
     })
 }
 
