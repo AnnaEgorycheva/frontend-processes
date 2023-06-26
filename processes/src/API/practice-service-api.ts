@@ -62,4 +62,19 @@ export const practiceServiceAPI = {
                     }
             })
     },
+    editPracticeProfile(practiceProfileId: string, position: string | null,
+        characteristic: string | null, practiceDiary: string | null) 
+        {
+            const body = {
+                position: position,
+                characteristic: characteristic,
+                practiceDiary: practiceDiary
+            }
+            return instanceWithAuth.put(`api/practiceProfile/edit/${practiceProfileId}`, body)
+                .then(response => {
+                    if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+                })
+    }
 }

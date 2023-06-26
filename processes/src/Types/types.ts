@@ -78,6 +78,13 @@ export type StudentType = {
     email: string
 }
 
+export type CompanyInfoType = {
+    companyName: string,
+    companyDescription?: string | null,
+    companyContacts?: string | null,
+    companyAddress?: string | null
+}
+
 export type ApplicationType = {
     applicationId: number | string
     positionName: string

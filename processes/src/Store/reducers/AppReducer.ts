@@ -2,7 +2,7 @@ import { getUserDataByEmailWhileInitializing } from './AuthReducer';
 import {InferActionsTypes} from '../store';
 
 let initialState = {
-    initialized: false
+    initialized: false as boolean
 };
 
 const appReducer = (state = initialState, action: ActionsType): InitialStateType => {

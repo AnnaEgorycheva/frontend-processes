@@ -8,7 +8,7 @@ import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
 import PracticePeriodPage from 'pages/PracticePeriod/PracticePeriodPage';
 import PracticePeriodsPage from 'pages/PracticePeriods/PracticePeriodsPage';
-import PracticeProfilePage from 'pages/PracticeProfile/PracticeProfilePage';
+import PracticeProfilePageContainer from 'pages/PracticeProfile/PracticeProfilePageContainer';
 import PracticeProfilesPage from 'pages/PracticeProfiles/PracticeProfilesPage';
 import Profile from 'pages/Profile/Profile';
 import Student from 'pages/Student/Student';
@@ -63,7 +63,7 @@ const RoutesPage: React.FC = () => {
                 element={ isAuth ? <PracticeProfilesPage/> : <Navigate to={'/login'}/> }
           />
           <Route path='practiceProfiles/:id' 
-                element={ isAuth ? <PracticeProfilePage/> : <Navigate to={'/login'}/> }
+                element={ isAuth ? <PracticeProfilePageContainer/> : <Navigate to={'/login'}/> }
           />   
           <Route path='login'
                 element={<LoginPageContainer/>}

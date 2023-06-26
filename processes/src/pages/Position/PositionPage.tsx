@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 
 const PositionPage: React.FC = () => {
     const role = useSelector(selectUserRole);
-
     return (
         <>
             { role === "SCHOOL" && <PositionForSchoolContainer/> }
