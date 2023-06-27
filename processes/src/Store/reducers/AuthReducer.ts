@@ -106,7 +106,9 @@ export const logout = () => (dispatch: any) => {
         lastName: '',
         patronym: '',
         role: '',
-        email: ''
+        email: '',
+        groupNumber: null,
+        companyId: null
     }))
     dispatch(setIsAuth(false))
     localStorage.setItem('token', '')
@@ -114,61 +116,10 @@ export const logout = () => (dispatch: any) => {
     window.history.pushState(null, '', "login")
 }
 
-// export const authReducerActions = {
-//     setUserData: (user: UserDtoType) => ({
-//         type: 'SET_USER_DATA',
-//         user
-//     } as const),
-//     setIsAuth: (isAuth: boolean) => ({
-//         type: 'SET_IS_AUTH',
-//         isAuth
-//     } as const),
-//     setToken: (token: string) => ({
-//         type: 'SET_TOKEN',
-//         token
-//     } as const),
-//     setLoginFormData: (formData: LoginDataFormType) => ({
-//         type: 'SET_LOGIN_FORM_DATA',
-//         payload: formData
-//     } as const),
-//     clearLoginFormData: () => ({
-//         type: 'CLEAR_LOGIN_FORM_DATA',
-//     } as const),
-// }
-
-// export const getUserData = (email: string | null): ThunkType => async (dispatch) => {
-//     let userData = await userAPI.getUsersByEmail(email)
-//     dispatch(authReducerActions.setUserData(userData))
-// }
-
-// export const login = (loginData: LoginDataFormType): ThunkType => async (dispatch) => {
-//     let data = await userAPI.authenticate(loginData.email, loginData.password)
-//     let token = data.jwtToken
-//     dispatch(getUserData(loginData.email))
-//     dispatch(authReducerActions.setIsAuth(true))
-//     dispatch(authReducerActions.setToken(token))
-//     localStorage.setItem('token', `Bearer ${token}`)
-// }
-
-// export const logout = (): ThunkType => async (dispatch: any) => {
-//     dispatch(authReducerActions.setUserData({
-//         userId: '',
-//         firstName: '',
-//         lastName: '',
-//         patronym: '',
-//         role: '',
-//         email: ''
-//     }))
-//     dispatch(authReducerActions.setIsAuth(false))
-//     dispatch(authReducerActions.setToken(''))
-//     localStorage.setItem('token', '')
-// }
-
 export default authReducer;
 
 export type InitialStateType = typeof initialState
 export type LoginDataFormType = typeof initialState.loginFormData
-// type ActionsType = InferActionsTypes<typeof authReducerActions>
 type ActionsType = InferActionsTypes<typeof setUserData & typeof setIsAuth & 
                                      typeof setToken & typeof setLoginFormData & 
                                      typeof clearLoginFormData>

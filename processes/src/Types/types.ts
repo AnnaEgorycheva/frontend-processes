@@ -41,7 +41,9 @@ export type UserDtoType = {
     lastName: string,
     patronym?: string | null,
     role: string,
-    email: string
+    email: string,
+    groupNumber?: string | null,
+    companyId?: string | number | null
 }
 
 export type IntershipPositionType = {
