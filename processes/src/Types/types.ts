@@ -120,7 +120,8 @@ export interface IStudent {
     email: string,
     firstName: string,
     lastName: string,
-    patronym: string,
+    patronym?: string,
     role: string,
     userId: string,
+    groupNumber: string;
 };

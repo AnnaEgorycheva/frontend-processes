@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Form, Input, Spin } from 'antd';
 import { useSelector } from 'react-redux';
-import { selectUserEmail } from 'Store/selectors/AuthSelector';
+import { selectUserEmail, selectUserRole } from 'Store/selectors/AuthSelector';
 import { userAPI } from 'API/user-api';
+import { IStudent } from 'Types/types';
 
 const Profile: React.FC = () => {
     const [form] = Form.useForm();
     const email = useSelector(selectUserEmail);
+    const role = useSelector(selectUserRole);
     const [ user, setUser ] = useState();
 
     useEffect(() => {
@@ -27,6 +29,7 @@ const Profile: React.FC = () => {
         console.log(result);
       }, [ form ]);
 
+    console.log((user as unknown as IStudent)?.groupNumber);
     return (
         <Spin spinning={user === undefined}>
             <div>
@@ -61,6 +64,27 @@ const Profile: React.FC = () => {
                     rules={[{ required: true, message: 'Заполните email!' }]}>
                     <Input placeholder='email' type='STRING'/>
                 </Form.Item>
+                {role === 'STUDENT' ? (<Form.Item
+                    label="Номер группы"
+                    name="groupNumber"
+                    hidden={!(user as unknown as IStudent)?.groupNumber}
+                    rules={[{ required: true, message: 'Заполните номер группы!' }]}>
+                    <Input placeholder='Номер группы' type='STRING'/>
+                </Form.Item>) : null}
+                {role === 'STUDENT' ? (<Form.Item
+                    label="Место прохождения практики"
+                    name="place"
+                    hidden={!(user as unknown as IStudent)?.groupNumber}
+                    rules={[{ required: true, message: 'Заполните место прохождения практики!' }]}>
+                    <Input placeholder='Место прохождения практики' type='STRING'/>
+                </Form.Item>) : null}
+                {role === 'STUDENT' ? (<Form.Item
+                    label="Позиция"
+                    name="position"
+                    hidden={!(user as unknown as IStudent)?.groupNumber}
+                    rules={[{ required: true, message: 'Заполните позицию!' }]}>
+                    <Input placeholder='Позиция' type='STRING'/>
+                </Form.Item>) : null}
                 <Button type="primary" onClick={onSave}>Редактировать профиль</Button>
             </Form>
             </div>

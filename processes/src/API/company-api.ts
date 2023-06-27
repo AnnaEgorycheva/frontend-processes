@@ -9,11 +9,11 @@ const instanceWithAuth = axios.create({
     }
 });
 export const companyAPI = {
-    async getCompanies() {
-        return await instanceWithAuth.get('/api/companies')
+    getCompanies() {
+        return instanceWithAuth.get('/api/companies')
             .then(async response => {
                 if (response.status === ResultCodesEnum.OK) {
-                        return await response.data
+                        return response.data
                     } 
             })
     },

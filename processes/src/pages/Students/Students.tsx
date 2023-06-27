@@ -1,7 +1,7 @@
 import { companyAPI } from 'API/company-api';
 import { userAPI } from 'API/user-api';
 import { IStudent } from 'Types/types';
-import { Button, Form, Input, Layout, List, message } from 'antd';
+import { Button, Form, Input, Layout, List, Spin, message } from 'antd';
 import Item from 'antd/es/list/Item';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -89,26 +89,27 @@ const Students: React.FC = () => {
                     </Button>   
                 </Form.Item>
             </Form>
-            <List
-                itemLayout="horizontal"
-                header={
-                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingInline: 50, paddingBlock: 15, fontWeight: 'bold', fontSize: '18px'}}>
-                        <div>ФИО</div>
-                        <div>Группа</div>
-                    </div>
-            }
-                dataSource={students}
-                pagination={{
-                    pageSize: 10,
-                }}
-                renderItem={(item) => (
-                    <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.userId)}}>
-                        <div>{item.lastName} {item.firstName} {item.patronym}</div>
-                        <div>группа</div>
-                    </List.Item>
-                )}
-            />
-
+            <Spin spinning={students === undefined}>
+                <List
+                    itemLayout="horizontal"
+                    header={
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingInline: 50, paddingBlock: 15, fontWeight: 'bold', fontSize: '18px'}}>
+                            <div>ФИО</div>
+                            <div>Группа</div>
+                        </div>
+                }
+                    dataSource={students}
+                    pagination={{
+                        pageSize: 10,
+                    }}
+                    renderItem={(item) => (
+                        <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.userId)}}>
+                            <div>{item.lastName} {item.firstName} {item.patronym}</div>
+                            <div>{item.groupNumber}</div>
+                        </List.Item>
+                    )}
+                />
+            </Spin>
         </Layout>
     )
 };
