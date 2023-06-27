@@ -12,7 +12,7 @@ const instanceWithAuth = axios.create({
 export const applicationServiceAPI = {
     // APPLICATION-CONTROLLER
     getApplicationById(applicationId: string) {
-        return instanceWithAuth.get(`api/application/${applicationId}`)
+        return instanceWithAuth.get(`api/applications/${applicationId}`)
             .then(response => {
                 if(response.status === ResultCodesEnum.OK) {
                     return response.data
@@ -20,7 +20,7 @@ export const applicationServiceAPI = {
             })
     },
     addStatusToApplication(applicationId: string, status: string) {
-        return instanceWithAuth.post(`api/application/${applicationId}/status/${status}`)
+        return instanceWithAuth.post(`api/applications/${applicationId}/status/${status}`)
             .then(response => {
                 if(response.status === ResultCodesEnum.OK) {
                     return response.data
@@ -28,7 +28,7 @@ export const applicationServiceAPI = {
             })
     },
     createApplication(positionId: string) {
-        return instanceWithAuth.post(`api/application/${positionId}`)
+        return instanceWithAuth.post(`api/applications/${positionId}`)
             .then(response => {
                 if(response.status === ResultCodesEnum.OK) {
                     return response.data

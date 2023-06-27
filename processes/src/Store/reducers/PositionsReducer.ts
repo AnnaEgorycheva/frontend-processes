@@ -1,6 +1,7 @@
 import type {InferActionsTypes} from '../store';
 import type {PositionType, IntershipPositionType} from '../../Types/types';
 import { companyAPI } from 'API/company-api';
+import { applicationServiceAPI } from 'API/application-service-api';
 
 let initialState = {
     positions: [] as Array<IntershipPositionType>,
@@ -43,6 +44,8 @@ export const getAllPositions = () => (dispatch: any) => {
         .then(data => {
             dispatch(positionsReducerActions.setPositions(data.intershipPositions))
             dispatch(positionsReducerActions.setIsPositionsFetching(false))
+            // applicationServiceAPI.getStudentApplicationsById('a4ed37c5-f27e-4f54-964a-934ac3acbb11')
+            //     .then(data => console.log(data))
         })
 }
 
