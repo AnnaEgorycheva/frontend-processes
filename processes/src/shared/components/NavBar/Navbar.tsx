@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/es/layout/layout';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {  Col, MenuProps, Row} from 'antd';
 import Title from 'antd/es/typography/Title';
 import LeftMenu from './LeftMenu';
@@ -11,6 +11,7 @@ import { logout } from 'Store/reducers/AuthReducer';
 import { useAppDispatch } from 'HOOKS/hooks';
 
 const Navbar: React.FC = () => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const isAuth = useSelector(selectIsAuth)
     const userRole = useSelector(selectUserRole)
