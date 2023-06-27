@@ -3,11 +3,16 @@ import { ICompany } from 'Types/types';
 import { Button, Form, Input, Layout, List, Spin, message } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AddCompanyModal from './components/AddCompanyModal';
+import { useSelector } from 'react-redux';
+import { selectUserRole } from 'Store/selectors/AuthSelector';
 
 const Companies: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const role = useSelector(selectUserRole);
     const [ companies, setCompanies ] = useState<ICompany[]>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (companies === undefined) {
@@ -37,6 +42,19 @@ const Companies: React.FC = () => {
 
     const onClick = useCallback((key: number) => {
         navigate(`/companies/${key}`);
+    }, []);
+
+    const showModal = useCallback(() => {
+        setIsModalOpen(true);
+    }, []);
+
+    const handleOk = useCallback(() => {
+        setIsModalOpen(false);
+        api();
+    }, []);
+
+    const handleCancel = useCallback(() => {
+        setIsModalOpen(false);
     }, []);
 
     return (
@@ -82,8 +100,15 @@ const Companies: React.FC = () => {
                         </List.Item>
                     )}
                 />
-
+                {role === 'SCHOOL' ? (<div><Button title='Добавить компанию' type='primary' onClick={showModal}>
+                    Добавить компанию
+                </Button></div>) : null}
             </Layout>
+            <AddCompanyModal
+                onCancel={handleCancel}
+                onOk={handleOk}
+                open={isModalOpen}
+            />
         </Spin>
     )
 };

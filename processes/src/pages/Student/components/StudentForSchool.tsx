@@ -48,7 +48,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {user.company ?? 'пока нет'} </Title>
                 <Title level={5} style={{ marginTop: 0 }}>Позиция: {user.position ?? 'пока нет'} </Title>
             </Card>
-            {user.company ? 
+            {!user.company ? 
             (<>
                 <Title level={5} style={{ marginTop: 20, marginLeft: 30 }}>Заявки на прохождения практики</Title>
                 <Table 

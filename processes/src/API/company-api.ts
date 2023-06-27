@@ -26,6 +26,15 @@ export const companyAPI = {
                     }
             })
     },
+    createCompany(companyName: string | null, companyDescription: string | null, companyContacts: string | null, companyAddress: string | null) {
+        const body = {
+            companyName: companyName,
+            companyDescription: companyDescription,
+            companyContacts: companyContacts,
+            companyAddress: companyAddress,
+        }
+        return instanceWithAuth.post('api/company/create', body)
+    },
     putCompany(id: string | null, companyName: string | null, companyDescription: string | null, companyContacts: string | null, companyAddress: string | null) {
         const body = {
             companyName: companyName,
