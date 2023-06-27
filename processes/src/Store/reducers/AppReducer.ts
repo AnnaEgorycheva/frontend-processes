@@ -22,7 +22,7 @@ export const actions = {
 }
 
 export const initializeApp = () => (dispatch: any) => {
-    console.log('is initializing')
+    console.log(window.location.pathname)
     if (localStorage.getItem('token') !== '' && localStorage.getItem('email') !== '') {
         let promise = dispatch(getUserDataByEmailWhileInitializing(localStorage.getItem('email')));
 

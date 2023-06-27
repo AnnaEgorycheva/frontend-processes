@@ -6,7 +6,7 @@ import Company from 'pages/Company/Company';
 import LoginPageContainer from 'pages/Login/LoginPageContainer';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
-import PracticePeriodPage from 'pages/PracticePeriod/PracticePeriodPage';
+import PracticePeriodPageContainer from 'pages/PracticePeriod/PracticePeriodPageContainer';
 import PracticePeriodsPage from 'pages/PracticePeriods/PracticePeriodsPage';
 import PracticeProfilePageContainer from 'pages/PracticeProfile/PracticeProfilePageContainer';
 import PracticeProfilesPage from 'pages/PracticeProfiles/PracticeProfilesPage';
@@ -57,7 +57,7 @@ const RoutesPage: React.FC = () => {
                 element={ isAuth ? <PracticePeriodsPage/> : <Navigate to={'/login'}/> }
           />
           <Route path='practicePeriods/:id' 
-                element={ isAuth ? <PracticePeriodPage/> : <Navigate to={'/login'}/> }
+                element={ isAuth ? <PracticePeriodPageContainer/> : <Navigate to={'/login'}/> }
           />
           <Route path='practiceProfiles' 
                 element={ isAuth ? <PracticeProfilesPage/> : <Navigate to={'/login'}/> }

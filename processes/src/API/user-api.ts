@@ -2,13 +2,13 @@ import axios from "axios";
 import { ResultCodesEnum } from "./api";
 
 const instanceWithoutAuth = axios.create({
-    baseURL: 'https://hits-user-service.onrender.com/',
+    baseURL: 'https://hits-user-service.onrender.com/api/',
     headers: {
         'Content-Type': 'application/json',
     }
 });
 const instanceWithAuth = axios.create({
-    baseURL: 'https://hits-user-service.onrender.com/',
+    baseURL: 'https://hits-user-service.onrender.com/api/',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('token')

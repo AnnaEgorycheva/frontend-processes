@@ -9,6 +9,7 @@ import appReducer from "./reducers/AppReducer";
 import practicePeriodsReducer from "./reducers/PracticePeriodsReducer";
 import practiceProfilesReducer from "./reducers/PracticeProfilesReducer";
 import PracticeProfileReducer from "./reducers/PracticeProfileReducer";
+import PracticePeriodReducer from "./reducers/PracticePeriodReducer";
 
 let rootReducer = combineReducers({
     positions : positionsReducer,
@@ -19,7 +20,8 @@ let rootReducer = combineReducers({
     app: appReducer,
     practicePeriods: practicePeriodsReducer,
     practiceProfiles: practiceProfilesReducer,
-    practiceProfile: PracticeProfileReducer
+    practiceProfile: PracticeProfileReducer,
+    practicePeriod: PracticePeriodReducer
 })
 
 type RootReducerType = typeof rootReducer; 
