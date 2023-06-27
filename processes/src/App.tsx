@@ -5,14 +5,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-// const App: React.FC = () => {
-//   return (
-//     <MainLayout/>
-//   )
-// };
-
-// export default App;
-
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
     initializeApp: () => void
@@ -29,13 +21,18 @@ class App extends Component<MapPropsType & DispatchPropsType> {
 
     render() {
         return (
-          <MainLayout/>
+            <>
+                {
+                this.props.initialized && <MainLayout/>
+                }
+            </>
         )
     }
 }
 
 const mapStateToProps = (state: AppStateType) => ({
-    initialized: state.app.initialized
+    initialized: state.app.initialized,
+    isMainPathname: state.app.isMainPathname
 })
 
 let AppContainer = compose<React.ComponentType>(

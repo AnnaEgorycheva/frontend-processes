@@ -2,7 +2,8 @@ import { getUserDataByEmailWhileInitializing } from './AuthReducer';
 import {InferActionsTypes} from '../store';
 
 let initialState = {
-    initialized: false as boolean
+    initialized: false as boolean,
+    isMainPathname: false as boolean
 };
 
 const appReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -18,11 +19,14 @@ const appReducer = (state = initialState, action: ActionsType): InitialStateType
 }
 
 export const actions = {
-    initializedSuccess: () => ({type: 'INITIALIZED_SUCCESS'} as const)
+    initializedSuccess: () => ({type: 'INITIALIZED_SUCCESS'} as const),
+    setIsMainPathname: (isMainPathname: boolean) => ({type: 'SET_IS_MAIN_PATHNAME', isMainPathname} as const)
 }
 
 export const initializeApp = () => (dispatch: any) => {
-    console.log(window.location.pathname)
+    let isMainPathname = window.location.pathname === '/' ? true : false
+    dispatch(actions.setIsMainPathname(isMainPathname))
+    
     if (localStorage.getItem('token') !== '' && localStorage.getItem('email') !== '') {
         let promise = dispatch(getUserDataByEmailWhileInitializing(localStorage.getItem('email')));
 

@@ -4,6 +4,7 @@ import ApplicationsPage from 'pages/Applications/ApplicationsPage';
 import Companies from 'pages/Companies/Companies';
 import Company from 'pages/Company/Company';
 import LoginPageContainer from 'pages/Login/LoginPageContainer';
+import MainPageRedirect from 'pages/Main/MainPageRedirect';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
 import PracticePeriodPageContainer from 'pages/PracticePeriod/PracticePeriodPageContainer';
@@ -17,14 +18,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {Navigate, Route, Routes } from 'react-router-dom';
 
-
 const RoutesPage: React.FC = () => {
   const isAuth = useSelector(selectIsAuth)
 
   return (
       <Routes>
           <Route path="/" 
-                element={ isAuth ? <>main</> : <Navigate to={'/login'}/> }
+                element={ isAuth ? <MainPageRedirect/> : <Navigate to={'/login'}/> }
           />
           <Route path="students" 
                 element={ isAuth ? <Students/> : <Navigate to={'/login'}/> }
