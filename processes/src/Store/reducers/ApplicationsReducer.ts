@@ -64,8 +64,13 @@ export const getStudentApplications = () => (dispatch: any, getState: any) => {
 }
 
 export const getCompanyApplications = () => (dispatch: any, getState: any) => {
-    // dispatch(applicationsReducerActions.setIsApplicationsFetching(true))
-    const companyId = getState().auth.user.userId
+    dispatch(applicationsReducerActions.setIsApplicationsFetching(true))
+    const companyId = getState().auth.user.companyId
+    companyAPI.getCompanyApplications(companyId)
+        .then((data) => {
+            dispatch(applicationsReducerActions.setApplications(data.applications))
+            dispatch(applicationsReducerActions.setIsApplicationsFetching(false))
+        })
 }
 
 export type InitialStateType = typeof initialState

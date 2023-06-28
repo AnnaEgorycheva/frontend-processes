@@ -26,7 +26,7 @@ const ApplicationsForStudent: React.FC<PropsType> = (props) => {
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}>
                                 <Col span={4}>{item.intershipPositionName}</Col>
                                 <Col span={4}>{item.companyName}</Col>
-                                <Col span={4} style={{ textAlign: 'end'}}>{item.status}</Col>
+                                <Col span={4} style={{ textAlign: 'end'}}>{item.status[item.status.length - 1]}</Col>
                             </List.Item>
                         </NavLink>
                     )}

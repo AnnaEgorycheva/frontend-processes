@@ -26,6 +26,14 @@ export const companyAPI = {
                     }
             })
     },
+    getCompanyApplications(companyId: string | number | null) {
+        return instanceWithAuth.get(`/api/company/allApplications/${companyId}`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
     createCompany(companyName: string | null, companyDescription: string | null, companyContacts: string | null, companyAddress: string | null) {
         const body = {
             companyName: companyName,

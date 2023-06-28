@@ -24,9 +24,9 @@ const ApplicationsForCompany: React.FC<PropsType> = (props) => {
                     renderItem={(item) => (
                         <NavLink to={'/applications/' + item.id}>
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}>
-                                <Col span={4}>Фио</Col>
-                                <Col span={4}>Позиция</Col>
-                                <Col span={4} style={{ textAlign: 'end'}}>{item.status}</Col>
+                                <Col span={4}>{item.lastName} {item.firstName} {item?.patronym}</Col>
+                                <Col span={4}>{item.intershipPositionName}</Col>
+                                <Col span={4} style={{ textAlign: 'end'}}>{item.status[item.status.length - 1]}</Col>
                             </List.Item>
                         </NavLink>
                     )}
