@@ -1,16 +1,20 @@
 import { companyAPI } from 'API/company-api';
 import { userAPI } from 'API/user-api';
+import { selectUserRole } from 'Store/selectors/AuthSelector';
 import { IStudent } from 'Types/types';
+import { useSelector } from 'react-redux';
 import { Button, Form, Input, Layout, List, Spin, message } from 'antd';
-import Item from 'antd/es/list/Item';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AddStudentModal from './components/AddStudentModal';
 
 const Students: React.FC = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const [ students, setStudents ] = useState<IStudent[]>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const role = useSelector(selectUserRole);
     useEffect(() => {
         if (students === undefined) {
             api();
@@ -34,13 +38,13 @@ const Students: React.FC = () => {
     }, []);
 
     const onSearchGroup = useCallback(() => {
-        // const result = form.getFieldValue('group');
-        // if (result) {
-        //     const resultSearch = students?.filter(item => item.group.includes(result));
-        //     setStudents(resultSearch);
-        // } else {
-        //     message.info('Для корректного поиска введите номер группы!');
-        // }
+        const result = form.getFieldValue('group');
+        if (result) {
+            const resultSearch = students?.filter(item => item.groupNumber.includes(result));
+            setStudents(resultSearch);
+        } else {
+            message.info('Для корректного поиска введите номер группы!');
+        }
     }, []);
 
     const onClear = useCallback(() => {
@@ -51,6 +55,19 @@ const Students: React.FC = () => {
 
     const onClick = useCallback((key: string) => {
         navigate(`/students/${key}`);
+    }, []);
+
+    const showModal = useCallback(() => {
+        setIsModalOpen(true);
+    }, []);
+
+    const handleOk = useCallback(() => {
+        setIsModalOpen(false);
+        api();
+    }, []);
+
+    const handleCancel = useCallback(() => {
+        setIsModalOpen(false);
     }, []);
 
     return (
@@ -108,6 +125,14 @@ const Students: React.FC = () => {
                             <div>{item.groupNumber}</div>
                         </List.Item>
                     )}
+                />
+                {role === 'SCHOOL' ? (<div><Button style={{ marginLeft: 30}} title='Добавить студента' type='primary' onClick={showModal}>
+                    Добавить студента
+                </Button></div>) : null}
+                <AddStudentModal
+                    onCancel={handleCancel}
+                    onOk={handleOk}
+                    open={isModalOpen}
                 />
             </Spin>
         </Layout>
