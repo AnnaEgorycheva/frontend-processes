@@ -82,6 +82,17 @@ export type ApplicationDtoType = {
     id:	string,
     interviews:	Array<InterviewDtoType>,
     positionId:	string,
+    companyName?: string,
+    intershipPositionName?: string,
+    status:	Array<string>
+    studentId:string
+}
+
+export type ApplicationWithConpanyNameDtoType = {
+    id:	string,
+    interviews:	Array<InterviewDtoType>,
+    positionId:	string,
+    companyName: string,
     status:	Array<string>
     studentId:string
 }
