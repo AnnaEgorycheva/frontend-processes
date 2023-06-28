@@ -66,7 +66,7 @@ const Company: React.FC = () => {
                 >
                     <Column dataIndex="intershipPositionName" key="intershipPositionName" title="Позиция" width="300px" />
                     <Column dataIndex="intershipPositionCount" key="intershipPositionCount" title="Количество мест" width="300px" />
-                    {role === 'SCHOOL' ? <Column dataIndex="intershipPositionCount" key="intershipPositionCount" title="Количество заявок" width="300px" /> : null}
+                    {role === 'SCHOOL' ? <Column dataIndex="intershipApplicationsCount" key="intershipApplicationsCount" title="Количество заявок" width="300px" /> : null}
                 </Table>
             </Spin>
             {role === 'SCHOOL' ? (<div><Button style={{ marginLeft: 30}} title='Добавить представителя компании' type='primary' onClick={showModal}>
