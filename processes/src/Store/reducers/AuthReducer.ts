@@ -74,9 +74,10 @@ export const setIsAuthSuccess = (isSuccess: boolean) => {
     return { type: 'SET_IS_AUTH_SUCCESS', isSuccess}
 };
 
-export const getUserDataByEmailWhileInitializing = (email: string | null)=> async (dispatch: any) => {
-    let userData = await userAPI.getUsersByEmail(email)
+export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) => {
+    let userData = await userAPI.getUsersByToken()
     dispatch(setUserData(userData))
+    localStorage.setItem('email', userData.email)
     dispatch(setIsAuth(true))
 }
 
@@ -92,8 +93,8 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
         userAPI.getUsersByEmail(loginData.email)
         .then(userData => {
             dispatch(setUserData(userData))
-            dispatch(setIsAuth(true))
             localStorage.setItem('email', userData.email)
+            dispatch(setIsAuth(true))
         })
         .then(() => dispatch(setIsAuthSuccess(true)))
     })

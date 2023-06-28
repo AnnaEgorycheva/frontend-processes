@@ -5,7 +5,7 @@ import { positionsReducerActions } from './PositionsReducer';
 
 let initialState = {
     newPosition: {
-        companyId: 3,
+        companyId: null,
         intershipPositionName: '',
         intershipPositionDescription: '',
         intershipPositionskills: '',
@@ -25,7 +25,7 @@ const creatingNewPositionReducer = (state = initialState, action: any): InitialS
             return {
                 ...state,
                 newPosition : {
-                    companyId: 3,
+                    companyId: null,
                     intershipPositionName: '',
                     intershipPositionDescription: '',
                     intershipPositionskills: '',
