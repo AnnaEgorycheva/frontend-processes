@@ -53,7 +53,7 @@ export type IntershipPositionType = {
     intershipPositionName: string,
     intershipPositionDescription?: string | null,
     intershipPositionCount: number | string,
-    intershipPositionApplicationsCount?: number | string
+    intershipApplicationsCount: number | string
 }
 export type IntersipPositionCreationType = {
     companyId: number | string | null,
