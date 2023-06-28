@@ -1,4 +1,7 @@
-import { getPositionInfo, positionReducerActions } from 'Store/reducers/PositionReducer';
+import { getPositionInfo, positionReducerActions, 
+    findOutIsStudentAppliedAnApplication,
+    createApplicationForPosition,
+     } from 'Store/reducers/PositionReducer';
 import { AppStateType, InferActionsTypes } from 'Store/store';
 import { Card, Layout, Spin } from 'antd';
 import React from 'react';
@@ -11,6 +14,12 @@ import withRouter from 'HOC/withRouter';
 class PositionForStudentContainer extends React.Component<PropsType> {
     componentDidMount(): void {
         this.props.getPositionInfo(this.props.router.params.id)
+        this.props.findOutIsStudentAppliedAnApplication(this.props.router.params.id)
+    }
+
+    applyApplication = () => {
+        console.log('trying to create application')
+        // this.props.createApplicationForPosition(this.props.router.params.id)
     }
 
     render() {
@@ -21,7 +30,10 @@ class PositionForStudentContainer extends React.Component<PropsType> {
                         <Spin spinning={this.props.positionInfoIsFetching}>
                             <PositionInfo positionInfo={this.props.positionInfo}/>
                         </Spin>
-                        <SubmitApplicationModal isStudentApplyedAnApplication={this.props.isStudentApplyed}/>
+                        <SubmitApplicationModal 
+                            isStudentApplyedAnApplication={this.props.isStudentApplied}
+                            createApplication={this.applyApplication}
+                        />
                     </Card>
                 </Layout>
             </>
@@ -33,13 +45,15 @@ let mapStateToProps = (state: AppStateType)  => {
     return {
         positionInfo: state.position.positionInfo,
         positionInfoIsFetching: state.position.positionInfoIsFetching,
-        isStudentApplyed: state.position.isStudentAppliedAnApplication
+        isStudentApplied: state.position.isStudentAppliedAnApplication
     }
 }
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchType = {
-    getPositionInfo: (positionId: string | null) => Promise<any>
+    getPositionInfo: (positionId: string) => Promise<any>,
+    findOutIsStudentAppliedAnApplication: (positionId: string) => Promise<any>,
+    createApplicationForPosition: (positionId: string) => Promise<any>
 }
 type ActionsType = InferActionsTypes<typeof positionReducerActions>
 type OwnPropsType = {
@@ -47,7 +61,7 @@ type OwnPropsType = {
         location: {},
         navigate: Function,
         params: {
-            id: string | null
+            id: string
         }
     },
 }
@@ -55,7 +69,9 @@ type OwnPropsType = {
 type PropsType = MapPropsType & ActionsType & DispatchType & OwnPropsType;
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionReducerActions, getPositionInfo}), withRouter
+    connect(mapStateToProps, {...positionReducerActions, 
+        getPositionInfo, findOutIsStudentAppliedAnApplication,
+        createApplicationForPosition}), withRouter
 )(PositionForStudentContainer)
 
 

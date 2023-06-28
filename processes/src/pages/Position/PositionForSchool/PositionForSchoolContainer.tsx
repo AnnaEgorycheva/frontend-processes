@@ -1,4 +1,4 @@
-import { getPositionInfo, positionReducerActions } from 'Store/reducers/PositionReducer';
+import { getPositionInfo, positionReducerActions, getStudentsFromPositionApplications} from 'Store/reducers/PositionReducer';
 import { AppStateType, InferActionsTypes } from 'Store/store';
 import { Card, Layout, Spin } from 'antd';
 import React from 'react';
@@ -11,6 +11,7 @@ import withRouter from 'HOC/withRouter';
 class PositionForSchoolContainer extends React.Component<PropsType> {
     componentDidMount(): void {
         this.props.getPositionInfo(this.props.router.params.id)
+        this.props.getStudentsFromPositionApplications(this.props.router.params.id)
     }
 
     render() {
@@ -22,7 +23,9 @@ class PositionForSchoolContainer extends React.Component<PropsType> {
                             <PositionInfo positionInfo={this.props.positionInfo}/>
                         </Spin>
                     </Card>
-                    <StudentsOnPositionList studentsOnPosition={this.props.studentsOnPosition}/>
+                    <Spin spinning={this.props.studentsOnPositionIsFetching}>
+                        <StudentsOnPositionList studentsOnPosition={this.props.studentsOnPosition}/>
+                    </Spin>
                 </Layout>
             </>
         )
@@ -33,13 +36,15 @@ let mapStateToProps = (state: AppStateType)  => {
     return {
         positionInfo: state.position.positionInfo,
         positionInfoIsFetching: state.position.positionInfoIsFetching,
-        studentsOnPosition: state.position.studentsOnPosition
+        studentsOnPosition: state.position.studentsOnPosition,
+        studentsOnPositionIsFetching: state.position.studentsOnPositionIsFetching
     }
 }
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchType = {
-    getPositionInfo: (positionId: string | null) => Promise<any>
+    getPositionInfo: (positionId: string) => Promise<any>,
+    getStudentsFromPositionApplications: (positionId: string) => Promise<any>
 }
 type ActionsType = InferActionsTypes<typeof positionReducerActions>
 type OwnPropsType = {
@@ -47,7 +52,7 @@ type OwnPropsType = {
         location: {},
         navigate: Function,
         params: {
-            id: string | null
+            id: string 
         }
     },
 }
@@ -55,7 +60,7 @@ type OwnPropsType = {
 type PropsType = MapPropsType & ActionsType & DispatchType & OwnPropsType;
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {...positionReducerActions, getPositionInfo}), withRouter
+    connect(mapStateToProps, {...positionReducerActions, getPositionInfo, getStudentsFromPositionApplications}), withRouter
 )(PositionForSchoolContainer)
 
 

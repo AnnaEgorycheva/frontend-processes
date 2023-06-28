@@ -72,6 +72,20 @@ export type PositionType = {
     applicationsNumber: number| null | undefined
 }
 
+export type InterviewDtoType = {
+    date: string,
+    id:	string,
+    location?: string
+}
+
+export type ApplicationDtoType = {
+    id:	string,
+    interviews:	Array<InterviewDtoType>,
+    positionId:	string,
+    status:	Array<string>
+    studentId:string
+}
+
 export type StudentType = {
     id: number | string
     firstName: string
