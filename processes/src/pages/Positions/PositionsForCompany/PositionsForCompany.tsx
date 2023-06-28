@@ -31,7 +31,7 @@ const PositionsForCompany: React.FC<PropsType> = (props) => {
                                    onClick={() => {onItemClick(item.intershipPositionId)}}>
                             <Col span={4}>{item.intershipPositionName}</Col>
                             <Col span={4}>{item.intershipPositionCount}</Col>
-                            <Col span={4} style={{ textAlign: 'end'}}>0</Col>
+                            <Col span={4} style={{ textAlign: 'end'}}>{item.intershipPositionApplicationsCount}</Col>
                         </List.Item> 
                     )}
                 />

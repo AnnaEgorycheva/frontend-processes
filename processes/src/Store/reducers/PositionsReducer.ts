@@ -44,17 +44,29 @@ export const getAllPositions = () => (dispatch: any) => {
         .then(data => {
             dispatch(positionsReducerActions.setPositions(data.intershipPositions))
             dispatch(positionsReducerActions.setIsPositionsFetching(false))
-            // applicationServiceAPI.getStudentApplicationsById('a4ed37c5-f27e-4f54-964a-934ac3acbb11')
-            //     .then(data => console.log(data))
         })
 }
 
-export const getAllCompanyPositions = (companyId: string | number = 3) => (dispatch: any) => {
+const connectCompanyPositionsAndApplicationsNumber = async (companyPositions: Array<IntershipPositionType>) => {
+    await Promise.all(companyPositions.map(companyPosition => {
+        return applicationServiceAPI.getAllApplicationsByPositionId(companyPosition.intershipPositionId)
+        .then(data => {
+            companyPosition.intershipPositionApplicationsCount = data.length;
+        })
+    }))
+
+    return companyPositions;
+}
+
+export const getAllCompanyPositions = (companyId: string | number | null) => (dispatch: any) => {
     dispatch(positionsReducerActions.setIsPositionsFetching(true))
     companyAPI.getCompanyIntershipPositions(companyId)
         .then(data => {
-            dispatch(positionsReducerActions.setPositions(data.intershipPositions))
-            dispatch(positionsReducerActions.setIsPositionsFetching(false))
+            connectCompanyPositionsAndApplicationsNumber(data.intershipPositions)
+                .then(companyPositionsWithApplicationsCount => {
+                    dispatch(positionsReducerActions.setPositions(companyPositionsWithApplicationsCount))
+                    dispatch(positionsReducerActions.setIsPositionsFetching(false))
+                })
         })
 
 }

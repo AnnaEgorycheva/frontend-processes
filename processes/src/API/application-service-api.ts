@@ -35,6 +35,14 @@ export const applicationServiceAPI = {
                 }
             })
     },
+    getAllApplicationsByPositionId(positionId: string) {
+        return instanceWithAuth.get(`api/applications/position/${positionId}`)
+            .then(response => {
+                if(response.status === ResultCodesEnum.OK) {
+                    return response.data
+                }
+            })
+    },
     // INTERVIEW-CONTROLLER
     createApplicationInterview(applicationId: string, date: string, location: string) {
         const body = {

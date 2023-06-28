@@ -39,6 +39,14 @@ export const userAPI = {
                     }
             })
     },
+    getUsersByToken() {
+        return instanceWithAuth.get(`users/jwt`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
     getUsersByRole(role: 'STUDENT' | 'SCHOOL' | 'COMPANY') {
         return instanceWithAuth.get(`users/roles/${role}`)
             .then(response => {

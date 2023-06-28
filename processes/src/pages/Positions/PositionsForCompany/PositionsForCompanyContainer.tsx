@@ -21,7 +21,7 @@ type PropsType = MapPropsType & DispatchPropsType & any;
 
 class PositionsForCompanyContainer extends React.Component<PropsType> {
     componentDidMount(): void {
-        this.props.getAllCompanyPositions()
+        this.props.getAllCompanyPositions(this.props.companyId)
     }
 
     render() {
@@ -38,6 +38,7 @@ class PositionsForCompanyContainer extends React.Component<PropsType> {
                         onChangeValues={this.props.setNewPosition} 
                         clearForm={this.props.clearNewPositionData} 
                         createNewCompanyPosition={this.props.createNewCompanyPosition} 
+                        companyId={this.props.companyId}
                     />
                 </Layout>
             </>
@@ -49,7 +50,8 @@ let mapStateToProps = (state: AppStateType) => {
     return {
         positions: state.positions,
         newPosition : state.creatingNewPosition.newPosition,
-        isPositionsFetching: state.positions.isPositionsFetching
+        isPositionsFetching: state.positions.isPositionsFetching,
+        companyId: state.auth.user.companyId
     }
 }
 

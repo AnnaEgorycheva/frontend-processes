@@ -1,13 +1,16 @@
+import { selectCompanyId } from 'Store/selectors/AuthSelector';
 import { IntersipPositionCreationType } from 'Types/types';
 import { Button, Form, Input, Modal, Space } from 'antd';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { checkIfUndefined } from 'shared/functions/Functions';
 
 type PropsType = {
     newPosition: IntersipPositionCreationType,
     onChangeValues: (position : IntersipPositionCreationType) => void,
     clearForm: () => void,
-    createNewCompanyPosition: () => Promise<any>
+    createNewCompanyPosition: () => Promise<any>,
+    companyId: string | number | null
 }
 
 const AddingNewPositionButton: React.FC<PropsType> = (props) => {
@@ -43,7 +46,7 @@ const AddingNewPositionButton: React.FC<PropsType> = (props) => {
         .then(() => {
             if(!!values){
                 props.onChangeValues({
-                    companyId: 3,
+                    companyId: props.companyId,
                     intershipPositionName: checkIfUndefined(values.intershipPositionName),
                     intershipPositionDescription: checkIfUndefined(values.intershipPositionDescription),
                     intershipPositionskills: '',
