@@ -11,7 +11,7 @@ type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
     onChangeValues: (loginData: LoginDataFormType) => void
     clearForm: () => void,
-    login: (loginData: LoginDataFormType) => void
+    login: (loginData: LoginDataFormType) => Promise<any>
 }
 type OwnPropsType = {
     router: {

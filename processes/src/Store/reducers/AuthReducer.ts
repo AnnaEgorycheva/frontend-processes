@@ -1,6 +1,7 @@
 import type {BaseThunkType, InferActionsTypes} from '../store';
 import type {UserDtoType} from '../../Types/types';
 import { userAPI } from 'API/user-api';
+import axios from 'axios';
 
 let initialState = {
     user: {} as UserDtoType,
@@ -96,9 +97,11 @@ export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) =
     dispatch(setUserData(userData))
     localStorage.setItem('email', userData.email)
     dispatch(setIsAuth(true))
+    dispatch(setIsAuthSuccess(true))
 }
 
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
+    dispatch(setIsAuth(false))
     dispatch(setIsAuthSuccess(false))
     userAPI.authenticate(loginData.email, loginData.password)
         .then(data => {
@@ -115,6 +118,7 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
                     dispatch(setIsAuthSuccess(true))
                 })
         })
+
 }
 
 export const logout = () => (dispatch: any) => {

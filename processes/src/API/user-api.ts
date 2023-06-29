@@ -14,6 +14,10 @@ const instanceWithAuth = axios.create({
         'Authorization': localStorage.getItem('token'),
     }
 });
+instanceWithAuth.interceptors.request.use((config) => {
+    config.headers.Authorization = localStorage.getItem('token')
+    return config
+})
 
 export const userAPI = {
     authenticate(email: string | null, password: string | null) {
