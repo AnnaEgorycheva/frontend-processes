@@ -94,20 +94,20 @@ export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) =
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     dispatch(setIsAuthSuccess(false))
     userAPI.authenticate(loginData.email, loginData.password)
-    .then(data => {
-        let token = data.jwtToken
-        localStorage.setItem('token', `Bearer ${token}`)
-        dispatch(clearLoginFormData())
-    })
-    .then(() => {
-        userAPI.getUsersByEmail(loginData.email)
-        .then(userData => {
-            dispatch(setUserData(userData))
-            localStorage.setItem('email', userData.email)
-            dispatch(setIsAuth(true))
+        .then(data => {
+            let token = data.jwtToken
+            localStorage.setItem('token', `Bearer ${token}`)
+            dispatch(clearLoginFormData())
         })
-        .then(() => dispatch(setIsAuthSuccess(true)))
-    })
+        .then(() => {
+            userAPI.getUsersByEmail(loginData.email)
+            .then(userData => {
+                dispatch(setUserData(userData))
+                localStorage.setItem('email', userData.email)
+                dispatch(setIsAuth(true))
+            })
+            .then(() => dispatch(setIsAuthSuccess(true)))
+        })
 }
 
 export const logout = () => (dispatch: any) => {
