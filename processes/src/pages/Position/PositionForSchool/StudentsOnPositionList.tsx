@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {StudentType, UserDtoType} from '../../../Types/types'
 import Title from 'antd/es/typography/Title';
 import { Card, Col, List, Row } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 type PropsType = {
     studentsOnPosition : Array<UserDtoType>
 }
 
 const StudentsOnPositionList: React.FC<PropsType> = (props) => {
+    const navigate = useNavigate()
     const [isListOpened, setIsListOpened] = useState(false)
     const onListClick = () => {
         setIsListOpened(!isListOpened);
     };
+    const onItemClick = useCallback((studentId: string) => {
+        navigate(`/students/${studentId}`);
+    }, []);
     return (
         <>
             <Card style={{ margin: 20 }}>
@@ -35,7 +40,8 @@ const StudentsOnPositionList: React.FC<PropsType> = (props) => {
                         }
                         dataSource={props.studentsOnPosition}
                         renderItem={(item) => (
-                            <List.Item style={{ paddingInline: 30}}>
+                            <List.Item style={{ paddingInline: 30, cursor: 'pointer'}} 
+                                       onClick={() => {onItemClick(item.userId)}}>
                                 <Row>
                                     <Col span={24}>{item.lastName} {item.firstName} {item.patronym === '' ? '' : item.patronym}</Col>
                                 </Row>
