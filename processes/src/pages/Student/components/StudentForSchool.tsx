@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Card, Col, Row, Table, Typography } from 'antd';
+import { Button, Card, Col, Row, Spin, Table, Typography } from 'antd';
 import { useSelector } from 'react-redux';
 import { practiceServiceAPI } from 'API/practice-service-api';
 import { IPeriod, IStudent } from 'Types/types';
@@ -32,11 +32,10 @@ const data = [
 
 const StudentForSchool: React.FC<IProps> = ({ id }) => {
     const [ periods, setPeriods ] = useState<IPeriod[]>();
-    const email = useSelector(selectUserEmail);
     const [ user, setUser ] = useState<IStudent>();
 
     useEffect(() => {
-        if (periods === undefined) {
+        if (periods === undefined || user === undefined) {
             api();
         }
     }, []);
@@ -51,10 +50,11 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
 
     return (
         <>
+            <Spin spinning={user === undefined}>
             <Card style={{ margin: 20 }}>
                 <Row>
                     <Col flex='auto'>
-                        <Title level={3} style={{ marginTop: 0 }}>{user?.lastName} {user?.firstName} {user?.patronym}</Title>
+                        <Title level={3} style={{ marginTop: 0 }}>ФИО: {user?.lastName} {user?.firstName} {user?.patronym}</Title>
                     </Col>
                     <Col flex='none'>
                         <div style={{ textAlign: 'right' }}><Button type="primary" title='Создать уведомление' onClick={()=>{}}>Создать уведомление</Button></div>
@@ -64,6 +64,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {'пока нет'} </Title>
                 <Title level={5} style={{ marginTop: 0 }}>Позиция: {'пока нет'} </Title>
             </Card>
+            </Spin>
             <Title level={5} style={{ marginTop: 20, marginLeft: 30 }}>Заявки на прохождения практики</Title>
                 <Table 
                     dataSource={data} 
@@ -78,6 +79,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 </Table>
             
             <Title level={5} style={{ marginTop: 20, marginLeft: 30 }}>Периоды практики:</Title>
+            <Spin spinning={periods === undefined}>
             <Table 
                 dataSource={periods} 
                 pagination={{
@@ -89,6 +91,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 <Column dataIndex="startDate" key="startDate" title="Дата начала" width="300px" />
                 <Column dataIndex="endDate" key="endDate" title="Дата окончания" width="300px" />
             </Table>
+            </Spin>
         </>
     )
 };
