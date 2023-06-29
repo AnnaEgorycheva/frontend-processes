@@ -11,7 +11,6 @@ const instanceWithAuth = axios.create({
     baseURL: 'https://hits-user-service.onrender.com/api/',
     headers: {
         'Content-Type': 'application/json',
-        // 'Authorization': '',
         'Authorization': localStorage.getItem('token'),
     }
 });
