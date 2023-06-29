@@ -34,14 +34,19 @@ const Profile: React.FC = () => {
         }
     }, []);
 
-    const onSave = useCallback(() => {
+    const onSave = useCallback(async () => {
         const result = form.getFieldsValue();
         setUser(result);
-        console.log(result);
+        
+        const resultId = await userAPI.getUsersByEmail(email);
+        
+        console.log(resultId, result);
+        await userAPI.updateUser(resultId.userId, resultId.companyId, result.email, result.firstName, resultId.groupNumber, result.lastName, result.patronym, resultId.role)
     }, [ form ]);
     
     console.log(user);
     const onSaveCompany = useCallback(async () => {
+        formCompany.validateFields();
         const result = formCompany.getFieldsValue();
         setCompany(result);
         
@@ -78,8 +83,7 @@ const Profile: React.FC = () => {
                                 </Form.Item>
                                 <Form.Item
                                     label="Отчество"
-                                    name="patronym"
-                                    rules={[{ required: true, message: 'Заполните отчество!' }]}>
+                                    name="patronym">
                                     <Input placeholder='Отчество' type='STRING'/>
                                 </Form.Item>
                                 <Form.Item
