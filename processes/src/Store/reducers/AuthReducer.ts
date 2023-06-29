@@ -6,8 +6,8 @@ let initialState = {
     user: {} as UserDtoType,
     isAuth: false,
     loginFormData: {
-        email: '' as string | null ,
-        password: '' as string | null 
+        email: '' as string ,
+        password: '' as string 
     },
     isAuthSuccess: false as boolean 
 }
@@ -91,22 +91,29 @@ export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) =
     dispatch(setIsAuth(true))
 }
 
+export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) => {
+    let userData = await userAPI.getUsersByToken()
+    dispatch(setUserData(userData))
+    localStorage.setItem('email', userData.email)
+    dispatch(setIsAuth(true))
+}
+
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     dispatch(setIsAuthSuccess(false))
     userAPI.authenticate(loginData.email, loginData.password)
         .then(data => {
             let token = data.jwtToken
             localStorage.setItem('token', `Bearer ${token}`)
+            localStorage.setItem('email', loginData.email)
             dispatch(clearLoginFormData())
         })
         .then(() => {
-            userAPI.getUsersByEmail(loginData.email)
-            .then(userData => {
-                dispatch(setUserData(userData))
-                localStorage.setItem('email', userData.email)
-                dispatch(setIsAuth(true))
-            })
-            .then(() => dispatch(setIsAuthSuccess(true)))
+            userAPI.getUsersByToken()
+                .then(userData => {
+                    dispatch(setUserData(userData))
+                    dispatch(setIsAuth(true))
+                    dispatch(setIsAuthSuccess(true))
+                })
         })
 }
 
