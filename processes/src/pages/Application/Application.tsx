@@ -12,7 +12,7 @@ const Application: React.FC = () => {
     const id = location.pathname.split('/')[2];
 
     return (
-         <>{user.role === 'company' ? <ApplicationForCompany id={location.pathname.split('/')[2]}/> : <ApplicationForStudent id={location.pathname.split('/')[2]}/>}</>
+         <>{user.role === 'COMPANY' ? <ApplicationForCompany id={location.pathname.split('/')[2]}/> : <ApplicationForStudent id={location.pathname.split('/')[2]}/>}</>
     )
 };
 

@@ -2,8 +2,6 @@ import { userAPI } from 'API/user-api';
 import { Form, Input, Modal } from 'antd';
 import React, { useCallback } from 'react';
 
-const { TextArea } = Input;
-
 interface IProps {
     onOk: () => void;
     onCancel: () => void;

@@ -144,6 +144,7 @@ export interface IStudent {
     role: string,
     userId: string,
     groupNumber: string;
+    companyId?: string;
 };
 
 export interface IPeriod {
