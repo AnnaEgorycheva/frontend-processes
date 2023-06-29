@@ -11,7 +11,8 @@ const instanceWithAuth = axios.create({
     baseURL: 'https://hits-user-service.onrender.com/api/',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hvb2xAdGVzdGVyLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJTQ0hPT0wifV0sImlhdCI6MTY4ODA0MzI0MywiZXhwIjoxNjg4MDc5MjQzfQ.lLDGemNbWNnvLqRxVdVddx2rCJe1V9UpS132UTXeR38',
+        // 'Authorization': localStorage.getItem('token'),
     }
 });
 
@@ -49,6 +50,14 @@ export const userAPI = {
     },
     getUsersByRole(role: 'STUDENT' | 'SCHOOL' | 'COMPANY') {
         return instanceWithAuth.get(`users/roles/${role}`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
+    getUsersById(userId: string) {
+        return instanceWithAuth.get(`users/id/${userId}`)
             .then(response => {
                 if (response.status === ResultCodesEnum.OK) {
                         return response.data

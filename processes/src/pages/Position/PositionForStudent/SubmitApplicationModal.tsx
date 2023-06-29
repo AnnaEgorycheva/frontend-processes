@@ -19,6 +19,10 @@ const SubmitApplicationModal: React.FC<PropsType> = (props) => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+    const onCreateApplicationBtnClick = () => {
+        props.createApplication()
+        setIsModalOpen(false);
+    }
 
     return (
         <>
@@ -41,7 +45,7 @@ const SubmitApplicationModal: React.FC<PropsType> = (props) => {
                 footer={[]}
             >
                 <div style={{marginTop: 30, marginBottom: 30 }}>Вы уверены, что хотите подать заявку на позицию?</div>
-                <Button type="primary" htmlType="submit" onClick={() => props.createApplication()}>
+                <Button type="primary" htmlType="submit" onClick={onCreateApplicationBtnClick}>
                     Подать заявку
                 </Button>
             </Modal>

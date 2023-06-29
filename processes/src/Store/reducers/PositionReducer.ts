@@ -8,6 +8,7 @@ import type {PositionType,
 import { companyAPI } from 'API/company-api';
 import { ResultCodesEnum } from 'API/api';
 import { applicationServiceAPI } from 'API/application-service-api';
+import { userAPI } from 'API/user-api';
 
 let initialState = {
     positionInfo: {} as IntershipPositionType,
@@ -156,9 +157,27 @@ export const updatePositionInfo = (positionId: string) => (dispatch: any, getSta
         })
 }
 
+const connectApplicationPositionAndStudents = async (applications: Array<ApplicationDtoType>) => {
+    let students: Array<UserDtoType> = []
+    await Promise.all(applications.map(application => {
+        return userAPI.getUsersById(application.studentId)
+            .then(studentInfo => {
+                students.push(studentInfo)
+            })
+    }))
+
+    return students;
+}
 export const getStudentsFromPositionApplications = (positionId: string) => (dispatch: any) => {
     dispatch(positionReducerActions.setStudentsOnPositionIsFetching(true))
-    dispatch(positionReducerActions.setStudentsOnPositionIsFetching(false))
+    applicationServiceAPI.getAllApplicationsByPositionId(positionId)
+        .then(data => {
+            connectApplicationPositionAndStudents(data)
+                .then(studentsAppliedToPosition => {
+                    dispatch(positionReducerActions.setStudentsOnPosition(studentsAppliedToPosition))
+                    dispatch(positionReducerActions.setStudentsOnPositionIsFetching(false))
+                })
+        })
 }
 
 export const findOutIsStudentAppliedAnApplication = (positionId: string) => (dispatch: any, getState: any) => {

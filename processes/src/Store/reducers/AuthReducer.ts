@@ -11,6 +11,16 @@ let initialState = {
     },
     isAuthSuccess: false as boolean 
 }
+// {
+//     userId: "a4ed37c5-f27e-4f54-964a-934ac3acbb11",
+//     firstName: "Студент",
+//     lastName: "Студентов",
+//     patronym: "Студентович",
+//     role: "STUDENT",
+//     email: "student@tester.com",
+//     groupNumber: "872359",
+//     companyId: null
+//   }
 
 const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
@@ -74,8 +84,8 @@ export const setIsAuthSuccess = (isSuccess: boolean) => {
     return { type: 'SET_IS_AUTH_SUCCESS', isSuccess}
 };
 
-export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) => {
-    let userData = await userAPI.getUsersByToken()
+export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) => {
+    let userData = await userAPI.getUsersByEmail(localStorage.getItem('email'))
     dispatch(setUserData(userData))
     localStorage.setItem('email', userData.email)
     dispatch(setIsAuth(true))

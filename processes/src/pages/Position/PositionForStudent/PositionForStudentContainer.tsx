@@ -18,8 +18,7 @@ class PositionForStudentContainer extends React.Component<PropsType> {
     }
 
     applyApplication = () => {
-        console.log('trying to create application')
-        // this.props.createApplicationForPosition(this.props.router.params.id)
+        this.props.createApplicationForPosition(this.props.router.params.id)
     }
 
     render() {
