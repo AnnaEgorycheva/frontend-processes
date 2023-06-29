@@ -53,7 +53,7 @@ export type IntershipPositionType = {
     intershipPositionName: string,
     intershipPositionDescription?: string | null,
     intershipPositionCount: number | string,
-    intershipPositionApplicationsCount?: number | string
+    intershipApplicationsCount: number | string
 }
 export type IntersipPositionCreationType = {
     companyId: number | string | null,
@@ -70,6 +70,25 @@ export type PositionType = {
     places: number | null | undefined
     companyName: string
     applicationsNumber: number| null | undefined
+}
+
+export type InterviewDtoType = {
+    date: string,
+    id:	string,
+    location?: string
+}
+
+export type ApplicationDtoType = {
+    id:	string,
+    interviews:	Array<InterviewDtoType>,
+    positionId:	string,
+    status:	Array<string>,
+    studentId: string,
+    firstName?: string,
+    lastName?: string,
+    patronym?: string,
+    companyName?: string,
+    intershipPositionName?: string,
 }
 
 export type StudentType = {

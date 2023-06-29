@@ -16,8 +16,8 @@ const PositionInfo: React.FC<PropsType> = (props) => {
             <Title level={5} style={{ marginTop: 0 }}>
                 {
                     positionInfo.intershipPositionDescription === '' 
-                    ?  positionInfo.intershipPositionDescription
-                    : 'У позиции пока нет описания.'
+                    ? 'На текущий момент у позиции нет описания.'
+                    : positionInfo.intershipPositionDescription
                 } 
             </Title>
             {/* <Title level={5} style={{ marginTop: 0 }}>

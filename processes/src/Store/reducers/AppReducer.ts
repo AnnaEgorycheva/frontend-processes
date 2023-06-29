@@ -1,4 +1,4 @@
-import { getUserDataByTokenWhileInitializing } from './AuthReducer';
+import { getUserDataByEmailWhileInitializing } from './AuthReducer';
 import {InferActionsTypes} from '../store';
 
 let initialState = {
@@ -39,7 +39,7 @@ export const initializeApp = () => (dispatch: any) => {
         localStorage.setItem('email', '')
     
     if (localStorage.getItem('token') !== '') {
-        let promise = dispatch(getUserDataByTokenWhileInitializing());
+        let promise = dispatch(getUserDataByEmailWhileInitializing());
 
         Promise.all([promise])
             .then(() => {

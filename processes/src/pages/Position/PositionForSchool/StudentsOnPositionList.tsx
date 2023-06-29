@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import {StudentType} from '../../../Types/types'
+import {StudentType, UserDtoType} from '../../../Types/types'
 import Title from 'antd/es/typography/Title';
 import { Card, Col, List, Row } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 
 type PropsType = {
-    studentsOnPosition : Array<StudentType>
+    studentsOnPosition : Array<UserDtoType>
 }
 
 const StudentsOnPositionList: React.FC<PropsType> = (props) => {
@@ -16,7 +16,7 @@ const StudentsOnPositionList: React.FC<PropsType> = (props) => {
     return (
         <>
             <Card style={{ margin: 20 }}>
-                <Title level={5} style={{ marginTop: 20}} onClick={() => {onListClick()}}>
+                <Title level={5} style={{ marginTop: 20, cursor: 'pointer'}} onClick={() => {onListClick()}}>
                     Студенты подавшие заявку
                     {
                     isListOpened
@@ -28,11 +28,16 @@ const StudentsOnPositionList: React.FC<PropsType> = (props) => {
                 {
                     isListOpened &&
                     <List
+                        header={
+                            <div style={{ paddingInline: 50, paddingBlock: 15, fontWeight: 'bold', fontSize: '16px'}}>
+                                ФИО
+                            </div>
+                        }
                         dataSource={props.studentsOnPosition}
                         renderItem={(item) => (
                             <List.Item style={{ paddingInline: 30}}>
                                 <Row>
-                                    <Col span={24}>{item.lastName} {item.firstName} {item.patronym === '' ? '' :item.patronym}</Col>
+                                    <Col span={24}>{item.lastName} {item.firstName} {item.patronym === '' ? '' : item.patronym}</Col>
                                 </Row>
                             </List.Item>
                         )}

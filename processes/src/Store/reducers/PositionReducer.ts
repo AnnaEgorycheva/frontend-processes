@@ -1,37 +1,20 @@
 import type {InferActionsTypes} from '../store';
-import type {PositionType, StudentType, IntershipPositionType, IntersipPositionCreationType} from '../../Types/types';
+import type {PositionType, 
+    StudentType, 
+    IntershipPositionType, 
+    IntersipPositionCreationType, 
+    UserDtoType,
+    ApplicationDtoType} from '../../Types/types';
 import { companyAPI } from 'API/company-api';
 import { ResultCodesEnum } from 'API/api';
-
-//     intershipPositionId: string;
-//     companyId: number | string;
-//     companyName: string;
-//     intershipPositionName: string;
-//     intershipPositionDescription?: string | null | undefined;
-//     intershipPositionCount: number | string;
+import { applicationServiceAPI } from 'API/application-service-api';
+import { userAPI } from 'API/user-api';
 
 let initialState = {
     positionInfo: {} as IntershipPositionType,
     positionInfoIsFetching: true as boolean,
-    studentsOnPosition: [
-        {
-            id: '1',
-            firstName: 'Иван',
-            lastName: 'Иванов',
-            patronym: 'Иванович',
-            role: 'student',
-            email: 'email'
-        },
-        {
-            id: '2',
-            firstName: 'Петр',
-            lastName: 'Петров',
-            patronym: 'Петрович',
-            role: 'student',
-            email: 'email'
-        }
-
-    ] as Array<StudentType>,
+    studentsOnPosition: [] as Array<UserDtoType>,
+    studentsOnPositionIsFetching: false as boolean,
     isStudentAppliedAnApplication: true,
     updatedPositionInfo: {
         companyId: null,
@@ -53,6 +36,11 @@ const positionReducer = (state = initialState, action: ActionsType): InitialStat
              return {
                 ...state,
                 positionInfoIsFetching: action.positionInfoIsFetching
+            };
+        case 'SET_STUDENTS_ON_POSITION_IS_FETCHING':
+            return {
+                 ...state,
+                 studentsOnPositionIsFetching: action.isFetching
             };
         case 'SET_STUDENTS_ON_POSITION':
             return {
@@ -94,9 +82,13 @@ export const positionReducerActions = {
         type: 'SET_POSITION_INFO_IS_FETCHING',
         positionInfoIsFetching: isFetching
     } as const),
-    setStudentsOnPosition: (studentOnPosition: Array<StudentType>) => ({
+    setStudentsOnPosition: (studentOnPosition: Array<UserDtoType>) => ({
         type: 'SET_STUDENTS_ON_POSITION',
         studentOnPosition: studentOnPosition
+    } as const),
+    setStudentsOnPositionIsFetching: (isFetching: boolean) => ({
+        type: 'SET_STUDENTS_ON_POSITION_IS_FETCHING',
+        isFetching
     } as const),
     setIsStudentAppliedAnApplication: (isApplied: boolean) => ({
         type: 'SET_IS_STUDENT_APPLIED_AN_APPLICATION',
@@ -111,8 +103,9 @@ export const positionReducerActions = {
     } as const),
 }
 
-export const getPositionInfo = (positionId: string | null) => (dispatch: any) => {
+export const getPositionInfo = (positionId: string) => (dispatch: any) => {
     dispatch(positionReducerActions.setPositionInfoIsFetching(true))
+    dispatch(positionReducerActions.setIsStudentAppliedAnApplication(false))
     companyAPI.getIntershipPositionInfo(positionId)
         .then(data => {
             dispatch(positionReducerActions.setPositionInfo(data))
@@ -161,6 +154,49 @@ export const updatePositionInfo = (positionId: string) => (dispatch: any, getSta
                     }))
                     dispatch(positionReducerActions.setPositionInfoIsFetching(false))
                 })
+        })
+}
+
+const connectApplicationPositionAndStudents = async (applications: Array<ApplicationDtoType>) => {
+    let students: Array<UserDtoType> = []
+    await Promise.all(applications.map(application => {
+        return userAPI.getUsersById(application.studentId)
+            .then(studentInfo => {
+                students.push(studentInfo)
+            })
+    }))
+
+    return students;
+}
+export const getStudentsFromPositionApplications = (positionId: string) => (dispatch: any) => {
+    dispatch(positionReducerActions.setStudentsOnPositionIsFetching(true))
+    applicationServiceAPI.getAllApplicationsByPositionId(positionId)
+        .then(data => {
+            connectApplicationPositionAndStudents(data)
+                .then(studentsAppliedToPosition => {
+                    dispatch(positionReducerActions.setStudentsOnPosition(studentsAppliedToPosition))
+                    dispatch(positionReducerActions.setStudentsOnPositionIsFetching(false))
+                })
+        })
+}
+
+export const findOutIsStudentAppliedAnApplication = (positionId: string) => (dispatch: any, getState: any) => {
+    const studentId = getState().auth.user.userId
+    let isApplied = false
+    applicationServiceAPI.getAllApplicationsByPositionId(positionId)
+        .then(applications => {
+            let filteredApplications = applications.filter((application: ApplicationDtoType) => application.studentId === studentId)
+            isApplied = filteredApplications.length === 0 ? false : true
+            dispatch(positionReducerActions.setIsStudentAppliedAnApplication(isApplied))
+        })
+}
+
+export const createApplicationForPosition = (positionId: string) => (dispatch: any) => {
+    applicationServiceAPI.createApplication(positionId)
+        .then(response => {
+            if(response.status === ResultCodesEnum.OK) {
+                dispatch(positionReducerActions.setIsStudentAppliedAnApplication(true))
+            }
         })
 }
 

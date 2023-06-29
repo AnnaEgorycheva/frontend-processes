@@ -1,14 +1,14 @@
 import { Col, List} from 'antd';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ApplicationType } from '../../../Types/types';
+import { ApplicationDtoType } from '../../../Types/types';
 
 type PropsType = {
-    applications: Array<ApplicationType>
+    applications: Array<ApplicationDtoType>
 }
 
 const ApplicationsForCompany: React.FC<PropsType> = (props) => {
-    let applications = props.applications.filter(application => application.companyName === 'НТР')
+    let applications = props.applications
     return (
         <>
             <List
@@ -22,11 +22,11 @@ const ApplicationsForCompany: React.FC<PropsType> = (props) => {
                 }
                     dataSource={applications}
                     renderItem={(item) => (
-                        <NavLink to={'/applications/' + item.applicationId}>
+                        <NavLink to={'/applications/' + item.id}>
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}>
-                                <Col span={4}>{item.user.lastName} {item.user.firstName} {item.user.patronym}</Col>
-                                <Col span={4}>{item.positionName}</Col>
-                                <Col span={4} style={{ textAlign: 'end'}}>{item.status}</Col>
+                                <Col span={4}>{item.lastName} {item.firstName} {item?.patronym}</Col>
+                                <Col span={4}>{item.intershipPositionName}</Col>
+                                <Col span={4} style={{ textAlign: 'end'}}>{item.status[item.status.length - 1]}</Col>
                             </List.Item>
                         </NavLink>
                     )}

@@ -30,9 +30,7 @@ export const applicationServiceAPI = {
     createApplication(positionId: string) {
         return instanceWithAuth.post(`api/applications/${positionId}`)
             .then(response => {
-                if(response.status === ResultCodesEnum.OK) {
-                    return response.data
-                }
+                return response
             })
     },
     getAllApplicationsByPositionId(positionId: string) {

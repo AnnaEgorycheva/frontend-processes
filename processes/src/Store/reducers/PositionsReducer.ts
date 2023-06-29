@@ -47,26 +47,13 @@ export const getAllPositions = () => (dispatch: any) => {
         })
 }
 
-const connectCompanyPositionsAndApplicationsNumber = async (companyPositions: Array<IntershipPositionType>) => {
-    await Promise.all(companyPositions.map(companyPosition => {
-        return applicationServiceAPI.getAllApplicationsByPositionId(companyPosition.intershipPositionId)
-        .then(data => {
-            companyPosition.intershipPositionApplicationsCount = data.length;
-        })
-    }))
-
-    return companyPositions;
-}
 
 export const getAllCompanyPositions = (companyId: string | number | null) => (dispatch: any) => {
     dispatch(positionsReducerActions.setIsPositionsFetching(true))
     companyAPI.getCompanyIntershipPositions(companyId)
         .then(data => {
-            connectCompanyPositionsAndApplicationsNumber(data.intershipPositions)
-                .then(companyPositionsWithApplicationsCount => {
-                    dispatch(positionsReducerActions.setPositions(companyPositionsWithApplicationsCount))
-                    dispatch(positionsReducerActions.setIsPositionsFetching(false))
-                })
+            dispatch(positionsReducerActions.setPositions(data.intershipPositions))
+            dispatch(positionsReducerActions.setIsPositionsFetching(false))
         })
 
 }
