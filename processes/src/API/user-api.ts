@@ -11,7 +11,8 @@ const instanceWithAuth = axios.create({
     baseURL: 'https://hits-user-service.onrender.com/api/',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('token')
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hvb2xAdGVzdGVyLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJTQ0hPT0wifV0sImlhdCI6MTY4ODA0MjQ0NywiZXhwIjoxNjg4MDc4NDQ3fQ.CKoId1uJfVJmrDFCMs2cohkbyUw8i8Nd_6sXaF3ZA90',
+        //'Authorization': localStorage.getItem('token')
     }
 });
 

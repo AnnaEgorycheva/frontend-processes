@@ -126,3 +126,9 @@ export interface IStudent {
     userId: string,
     groupNumber: string;
 };
+
+export interface IPeriod {
+    practicePeriodName: string;
+    startDate: string;
+    endDate: string;
+}
