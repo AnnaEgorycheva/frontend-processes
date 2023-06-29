@@ -19,7 +19,8 @@ export const practiceServiceAPI = {
             startDate: startDate,
             endDate: endDate,
             practiceOrder: practiceOrder,
-            practicePeriodName: practicePeriodName
+            practicePeriodName: practicePeriodName,
+            groups: []
         }
         return instanceWithAuth.post(`api/practicePeriod/create`, body)
             .then(response => {

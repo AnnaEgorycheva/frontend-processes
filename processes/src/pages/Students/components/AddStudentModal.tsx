@@ -15,7 +15,7 @@ const AddStudentModal: React.FC<IProps> = ({ onCancel, onOk, open }) => {
     
     const onSave = useCallback(async () => {
         if (form.getFieldValue('lastName') && form.getFieldValue('firstName') && form.getFieldValue('groupNumber') && form.getFieldValue('patronym') && form.getFieldValue('email') && form.getFieldValue('password')) {
-            await userAPI.createUser(null, form.getFieldValue('email'), form.getFieldValue('firstName'), form.getFieldValue('groupNumber'), form.getFieldValue('lastName'), form.getFieldValue('password'), form.getFieldValue('patronym'), 'COMPANY');
+            await userAPI.createUser(null, form.getFieldValue('email'), form.getFieldValue('firstName'), form.getFieldValue('groupNumber'), form.getFieldValue('lastName'), form.getFieldValue('password'), form.getFieldValue('patronym'), 'STUDENT');
             form.setFieldsValue({
                 lastName: null,
                 firstName: null,
