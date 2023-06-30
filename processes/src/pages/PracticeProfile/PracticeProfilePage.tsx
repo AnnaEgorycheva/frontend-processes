@@ -94,13 +94,6 @@ const PracticeProfilePage: React.FC<PropsType> = (props) => {
                     : 'На данный момент нет характеристики студента от компании по итогам прохождения практики.'
                 }
             </Title>
-            {/* <Title level={5} style={{ marginTop: 0 }}>
-                {
-                    positionInfo.skills === '' 
-                    ?  positionInfo.skills
-                    : 'Компания пока не указала требуемые навыки.'
-                } 
-            </Title> */}
         </>
     )
 }

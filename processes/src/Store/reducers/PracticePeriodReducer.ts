@@ -1,10 +1,10 @@
 import type {InferActionsTypes} from '../store';
-import type {PracticePeriod, StudentType} from '../../Types/types';
+import type {PracticePeriod, StudentType, UserDtoType} from '../../Types/types';
 import { practiceServiceAPI } from 'API/practice-service-api';
 
 let initialState = {
     practicePeriod: {} as PracticePeriod,
-    studentsOnPracticePeriod: [] as Array<StudentType>,
+    studentsOnPracticePeriod: [] as Array<UserDtoType>,
     isPracticePeriodDataFetching: false as boolean,
     isStudentListFetching: false as boolean
 }
@@ -42,7 +42,7 @@ export const practicePeriodReducerActions = {
             type: 'SET_PRACTICE_PERIOD_INFO', 
             practicePeriod
         } as const),
-    setStudentsOnPracticePeriod: (students: Array<StudentType>) => (
+    setStudentsOnPracticePeriod: (students: Array<UserDtoType>) => (
         {
             type: 'SET_STUDENTS_ON_PRACTICE_PERIOD', 
             students

@@ -1,16 +1,21 @@
-import React, { useState } from "react";
-import {StudentType} from '../../Types/types'
+import React, { useCallback, useState } from "react";
+import {UserDtoType} from '../../Types/types'
 import { List, Space } from "antd";
 import Title from "antd/es/typography/Title";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 type PropsType = {
-    students: Array<StudentType>
+    students: Array<UserDtoType>
 }
 
 const StudentsOnPracticePeriodList: React.FC<PropsType> = (props) => {
+    const navigate = useNavigate()
     const [isListOpen, setIsListOpen] = useState(false)
     const students = props.students
+    const onItemClick = useCallback((studentId: string) => {
+        navigate(`/students/${studentId}`);
+    }, []);
     return (
         <>
             <Space align="center">
@@ -36,7 +41,8 @@ const StudentsOnPracticePeriodList: React.FC<PropsType> = (props) => {
                         }
                         dataSource={students}
                         renderItem={(item) => (
-                            <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}>
+                            <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}
+                                onClick={() => {onItemClick(item.userId)}}>
                                 {item.lastName} {item.firstName} {item?.patronym}
                             </List.Item>
                         )}
