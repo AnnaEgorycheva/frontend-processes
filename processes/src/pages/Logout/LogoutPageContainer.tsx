@@ -5,6 +5,7 @@ import { AppStateType } from 'Store/store';
 import { logout } from 'Store/reducers/AuthReducer';
 import { compose } from 'redux';
 import { Navigate } from 'react-router-dom';
+import { Spin } from 'antd';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
@@ -21,7 +22,9 @@ class LogoutPageContainer extends React.Component<PropsType> {
         return (
             <>
                 {
-                    this.props.isLogoutSuccess && <Navigate to='/login'/>
+                    this.props.isLogoutSuccess 
+                    ? <Navigate to={'/login'}/>
+                    : <Spin spinning={!this.props.isLogoutSuccess}></Spin>
                 }
             </>
         )
