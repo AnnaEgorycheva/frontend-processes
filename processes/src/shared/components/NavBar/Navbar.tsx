@@ -11,7 +11,6 @@ import { logout } from 'Store/reducers/AuthReducer';
 import { useAppDispatch } from 'HOOKS/hooks';
 
 const Navbar: React.FC = () => {
-    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const isAuth = useSelector(selectIsAuth)
     const userRole = useSelector(selectUserRole)
@@ -22,7 +21,7 @@ const Navbar: React.FC = () => {
     const location = useLocation()
     const [current, setCurrent] = useState(location.pathname.split('/')[1])
     const onClick: MenuProps['onClick'] = (e) => {
-        if(e.key !== 'notifications' && e.key !== 'login')
+        if(e.key !== 'notifications')
             setCurrent(e.key);
     };
 
