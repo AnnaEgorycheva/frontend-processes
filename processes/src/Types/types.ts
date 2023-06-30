@@ -172,4 +172,20 @@ export interface IPeriod {
     startDate: string;
     endDate: string;
     practiceProfileId: string;
-}
+};
+
+export interface IApplication {
+    id: string;
+    interviews: [
+        {
+            date: string;
+            id: string;
+            location: string;
+        }
+    ],
+    positionId: string;
+    status: [ string ],
+    studentId: string;
+    companyName: string;
+    position: string;
+};

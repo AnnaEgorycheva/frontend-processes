@@ -53,7 +53,7 @@ const StudentForCompany: React.FC<IProps> = ({ id }) => {
                     <Title level={5} style={{ marginTop: 0 }}>Группа: {user?.groupNumber}</Title>
                     <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {'пока нет'} </Title>
                     <Title level={5} style={{ marginTop: 0 }}>Позиция: {'пока нет'} </Title>
-                    <Paragraph style={{ marginTop: 15 }}>Характеристика: {'пока нет'} </Paragraph>
+                    {/* <Paragraph style={{ marginTop: 15 }}>Характеристика: {'пока нет'} </Paragraph> */}
                     {/* <Button  type="primary" title='Загрузить характеристику студента' onClick={showModal}>Загрузить характеристику студента</Button> */}
             
                 </Card>

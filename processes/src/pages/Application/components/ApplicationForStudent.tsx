@@ -1,7 +1,9 @@
 import { CheckCircleOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Timeline, Typography } from 'antd';
-import React, { useCallback, useState } from 'react';
+import { Button, Col, Row, Spin, Timeline, Typography } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import AnswerModalForStudent from './AnswerModalForStudent';
+import { applicationServiceAPI } from 'API/application-service-api';
+import { IApplication } from 'Types/types';
 
 const { Title, Paragraph } = Typography;
 interface IProps {
@@ -36,16 +38,41 @@ const status = [
 
 const ApplicationForStudent: React.FC<IProps> = ({ id }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [ application, setApplication ] = useState<IApplication>();
+    const [ status, setStatus ] = useState();
+    const [ statusName, setStatusName ] = useState<string[]>();
+
+    useEffect(() => {
+        if (application === undefined) {
+            api();
+        }
+    }, []);
+
+    const api = useCallback( async () => {
+        const result = await applicationServiceAPI.getApplicationById(id);
+        setApplication(result)
+        setStatusName(result.status);
+        const statusResult = result.status.map((item: string) => {
+            return {
+                dot: <CheckCircleOutlined />,
+                children: item,
+            }
+        });
+        setStatus(statusResult);
+        console.log(result, statusResult[statusResult.length - 1].children);
+    }, []);
 
     const showModal = useCallback(() => {
         setIsModalOpen(true);
     }, []);
 
-    const handleOk = useCallback(() => {
+    const handleOk = useCallback(async () => {
+        await applicationServiceAPI.addStatusToApplication(id, 'OFFER_ACCEPTED');
         setIsModalOpen(false);
     }, []);
 
-    const handleCancel = useCallback(() => {
+    const handleCancel = useCallback(async () => {
+        await applicationServiceAPI.addStatusToApplication(id, 'OFFER_REJECTED');
         setIsModalOpen(false);
     }, []);
 
@@ -56,20 +83,29 @@ const ApplicationForStudent: React.FC<IProps> = ({ id }) => {
         <>
             <Row>
                 <Col span={12}>
-                    <div style={{ marginLeft: 50, marginTop: 70 }}>
-                        <Title level={5} style={{ marginTop: 0 }}>Позиция: {data.position}</Title>
-                        <Title level={5} style={{ marginTop: 0 }}>Компания: {data.company} </Title>
-                    </div>
-                    <Title level={5} style={{ marginLeft: 50, marginTop: 0 }} hidden={!data.date}>Дата собеседования: {data.date}</Title>
-                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>{data.resume}</Paragraph>
-                    <div style={{ marginLeft: 50, marginTop: 20 }}><Button type='primary' onClick={showModal}>Дать ответ</Button></div>
+                    <Spin spinning={application === undefined}>
+                        <div style={{ marginLeft: 50, marginTop: 70 }}>
+                            <Title level={5} style={{ marginTop: 0 }}>Позиция: {application?.position}</Title>
+                            <Title level={5} style={{ marginTop: 0 }}>Компания: {application?.companyName} </Title>
+                        </div>
+                        <Title level={5} style={{ marginLeft: 50, marginTop: 0 }} hidden={!application?.interviews[0]}>Дата собеседования: {application?.interviews[0]?.date}</Title>
+                        {/* <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>{data.resume}</Paragraph> */}
+                        <div style={{ marginLeft: 50, marginTop: 20 }}>
+                            {statusName && statusName[statusName?.length - 1] === 'Предложен оффер' ? (<Button 
+                                type='primary' 
+                                onClick={showModal} 
+                            >Дать ответ</Button>): null}
+                        </div>
+                    </Spin>
                 </Col>
                 <Col span={12}>
                     <Title level={5} style={{ marginLeft: 100, marginTop: 70 }}>Статусы заявки</Title>
-                    <Timeline
-                        items={status}
-                        style={{ marginLeft: 100, marginTop: 20 }}
-                    />
+                    <Spin spinning={status === undefined}>
+                        <Timeline
+                            items={status}
+                            style={{ marginLeft: 100, marginTop: 20 }}
+                        />
+                    </Spin>
                 </Col>
             </Row>
             <AnswerModalForStudent
