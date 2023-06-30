@@ -4,6 +4,7 @@ import ApplicationsPage from 'pages/Applications/ApplicationsPage';
 import Companies from 'pages/Companies/Companies';
 import Company from 'pages/Company/Company';
 import LoginPageContainer from 'pages/Login/LoginPageContainer';
+import LogoutPageContainer from 'pages/Logout/LogoutPageContainer';
 import MainPageRedirect from 'pages/Main/MainPageRedirect';
 import PositionPage from 'pages/Position/PositionPage';
 import PositionsPage from 'pages/Positions/PositionsPage';
@@ -67,6 +68,9 @@ const RoutesPage: React.FC = () => {
           />   
           <Route path='login'
                 element={<LoginPageContainer/>}
+          />
+          <Route path='logout'
+                element={<LogoutPageContainer/>}
           />
       </Routes>
   );

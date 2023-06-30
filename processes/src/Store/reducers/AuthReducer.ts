@@ -10,18 +10,9 @@ let initialState = {
         email: '' as string ,
         password: '' as string 
     },
-    isAuthSuccess: false as boolean 
+    isAuthSuccess: false as boolean,
+    isLogoutSuccess: false as boolean   
 }
-// {
-//     userId: "a4ed37c5-f27e-4f54-964a-934ac3acbb11",
-//     firstName: "Студент",
-//     lastName: "Студентов",
-//     patronym: "Студентович",
-//     role: "STUDENT",
-//     email: "student@tester.com",
-//     groupNumber: "872359",
-//     companyId: null
-//   }
 
 const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
@@ -53,6 +44,11 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
                 ...state,
                 isAuthSuccess: action.isSuccess
             }
+        case 'SET_IS_LOGOUT_SUCCESS':
+            return {
+                ...state,
+                isLogoutSuccess: action.isSuccess
+            }
         default:
             return state
     }
@@ -83,6 +79,9 @@ export const clearLoginFormData = () => {
 };
 export const setIsAuthSuccess = (isSuccess: boolean) => {
     return { type: 'SET_IS_AUTH_SUCCESS', isSuccess}
+};
+export const setIsLogoutSuccess = (isSuccess: boolean) => {
+    return { type: 'SET_IS_LOGOUT_SUCCESS', isSuccess}
 };
 
 export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) => {
@@ -122,6 +121,7 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
 }
 
 export const logout = () => (dispatch: any) => {
+    dispatch(setIsLogoutSuccess(false))
     dispatch(setUserData({
         userId: '',
         firstName: '',
@@ -135,6 +135,7 @@ export const logout = () => (dispatch: any) => {
     dispatch(setIsAuth(false))
     localStorage.setItem('token', '')
     localStorage.setItem('email', '')
+    dispatch(setIsLogoutSuccess(true))
     window.history.pushState(null, '', "login")
 }
 
