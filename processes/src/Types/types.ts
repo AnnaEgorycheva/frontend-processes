@@ -1,33 +1,51 @@
+export type PracticePeriodGroupType = {
+    groupNumber: string
+}
+
+export type SelectOptionType = {
+    value: string,
+    label: string
+}
+
+export type GroupType = {
+    groupNumber: string,
+    students: Array<UserDtoType>
+}
+
 export type PracticePeriod = {
-    id: string | null,
+    id: string,
     startDate: string,
     endDate: string,
     practiceOrder: string | null,
-    practicePeriodName: string | null 
+    practicePeriodName: string | null,
+    groups?: Array<PracticePeriodGroupType> | null
 }
 export type PracticePeriodInfo = {
-    id: string | null,
+    id: string,
     practicePeriodName: string | null 
 }
 export type PracticePeriodCreateUpdate = {
     startDate: string,
     endDate: string,
     practiceOrder: string | null,
-    practicePeriodName: string | null 
+    practicePeriodName: string | null,
+    groups?: Array<PracticePeriodGroupType> | null
 }
 
 export type PracticeProfile = {
-    practiceProfileId: string | null,
-    userId: string | null,
+    practiceProfileId: string,
+    userId: string,
     companyId: string | null,
     position: string | null,
     characteristic: string | null,
     practiceDiary: string | null,
-    practicePeriodId: string | null
+    practicePeriodId: string
 }
 export type PracticePeriodAndStudentPracticeProfile = {
+    startDate: string,
+    endDate: string,
     practicePeriodName: string | null,
-    practiceProfileId: string | null
+    practiceProfileId: string
 }
 export type PracticeProfileUpdateDto = {
     position: string | null,

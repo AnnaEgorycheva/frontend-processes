@@ -1,11 +1,28 @@
-import { PracticePeriodCreateUpdate } from '../../Types/types';
-import { Button, DatePicker, DatePickerProps, Form, Input, Modal, Space } from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { PracticePeriodCreateUpdate, SelectOptionType, PracticePeriodGroupType } from '../../Types/types';
+import { Button, Col, DatePicker, DatePickerProps, Form, Input, Modal, Row, Select, Space, Typography } from 'antd';
 import React, { useState } from 'react';
 import { checkIfUndefined } from 'shared/functions/Functions';
 
 type PropsType = {
     onChangeValues: (newPracticePeriodData : PracticePeriodCreateUpdate) => void,
-    createNewPracticePeriod: () => Promise<any>
+    createNewPracticePeriod: () => Promise<any>,
+    options: Array<SelectOptionType>
+}
+
+const makeAPracticePeriodGroupTypeArray = (groupNums: Array<string>) => {
+    let PracticePeriodGroupTypeArray: Array<PracticePeriodGroupType> = [];
+    if (!!groupNums) {
+        groupNums.map(groupNum => {
+            PracticePeriodGroupTypeArray.push({
+                groupNumber: groupNum
+            })
+        })
+        return PracticePeriodGroupTypeArray
+    }
+    else {
+        return null
+    }
 }
 
 const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
@@ -33,6 +50,7 @@ const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
         setIsModalOpen(false);
     }
     React.useEffect(() => {
+        console.log(values)
         form.validateFields({ validateOnly: true })
         .then(
           () => {setSubmittable(true);},
@@ -45,6 +63,7 @@ const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
                     endDate: checkIfUndefined(values.endDate?.toISOString()),
                     practiceOrder: checkIfUndefined(values.practiceOrder),
                     practicePeriodName: checkIfUndefined(values.practicePeriodName),
+                    groups: makeAPracticePeriodGroupTypeArray(values.groups)
                 })
             }
         });
@@ -68,17 +87,36 @@ const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
                     <Form.Item name="practicePeriodName" label="Название" rules={[{ required: true, message: 'Введите название периода практики' }]}>
                         <Input placeholder="Введите название периода практики"/>
                     </Form.Item>
-                    <Form.Item name="startDate" label="Дата начала периода практики" 
-                                rules={[{ required: true, message: 'Выберите дату начала периода практики' }]}
-                                style={{textAlign:'start'}}>
-                        <DatePicker placeholder="Выберите дату начала периода практики"
-                                    format={'DD.MM.YYYY'}/>
+                    <Form.Item label="Даты начала и окончания периода практики"
+                               name='dates' 
+                               rules={[{ required: true }]}>
+                        <Space.Compact style={{ width: '100%' }}>
+                            <Form.Item name="startDate" label="Дата начала" 
+                                    rules={[{ required: true, message: 'Введите дату начала' }]}
+                                    noStyle>
+                                <DatePicker placeholder="Введите дату начала"
+                                            format={'DD.MM.YYYY'}
+                                            style={{ width: '50%' }}
+                                />
+                            </Form.Item>
+                            <Form.Item name="endDate" label="Дата окончания" 
+                                    rules={[{ required: true, message: 'Введите дату окончания' }]}
+                                    noStyle>
+                                <DatePicker placeholder="Введите дату окончания"
+                                            format={'DD.MM.YYYY'}
+                                            style={{ width: '50%' }}
+                                />
+                            </Form.Item>
+                        </Space.Compact>
                     </Form.Item>
-                    <Form.Item name="endDate" label="Дата окончания периода практики" 
-                                rules={[{ required: true, message: 'Выберите дату окончания периода практики' }]}
-                                style={{textAlign:'start'}}>
-                        <DatePicker placeholder="Выберите дату окончания периода практики"
-                                    format={'DD.MM.YYYY'}/>
+                    <Form.Item name="groups" label="Группы">
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            style={{ width: '100%' }}
+                            placeholder="Выберите группу(ы)"
+                            options={props.options}
+                        />
                     </Form.Item>
                     <Form.Item name="practiceOrder" label="Приказ" rules={[{ required: true, message: 'Введите ссылку на приказ, утверждающий период практики' }]}>
                         <Input placeholder="Введите ссылку на приказ, утверждающий период практики"/>

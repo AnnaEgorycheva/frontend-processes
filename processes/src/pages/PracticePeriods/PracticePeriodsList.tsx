@@ -1,7 +1,7 @@
 import { Col, List, Row } from 'antd';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PracticePeriodInfo } from '../../Types/types'
+import { PracticePeriodInfo, SelectOptionType} from '../../Types/types'
 
 type PropsType = {
     practicePeriods: Array<PracticePeriodInfo>
@@ -9,7 +9,7 @@ type PropsType = {
 
 const PracticePeriodsList: React.FC<PropsType> = (props) => {
     const navigate = useNavigate();
-    const onItemClick = useCallback((practicePeriod: string | null) => {
+    const onItemClick = useCallback((practicePeriod: string) => {
         navigate(`/practicePeriods/${practicePeriod}`);
     }, []);
     return (

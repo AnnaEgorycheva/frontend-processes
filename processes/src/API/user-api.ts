@@ -92,5 +92,13 @@ export const userAPI = {
         }
         return instanceWithAuth.post(`/users/edit/${userId}`, body)
     },
+    getAllGroups() {
+        return instanceWithAuth.get(`groups`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    }
 
 }

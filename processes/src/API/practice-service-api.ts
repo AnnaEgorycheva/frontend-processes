@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ResultCodesEnum } from "./api";
+import { PracticePeriodGroupType } from "../Types/types";
 
 const instanceWithAuth = axios.create({
     baseURL: 'https://practice-service.onrender.com/',
@@ -13,14 +14,15 @@ export const practiceServiceAPI = {
     // PracticePeriod
     createNewPracticePeriod(
         startDate: string, endDate: string,
-        practiceOrder: string | null, practicePeriodName: string | null
+        practiceOrder: string | null, practicePeriodName: string | null, 
+        groups: Array<PracticePeriodGroupType> | null
     ) {
         const body = {
             startDate: startDate,
             endDate: endDate,
             practiceOrder: practiceOrder,
             practicePeriodName: practicePeriodName,
-            groups: []
+            groups: groups
         }
         return instanceWithAuth.post(`api/practicePeriod/create`, body)
             .then(response => {
@@ -45,8 +47,26 @@ export const practiceServiceAPI = {
                     }
             })
     },
-    
     // PracticeProfile
+    createPracticeProfile(studentId: string, companyId: string | null,
+        position: string | null, characteristic: string | null, 
+        practiceDiary: string | null, practicePeriodId: string) 
+        {
+            const body = {
+                userId: studentId,
+                companyId: companyId,
+                position: position,
+                characteristic: characteristic,
+                practiceDiary: practiceDiary,
+                practicePeriodId: practicePeriodId
+            }
+            return instanceWithAuth.post(`api/practiceProfile/create`, body)
+                .then(response => {
+                    if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+                })
+    },
     getPracticeProfileInfo(practiceProfileId: string) {
         return instanceWithAuth.get(`api/practiceProfile/info/${practiceProfileId}`)
             .then(response => {
