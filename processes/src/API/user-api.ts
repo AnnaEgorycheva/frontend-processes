@@ -80,17 +80,14 @@ export const userAPI = {
         }
         return instanceWithAuth.post('/users/sign-up', body)
     },
-    updateUser(userId: string, companyId: string | null, email: string | null, firstName: string | null, groupNumber: string | null, lastName: string | null, patronym: string | null, role: 'STUDENT' | 'SCHOOL' | 'COMPANY') {
+    updateUser(userId: string, email: string | null, firstName: string | null, lastName: string | null, patronym: string | null) {
         const body = {
-            companyId: companyId,
             email: email,
             firstName: firstName,
-            groupNumber: groupNumber,
             lastName: lastName,
             patronym: patronym,
-            role: role,
         }
-        return instanceWithAuth.post(`/users/edit/${userId}`, body)
+        return instanceWithAuth.patch(`/users/edit/${userId}`, body)
     },
 
 }

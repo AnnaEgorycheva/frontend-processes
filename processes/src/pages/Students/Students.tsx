@@ -30,7 +30,8 @@ const Students: React.FC = () => {
         const result = form.getFieldValue('username');
         if (result) {
             console.log(result);
-            const resultSearch = students?.filter(item => (`${item.lastName} ${item.firstName} ${item.patronym}`).includes(result));
+            const resultSearch = students?.filter(item => `${item.lastName} ${item.firstName} ${item.patronym}`.search(result) >= 0);
+
             setStudents(resultSearch ?? []);
         } else {
             message.info('Для корректного поиска введите ФИО!');

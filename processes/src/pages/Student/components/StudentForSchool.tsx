@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import { practiceServiceAPI } from 'API/practice-service-api';
 import { IPeriod, IStudent } from 'Types/types';
 import { userAPI } from 'API/user-api';
-import { selectUserEmail } from 'Store/selectors/AuthSelector';
+import { useNavigate } from 'react-router-dom';
+import { applicationServiceAPI } from 'API/application-service-api';
 
 const { Title } = Typography;
 const { Column } = Table;
@@ -31,6 +32,7 @@ const data = [
 ];
 
 const StudentForSchool: React.FC<IProps> = ({ id }) => {
+    const navigate = useNavigate();
     const [ periods, setPeriods ] = useState<IPeriod[]>();
     const [ user, setUser ] = useState<IStudent>();
 
@@ -46,6 +48,9 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
 
         const userResult = await userAPI.getUsersById(id);
         setUser(userResult);
+
+        const applicationsResult = await applicationServiceAPI.getStudentApplicationsById(id);
+        console.log(applicationsResult);
     }, []);
 
     return (
@@ -72,6 +77,11 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                         pageSize: 10,
                     }}
                     style={{ marginInline: 30 }}
+                    // onRow={(record, rowIndex) => {
+                    //     return {
+                    //       onClick: (event) => {navigate(`/applications/${record.id}`)},
+                    //     };
+                    // }}
                 >
                     <Column dataIndex="name" key="name" title="Компания" width="300px" />
                     <Column dataIndex="position" key="position" title="Позиция" width="300px" />
@@ -86,6 +96,11 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                     pageSize: 10,
                 }}
                 style={{ marginInline: 30 }}
+                onRow={(record, rowIndex) => {
+                    return {
+                      onClick: (event) => {navigate(`/practicePeriods/${record.practiceProfileId}`)},
+                    };
+                }}
             >
                 <Column dataIndex="practicePeriodName" key="practicePeriodName" title="Период" width="300px" />
                 <Column dataIndex="startDate" key="startDate" title="Дата начала" width="300px" />

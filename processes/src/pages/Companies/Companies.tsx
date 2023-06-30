@@ -28,7 +28,7 @@ const Companies: React.FC = () => {
     const onSearchCompany = useCallback(() => {
         const result = form.getFieldValue('company');
         if (result) {
-            const resultSearch = companies?.filter(item => item.companyName.includes(result));
+            const resultSearch = companies?.filter(item => `${item.companyName}`.search(result) >= 0);
             setCompanies(resultSearch ?? []);
         } else {
             message.info('Для корректного поиска введите название компании!')

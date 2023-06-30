@@ -63,7 +63,7 @@ const AddCompanyUserModal: React.FC<IProps> = ({ onCancel, onOk, open, companyId
                 <Form.Item name='firstName' label='Имя' rules={[{ required: true, message: 'Заполните!' }]}> 
                     <Input placeholder='Имя'/>
                 </Form.Item>
-                <Form.Item name='patronym' label='Отчество' rules={[{ required: true, message: 'Заполните!' }]}>
+                <Form.Item name='patronym' label='Отчество'>
                     <Input placeholder='Отчество'/>
                 </Form.Item>
                 <Form.Item name='email' label='email' rules={[{ required: true, message: 'Заполните!' }, { pattern: new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'), message: 'Введите корректный email'}]}>

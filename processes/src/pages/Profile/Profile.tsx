@@ -41,7 +41,7 @@ const Profile: React.FC = () => {
         const resultId = await userAPI.getUsersByEmail(email);
         
         console.log(resultId, result);
-        await userAPI.updateUser(resultId.userId, resultId.companyId, result.email, result.firstName, resultId.groupNumber, result.lastName, result.patronym, resultId.role)
+        await userAPI.updateUser(resultId.userId, result.email, result.firstName, result.lastName, result.patronym);
     }, [ form ]);
     
     console.log(user);
@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
     }, [ form ]);
 
     return (
-        <Spin spinning={user === undefined || company === undefined}>
+        <Spin spinning={user === undefined || (role === 'COMPANY' && company === undefined)}>
             <div>
                     <Row>
                         <Col   flex='none' style={{ minWidth: 400}}>
@@ -95,22 +95,21 @@ const Profile: React.FC = () => {
                                 {role === 'STUDENT' ? (<Form.Item
                                     label="Номер группы"
                                     name="groupNumber"
-                                    hidden={!(user as unknown as IStudent)?.groupNumber}
-                                    rules={[{ required: true, message: 'Заполните номер группы!' }]}>
+                                    hidden={!(user as unknown as IStudent)?.groupNumber}>
                                     <Input placeholder='Номер группы' type='STRING' disabled/>
                                 </Form.Item>) : null}
                                 {role === 'STUDENT' ? (<Form.Item
                                     label="Место прохождения практики"
-                                    name="place"
-                                    hidden={!(user as unknown as IStudent)?.groupNumber}
-                                    rules={[{ required: true, message: 'Заполните место прохождения практики!' }]}>
+                                    name="companyName"
+                                    hidden={!(user as unknown as IStudent)?.companyName}
+                                >
                                     <Input placeholder='Место прохождения практики' type='STRING' disabled/>
                                 </Form.Item>) : null}
                                 {role === 'STUDENT' ? (<Form.Item
                                     label="Позиция"
                                     name="position"
-                                    hidden={!(user as unknown as IStudent)?.groupNumber}
-                                    rules={[{ required: true, message: 'Заполните позицию!' }]}>
+                                    hidden={!(user as unknown as IStudent)?.position}
+                                >
                                     <Input placeholder='Позиция' type='STRING' disabled/>
                                 </Form.Item>) : null}
                                 <Button type="primary" onClick={onSave}>Редактировать профиль</Button>

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Card, Spin, Table, Typography } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { companyAPI } from 'API/company-api';
 import { useSelector } from 'react-redux';
 import { selectUserRole } from 'Store/selectors/AuthSelector';
@@ -12,6 +12,7 @@ const { Column } = Table;
 
 const Company: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const id = location.pathname.split('/')[2];
     const [ company, setCompany ] = useState<ICompany>();
     const [ position, setPosition ] = useState<IPosition[]>();
@@ -63,6 +64,11 @@ const Company: React.FC = () => {
                         pageSize: 10,
                     }}
                     style={{ marginInline: 30 }}
+                    onRow={(record, rowIndex) => {
+                        return {
+                          onClick: (event) => {navigate(`/positions/${record.intershipPositionId}`)},
+                        };
+                    }}
                 >
                     <Column dataIndex="intershipPositionName" key="intershipPositionName" title="Позиция" width="300px" />
                     <Column dataIndex="intershipPositionCount" key="intershipPositionCount" title="Количество мест" width="300px" />

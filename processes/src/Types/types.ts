@@ -145,10 +145,13 @@ export interface IStudent {
     userId: string,
     groupNumber: string;
     companyId?: string;
+    position?: string;
+    companyName?: string;
 };
 
 export interface IPeriod {
     practicePeriodName: string;
     startDate: string;
     endDate: string;
+    practiceProfileId: string;
 }

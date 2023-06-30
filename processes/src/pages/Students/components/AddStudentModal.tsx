@@ -12,7 +12,7 @@ const AddStudentModal: React.FC<IProps> = ({ onCancel, onOk, open }) => {
     const [form] = Form.useForm();
     
     const onSave = useCallback(async () => {
-        if (form.getFieldValue('lastName') && form.getFieldValue('firstName') && form.getFieldValue('groupNumber') && form.getFieldValue('patronym') && form.getFieldValue('email') && form.getFieldValue('password')) {
+        if (form.getFieldValue('lastName') && form.getFieldValue('firstName') && form.getFieldValue('groupNumber') && form.getFieldValue('email') && form.getFieldValue('password')) {
             await userAPI.createUser(null, form.getFieldValue('email'), form.getFieldValue('firstName'), form.getFieldValue('groupNumber'), form.getFieldValue('lastName'), form.getFieldValue('password'), form.getFieldValue('patronym'), 'STUDENT');
             form.setFieldsValue({
                 lastName: null,
@@ -61,7 +61,7 @@ const AddStudentModal: React.FC<IProps> = ({ onCancel, onOk, open }) => {
                 <Form.Item name='firstName' label='Имя' rules={[{ required: true, message: 'Заполните!' }]}> 
                     <Input placeholder='Имя'/>
                 </Form.Item>
-                <Form.Item name='patronym' label='Отчество' rules={[{ required: true, message: 'Заполните!' }]}>
+                <Form.Item name='patronym' label='Отчество'>
                     <Input placeholder='Отчество'/>
                 </Form.Item>
                 <Form.Item name='groupNumber' label='Номер группы' rules={[{ required: true, message: 'Заполните!' }]}>
