@@ -1,15 +1,18 @@
 import type {InferActionsTypes} from '../store';
-import type {PracticePeriodInfo, PracticePeriodCreateUpdate} from '../../Types/types';
+import type {PracticePeriodInfo, PracticePeriodCreateUpdate, SelectOptionType, GroupType} from '../../Types/types';
 import { practiceServiceAPI } from 'API/practice-service-api';
+import { userAPI } from 'API/user-api';
 
 let initialState = {
     practicePeriods: [] as Array<PracticePeriodInfo>,
     isPracticePeriodsFetching: false as boolean,
+    groupsOptions: [] as Array<SelectOptionType>,
     newPracticePeriod: {
         startDate: '',
         endDate: '',
         practiceOrder: '',
-        practicePeriodName: ''
+        practicePeriodName: '',
+        groups: null
     } as PracticePeriodCreateUpdate
 }
 
@@ -24,6 +27,11 @@ const practicePeriodsReducer = (state = initialState, action: ActionsType): Init
             return {
                 ...state,
                 isPracticePeriodsFetching : action.isFetching
+            };
+        case 'SET_GROUP_OPTIONS':
+            return {
+                ...state,
+                groupsOptions : action.options
             };
         case 'SET_NEW_PRACTICE_PERIOD_DATA':
             return {
@@ -56,6 +64,11 @@ export const practicePeriodsReducerActions = {
             type: 'SET_IS_PRACTICE_PERIODS_FETCHING', 
             isFetching
         } as const),
+    setGroupsOptions: (options: Array<SelectOptionType>) => (
+        {
+            type: 'SET_GROUP_OPTIONS', 
+            options
+        } as const),
     setNewPracticePeriodData: (newPracticePeriod: PracticePeriodCreateUpdate) => (
         {
             type: 'SET_NEW_PRACTICE_PERIOD_DATA', 
@@ -80,7 +93,8 @@ export const createNewPracticePeriod = () => (dispatch: any, getState: any) => {
     const newPracticePeriodToCreate = getState().practicePeriods.newPracticePeriod
     practiceServiceAPI.createNewPracticePeriod(
         newPracticePeriodToCreate.startDate, newPracticePeriodToCreate.endDate,
-        newPracticePeriodToCreate.practiceOrder, newPracticePeriodToCreate.practicePeriodName
+        newPracticePeriodToCreate.practiceOrder, newPracticePeriodToCreate.practicePeriodName, 
+        newPracticePeriodToCreate.groups
     )
         .then((data) => {
             dispatch(practicePeriodsReducerActions.clearNewPracticePeriodData())
@@ -90,6 +104,20 @@ export const createNewPracticePeriod = () => (dispatch: any, getState: any) => {
                     dispatch(practicePeriodsReducerActions.setPracticePeriods(data.practicePeriods))
                     dispatch(practicePeriodsReducerActions.setIsPracticePeriodsFetching(false))
                 })
+        })
+}
+
+export const getGroupSelectOptions = () => (dispatch: any) => {
+    let options: Array<SelectOptionType> = []
+    userAPI.getAllGroups()
+        .then((groups: Array<GroupType>) => {
+            groups.map(group => {
+                options.push({
+                    value: group.groupNumber,
+                    label: group.groupNumber            
+                })
+            })
+            dispatch(practicePeriodsReducerActions.setGroupsOptions(options))
         })
 }
 

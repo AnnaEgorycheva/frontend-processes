@@ -89,5 +89,13 @@ export const userAPI = {
         }
         return instanceWithAuth.patch(`/users/edit/${userId}`, body)
     },
+    getAllGroups() {
+        return instanceWithAuth.get(`groups`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    }
 
 }
