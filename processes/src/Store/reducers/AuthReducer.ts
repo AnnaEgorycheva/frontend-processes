@@ -85,13 +85,15 @@ export const setIsLogoutSuccess = (isSuccess: boolean) => {
 };
 
 export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) => {
-    let userData = await userAPI.getUsersByEmail(localStorage.getItem('email'))
+    let userData = await userAPI.getUsersByToken()
     dispatch(setUserData(userData))
     localStorage.setItem('email', userData.email)
     dispatch(setIsAuth(true))
 }
 
 export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) => {
+    dispatch(setIsAuth(false))
+    dispatch(setIsAuthSuccess(false))
     let userData = await userAPI.getUsersByToken()
     dispatch(setUserData(userData))
     localStorage.setItem('email', userData.email)
@@ -136,7 +138,7 @@ export const logout = () => (dispatch: any) => {
     localStorage.setItem('token', '')
     localStorage.setItem('email', '')
     dispatch(setIsLogoutSuccess(true))
-    window.history.pushState(null, '', "login")
+    dispatch(setIsAuthSuccess(false))
 }
 
 export default authReducer;

@@ -14,16 +14,12 @@ class App extends Component<MapPropsType & DispatchPropsType> {
     componentDidMount() {
         this.props.initializeApp()
     }
-
-    componentDidUpdate(prevProps: Readonly<{ initialized: boolean; } & DispatchPropsType>, prevState: Readonly<{}>, snapshot?: any): void {
-        this.props.initializeApp()
-    }
-
+    
     render() {
         return (
             <>
                 {
-                this.props.initialized && <MainLayout/>
+                    this.props.initialized && <MainLayout/>
                 }
             </>
         )

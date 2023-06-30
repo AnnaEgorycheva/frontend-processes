@@ -41,9 +41,9 @@ const RightMenu: React.FC<PropsType> = (props) => {
                     },
                     {
                         label: (
-                            <div onClick={() => {props.logout()}}>
+                            <Link to='logout'>
                                 Выйти
-                            </div>
+                            </Link>
                         ),
                         key: 'logout',
                     },
