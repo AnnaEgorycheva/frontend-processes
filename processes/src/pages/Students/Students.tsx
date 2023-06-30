@@ -79,7 +79,7 @@ const Students: React.FC = () => {
                 name="filterStudent"
                 autoComplete="off"
             >
-                <Form.Item
+                {/* <Form.Item
                     name="username"
                     style={{ marginLeft: 50, width: 250 }}
                 >
@@ -89,7 +89,7 @@ const Students: React.FC = () => {
                     <Button type="primary" title='Найти' onClick={onSearchName}>
                         Найти
                     </Button>   
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name="group"
                     style={{ marginLeft: 50 }}

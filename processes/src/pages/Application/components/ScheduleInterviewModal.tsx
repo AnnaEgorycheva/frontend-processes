@@ -1,26 +1,37 @@
+import { applicationServiceAPI } from 'API/application-service-api';
 import { DatePicker, Form, Input, Modal } from 'antd';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 
 interface IProps {
     onOk: () => void;
     onCancel: () => void;
     open: boolean;
+    id: string;
 }
 
-const ScheduleInterviewModal: React.FC<IProps> = ({ onCancel, onOk, open }) => {
+const ScheduleInterviewModal: React.FC<IProps> = ({ onCancel, onOk, open, id }) => {
     const [form] = Form.useForm();
     
-    console.log(form.getFieldsValue());
+    const onSave = useCallback(async () => {
+        await applicationServiceAPI.createApplicationInterview(id, form.getFieldValue('date'), form.getFieldValue('place'));
+        onOk();
+    }, []);
+
+    const onClose = useCallback(() => {
+        form.setFieldsValue({});
+        onCancel();
+    }, []);
+
     return (
         <Modal 
             title="Назначить собеседование" 
             open={open} 
-            onCancel={onCancel}
+            onCancel={onClose}
             centered
             cancelText='Отменить'
             okText='Сохранить'
-            onOk={onOk}
+            onOk={onSave}
         >
             <Form
                 form={form}

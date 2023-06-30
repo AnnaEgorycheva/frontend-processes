@@ -69,11 +69,13 @@ const ApplicationForStudent: React.FC<IProps> = ({ id }) => {
     const handleOk = useCallback(async () => {
         await applicationServiceAPI.addStatusToApplication(id, 'OFFER_ACCEPTED');
         setIsModalOpen(false);
+        api();
     }, []);
 
     const handleCancel = useCallback(async () => {
         await applicationServiceAPI.addStatusToApplication(id, 'OFFER_REJECTED');
         setIsModalOpen(false);
+        api();
     }, []);
 
     const handleClose = useCallback(() => {
@@ -88,7 +90,8 @@ const ApplicationForStudent: React.FC<IProps> = ({ id }) => {
                             <Title level={5} style={{ marginTop: 0 }}>Позиция: {application?.position}</Title>
                             <Title level={5} style={{ marginTop: 0 }}>Компания: {application?.companyName} </Title>
                         </div>
-                        <Title level={5} style={{ marginLeft: 50, marginTop: 0 }} hidden={!application?.interviews[0]}>Дата собеседования: {application?.interviews[0]?.date}</Title>
+                        <Title level={5} style={{ marginLeft: 50, marginTop: 0 }} hidden={!application?.interviews[0]}>Дата собеседования: {application?.interviews[0]?.date.substr(0, 10)}</Title>
+                        <Title level={5} style={{ marginLeft: 50, marginTop: 0 }} hidden={!application?.interviews[0]}>Место собеседования: {application?.interviews[0]?.location}</Title>
                         {/* <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>{data.resume}</Paragraph> */}
                         <div style={{ marginLeft: 50, marginTop: 20 }}>
                             {statusName && statusName[statusName?.length - 1] === 'Предложен оффер' ? (<Button 

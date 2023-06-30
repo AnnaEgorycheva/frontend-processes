@@ -73,14 +73,17 @@ const ApplicationForCompany: React.FC<IProps> = ({ id }) => {
     const handleOkAnswerModal = useCallback(async () => {
         await applicationServiceAPI.addStatusToApplication(id, 'OFFER_ISSUED');
         setIsAnswerModalOpen(false);
+        api();
     }, []);
 
     const handleCancelAnswerModal = useCallback(async () => {
         await applicationServiceAPI.addStatusToApplication(id, 'REJECTED');
         setIsAnswerModalOpen(false);
+        api();
     }, []);
     const handleCloseAnswerModal = useCallback(() => {
         setIsAnswerModalOpen(false);
+        api();
     }, []);
 
     const showScheduleInterview = useCallback(() => {
@@ -89,10 +92,12 @@ const ApplicationForCompany: React.FC<IProps> = ({ id }) => {
 
     const handleOkScheduleInterviewModal = useCallback(() => {
         setIsScheduleInterviewModalOpen(false);
+        api();
     }, []);
 
     const handleCancelScheduleInterviewModal = useCallback(() => {
         setIsScheduleInterviewModalOpen(false);
+        api();
     }, []);
     
     return (
@@ -103,11 +108,18 @@ const ApplicationForCompany: React.FC<IProps> = ({ id }) => {
                         <Title level={5} style={{ marginTop: 0 }}>ФИО: {student}</Title>
                         <Title level={5} style={{ marginTop: 0 }}>Позиция: {application?.position}</Title>
                     </div>
-                    {/* <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>{data.resume}</Paragraph>
-                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>{data.interview}</Paragraph> */}
+                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Место собеседования: {(application?.interviews[0] && application?.interviews[0].location) ?? 'пока нет'}</Paragraph>
+                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Дата собеседования: {(application?.interviews[0] && application?.interviews[0].date.substr(0, 10)) ?? 'пока нет'}</Paragraph>
                     <div style={{ marginLeft: 50, marginTop: 20 }}>
-                        <Button type='primary' onClick={showAnswerModal}>Дать ответ</Button>
-                        <Button type='primary' onClick={showScheduleInterview} style={{ marginLeft: 20 }}>Назначить собеседование</Button>
+                        {statusName && (statusName[statusName?.length - 1] === 'Назначено собеседование' || statusName[statusName?.length - 1] === 'Подана заявка')? (<Button 
+                            type='primary' 
+                            onClick={showAnswerModal} 
+                        >Дать ответ</Button>): null}
+                        {statusName && statusName[statusName?.length - 1] === 'Подана заявка' ? (<Button 
+                            type='primary' 
+                            onClick={showScheduleInterview}
+                            style={{ marginLeft: 20 }}
+                        >Назначить собеседование</Button>): null}
                     </div>
                 </Col>
                 <Col span={12}>
@@ -128,6 +140,7 @@ const ApplicationForCompany: React.FC<IProps> = ({ id }) => {
                 onCancel={handleCancelScheduleInterviewModal}
                 onOk={handleOkScheduleInterviewModal}
                 open={isScheduleInterviewModalOpen}
+                id={id}
             />
         </>
     )

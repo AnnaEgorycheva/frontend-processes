@@ -60,7 +60,7 @@ const Companies: React.FC = () => {
     return (
         <Spin spinning={companies === undefined}>
             <Layout style={{ marginInline: 50, marginTop: 50 }}>
-                <Form
+                {/* <Form
                     form={form}
                     layout='inline'
                     name="filterCompanies"
@@ -82,7 +82,7 @@ const Companies: React.FC = () => {
                             Сбросить фильтр
                         </Button>   
                     </Form.Item>
-                </Form>
+                </Form> */}
                 <List
                     itemLayout="horizontal"
                     header={

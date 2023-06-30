@@ -68,9 +68,9 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                         <Col flex='auto'>
                             <Title level={3} style={{ marginTop: 0 }}>ФИО: {user?.lastName} {user?.firstName} {user?.patronym}</Title>
                         </Col>
-                        <Col flex='none'>
+                        {/* <Col flex='none'>
                             <div style={{ textAlign: 'right' }}><Button type="primary" title='Создать уведомление' onClick={()=>{}}>Создать уведомление</Button></div>
-                        </Col>
+                        </Col> */}
                     </Row>
                     <Title level={5} style={{ marginTop: 0 }}>Группа: {user?.groupNumber}</Title>
                     <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {'пока нет'} </Title>
