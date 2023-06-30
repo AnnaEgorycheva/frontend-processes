@@ -89,14 +89,14 @@ const LeftMenu: React.FC<PropsType> = (props) => {
                     ),
                     key: 'positions',
                 },
-                {
-                    label: (
-                        <Link to='students'>
-                            Студенты
-                        </Link>
-                    ),
-                    key: 'students',
-                },
+                // {
+                //     label: (
+                //         <Link to='students'>
+                //             Студенты
+                //         </Link>
+                //     ),
+                //     key: 'students',
+                // },
                 {
                     label: (
                         <Link to='applications'>

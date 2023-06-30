@@ -13,15 +13,15 @@ type PropsType = {
 const RightMenu: React.FC<PropsType> = (props) => {
     const RightMenuItems = {
         isAuthItems: [
-            {
-                label: (
-                    <Avatar size="large" 
-                            style={{fontSize: '24px', borderColor: '#ffffff', background: '#001529', cursor: 'pointer' }} 
-                            icon={<BellOutlined />} onClick={()=>{}}
-                    />
-                ),
-                key: 'notifications',
-            },
+            // {
+            //     label: (
+            //         <Avatar size="large" 
+            //                 style={{fontSize: '24px', borderColor: '#ffffff', background: '#001529', cursor: 'pointer' }} 
+            //                 icon={<BellOutlined />} onClick={()=>{}}
+            //         />
+            //     ),
+            //     key: 'notifications',
+            // },
             {
                 label: (
                     <Avatar size="large" 
