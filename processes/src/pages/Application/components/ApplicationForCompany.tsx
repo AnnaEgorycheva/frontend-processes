@@ -1,5 +1,5 @@
 import { CheckCircleOutlined } from '@ant-design/icons';
-import { Row, Col, Button, Timeline, Typography, Form } from 'antd';
+import { Row, Col, Button, Timeline, Typography, Form, Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import AnswerModalForCompany from './AnswerModalForCompany';
 import ScheduleInterviewModal from './ScheduleInterviewModal';
@@ -103,32 +103,35 @@ const ApplicationForCompany: React.FC<IProps> = ({ id }) => {
     return (
         <>
             <Row>
-                <Col span={12}>
-                    <div style={{ marginLeft: 50, marginTop: 70 }}>
-                        <Title level={5} style={{ marginTop: 0 }}>ФИО: {student}</Title>
-                        <Title level={5} style={{ marginTop: 0 }}>Позиция: {application?.position}</Title>
-                    </div>
-                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Место собеседования: {(application?.interviews[0] && application?.interviews[0].location) ?? 'пока нет'}</Paragraph>
-                    <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Дата собеседования: {(application?.interviews[0] && application?.interviews[0].date.substr(0, 10)) ?? 'пока нет'}</Paragraph>
-                    <div style={{ marginLeft: 50, marginTop: 20 }}>
-                        {statusName && (statusName[statusName?.length - 1] === 'Назначено собеседование' || statusName[statusName?.length - 1] === 'Подана заявка')? (<Button 
-                            type='primary' 
-                            onClick={showAnswerModal} 
-                        >Дать ответ</Button>): null}
-                        {statusName && statusName[statusName?.length - 1] === 'Подана заявка' ? (<Button 
-                            type='primary' 
-                            onClick={showScheduleInterview}
-                            style={{ marginLeft: 20 }}
-                        >Назначить собеседование</Button>): null}
-                    </div>
-                </Col>
-                <Col span={12}>
-                    <Title level={5} style={{ marginLeft: 100, marginTop: 70 }}>Статусы заявки</Title>
-                    <Timeline
-                        items={status}
-                        style={{ marginLeft: 100, marginTop: 20 }}
-                    />
-                </Col>
+                <Spin spinning={application === undefined}>
+                    <Col span={12}>
+                        <div style={{ marginLeft: 50, marginTop: 70 }}>
+                            <Title level={5} style={{ marginTop: 0 }}>ФИО: {student}</Title>
+                            <Title level={5} style={{ marginTop: 0 }}>Позиция: {application?.position}</Title>
+                        </div>
+                        <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Место собеседования: {(application?.interviews[0] && application?.interviews[0].location) ?? 'пока нет'}</Paragraph>
+                        <Paragraph style={{ marginLeft: 50, marginTop: 0 }}>Дата собеседования: {(application?.interviews[0] && application?.interviews[0].date.substr(0, 10)) ?? 'пока нет'}</Paragraph>
+                        <div style={{ marginLeft: 50, marginTop: 20 }}>
+                            {statusName && (statusName[statusName?.length - 1] === 'Назначено собеседование' || statusName[statusName?.length - 1] === 'Подана заявка')? (<Button 
+                                type='primary' 
+                                onClick={showAnswerModal} 
+                            >Дать ответ</Button>): null}
+                            {statusName && statusName[statusName?.length - 1] === 'Подана заявка' ? (<Button 
+                                type='primary' 
+                                onClick={showScheduleInterview}
+                                style={{ marginLeft: 20 }}
+                            >Назначить собеседование</Button>): null}
+                        </div>
+                    </Col>
+                
+                    <Col span={12}>
+                        <Title level={5} style={{ marginLeft: 100, marginTop: 70 }}>Статусы заявки</Title>
+                        <Timeline
+                            items={status}
+                            style={{ marginLeft: 100, marginTop: 20 }}
+                        />
+                    </Col>
+                </Spin>
             </Row>
             <AnswerModalForCompany
                 onCancel={handleCancelAnswerModal}

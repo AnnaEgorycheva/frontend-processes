@@ -78,7 +78,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 </Card>
             </Spin>
             <Title level={5} style={{ marginTop: 20, marginLeft: 30 }}>Заявки на прохождения практики</Title>
-                <Spin spinning={user === undefined}>
+                <Spin spinning={application === undefined}>
                     <Table 
                         dataSource={application} 
                         pagination={{
