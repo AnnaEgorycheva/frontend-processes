@@ -47,6 +47,14 @@ export const practiceServiceAPI = {
                     }
             })
     },
+    getPracticePeriodStudents(practicePeriodId: string) {
+        return instanceWithAuth.get(`api/practicePeriod/${practicePeriodId}/students`)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
     // PracticeProfile
     createPracticeProfile(studentId: string, companyId: string | null,
         position: string | null, characteristic: string | null, 

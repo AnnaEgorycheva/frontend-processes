@@ -1,3 +1,12 @@
+export type StudentInPeriodInfoType = {
+    firstName: string,
+    lastName: string,
+    groupNumber?: string | null,
+    patronym?: string | null,
+    userId: string,
+    practiceProfileId: string
+}
+
 export type PracticePeriodGroupType = {
     groupNumber: string
 }

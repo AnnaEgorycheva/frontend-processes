@@ -1,10 +1,10 @@
 import type {InferActionsTypes} from '../store';
-import type {PracticePeriod, StudentType, UserDtoType} from '../../Types/types';
+import type {PracticePeriod, StudentInPeriodInfoType, UserDtoType} from '../../Types/types';
 import { practiceServiceAPI } from 'API/practice-service-api';
 
 let initialState = {
     practicePeriod: {} as PracticePeriod,
-    studentsOnPracticePeriod: [] as Array<UserDtoType>,
+    studentsOnPracticePeriod: [] as Array<StudentInPeriodInfoType>,
     isPracticePeriodDataFetching: false as boolean,
     isStudentListFetching: false as boolean
 }
@@ -42,7 +42,7 @@ export const practicePeriodReducerActions = {
             type: 'SET_PRACTICE_PERIOD_INFO', 
             practicePeriod
         } as const),
-    setStudentsOnPracticePeriod: (students: Array<UserDtoType>) => (
+    setStudentsOnPracticePeriod: (students: Array<StudentInPeriodInfoType>) => (
         {
             type: 'SET_STUDENTS_ON_PRACTICE_PERIOD', 
             students
@@ -67,6 +67,15 @@ export const getPracticePeriodInfo = (practicePeriodId: string) => (dispatch: an
             dispatch(practicePeriodReducerActions.setIsPracticePeriodDataFetching(false))
         })
    
+}
+
+export const getStudentsOnPracticePeriod = (practicePeriodId: string) => (dispatch: any) => {
+    dispatch(practicePeriodReducerActions.setIsStudentListFetching(true))
+    practiceServiceAPI.getPracticePeriodStudents(practicePeriodId)
+        .then(data => {
+            dispatch(practicePeriodReducerActions.setStudentsOnPracticePeriod(data.studentInPeriodInfoDtos))
+            dispatch(practicePeriodReducerActions.setIsStudentListFetching(false))
+        })
 }
 
 export type InitialStateType = typeof initialState

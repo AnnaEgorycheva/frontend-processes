@@ -3,7 +3,7 @@ import withRouter from 'HOC/withRouter';
 import React from 'react';
 import { connect} from 'react-redux';
 import { compose } from 'redux';
-import { getPracticePeriodInfo } from 'Store/reducers/PracticePeriodReducer';
+import { getPracticePeriodInfo, getStudentsOnPracticePeriod } from 'Store/reducers/PracticePeriodReducer';
 import { AppStateType } from 'Store/store';
 import PracticePeriodInfo from './PracticePeriodInfo';
 import StudentsOnPracticePeriodList from './StudentsOnPracticePeriodList';
@@ -11,6 +11,7 @@ import StudentsOnPracticePeriodList from './StudentsOnPracticePeriodList';
 class PracticePeriodPageContainer extends React.Component<PropsType> {
   componentDidMount(): void {
     this.props.getPracticePeriodInfo(this.props.router.params.id)
+    this.props.getStudentsOnPracticePeriod(this.props.router.params.id)
   }
   render() {
     return (
@@ -45,7 +46,8 @@ let mapStateToProps = (state: AppStateType)  => {
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchType = {
-  getPracticePeriodInfo: (practicePeriodId: string) => Promise<any>
+  getPracticePeriodInfo: (practicePeriodId: string) => Promise<any>,
+  getStudentsOnPracticePeriod: (practicePeriodId: string) => Promise<any>
 }
 type OwnPropsType = {
   router: {
@@ -59,7 +61,7 @@ type OwnPropsType = {
 type PropsType = MapPropsType & DispatchType & OwnPropsType;
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {getPracticePeriodInfo}), withRouter
+    connect(mapStateToProps, {getPracticePeriodInfo, getStudentsOnPracticePeriod}), withRouter
 )(PracticePeriodPageContainer)
 
 

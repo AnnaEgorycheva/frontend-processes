@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
-import {UserDtoType} from '../../Types/types'
+import {StudentInPeriodInfoType} from '../../Types/types'
 import { List, Space } from "antd";
 import Title from "antd/es/typography/Title";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 type PropsType = {
-    students: Array<UserDtoType>
+    students: Array<StudentInPeriodInfoType>
 }
 
 const StudentsOnPracticePeriodList: React.FC<PropsType> = (props) => {

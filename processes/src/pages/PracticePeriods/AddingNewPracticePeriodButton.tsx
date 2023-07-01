@@ -31,6 +31,7 @@ const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
         setIsModalOpen(true);
     };
     const handleOk = () => {
+        form.resetFields();
         setIsModalOpen(false);
     };
     const handleCancel = () => {
@@ -109,7 +110,8 @@ const AddingNewPracticePeriodButton: React.FC<PropsType> = (props) => {
                             </Form.Item>
                         </Space.Compact>
                     </Form.Item>
-                    <Form.Item name="groups" label="Группы">
+                    <Form.Item name="groups" label="Группы"
+                               rules={[{ required: true, message: 'Выберите одну или более групп' }]}>
                         <Select
                             mode="multiple"
                             allowClear
