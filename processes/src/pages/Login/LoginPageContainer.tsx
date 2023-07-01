@@ -6,6 +6,7 @@ import {LoginDataFormType, clearLoginFormData, login, setLoginFormData} from '..
 import LoginPage from './LoginPage';
 import withRouter from 'HOC/withRouter';
 import NavigationAfterLogin from './NavigationAfterLogin';
+import { Spin } from 'antd';
 
 type MapPropsType = ReturnType<typeof mapStateToProps>
 type DispatchPropsType = {
@@ -30,11 +31,18 @@ class LoginPageContainer extends React.Component<PropsType> {
             <>
               {
                 this.props.isAuthSuccess
-                ? <NavigationAfterLogin/>
-                : <LoginPage loginFormData={this.props.loginFormData}
-                             onChangeFormValues={this.props.onChangeValues}
-                             clearForm={this.props.clearForm}
-                             login={this.props.login}/> 
+                ?   <NavigationAfterLogin/>
+                : 
+                    <>
+                        <Spin spinning={this.props.isUserTryingToLogin}
+                              tip='Выполняется вход...'
+                        >
+                            <LoginPage loginFormData={this.props.loginFormData}
+                                    onChangeFormValues={this.props.onChangeValues}
+                                    clearForm={this.props.clearForm}
+                                    login={this.props.login}/> 
+                        </Spin>
+                    </>
               }
             </>
         )
@@ -45,7 +53,8 @@ let mapStateToProps = (state: AppStateType) => {
     return {
         user: state.auth.user,
         loginFormData: state.auth.loginFormData,
-        isAuthSuccess: state.auth.isAuthSuccess
+        isAuthSuccess: state.auth.isAuthSuccess,
+        isUserTryingToLogin: state.auth.isUserTryingToLogin
     }
 }
 

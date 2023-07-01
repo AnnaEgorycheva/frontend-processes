@@ -11,7 +11,8 @@ let initialState = {
         password: '' as string 
     },
     isAuthSuccess: false as boolean,
-    isLogoutSuccess: false as boolean   
+    isLogoutSuccess: false as boolean,
+    isUserTryingToLogin: false as boolean   
 }
 
 const authReducer = (state = initialState, action: any): InitialStateType => {
@@ -49,6 +50,11 @@ const authReducer = (state = initialState, action: any): InitialStateType => {
                 ...state,
                 isLogoutSuccess: action.isSuccess
             }
+        case 'SET_IS_USER_TRYING_TO_LOGIN':
+            return {
+                ...state,
+                isUserTryingToLogin: action.isTryingToLogin
+            }
         default:
             return state
     }
@@ -83,6 +89,9 @@ export const setIsAuthSuccess = (isSuccess: boolean) => {
 export const setIsLogoutSuccess = (isSuccess: boolean) => {
     return { type: 'SET_IS_LOGOUT_SUCCESS', isSuccess}
 };
+export const setIsUserTryingToLogin = (isTryingToLogin: boolean) => {
+    return { type: 'SET_IS_USER_TRYING_TO_LOGIN', isTryingToLogin}
+};
 
 export const getUserDataByEmailWhileInitializing = () => async (dispatch: any) => {
     let userData = await userAPI.getUsersByToken()
@@ -104,6 +113,7 @@ export const getUserDataByTokenWhileInitializing = () => async (dispatch: any) =
 export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
     dispatch(setIsAuth(false))
     dispatch(setIsAuthSuccess(false))
+    dispatch(setIsUserTryingToLogin(true))
     userAPI.authenticate(loginData.email, loginData.password)
         .then(data => {
             let token = data.jwtToken
@@ -115,6 +125,7 @@ export const login = (loginData: LoginDataFormType) => (dispatch: any) => {
             userAPI.getUsersByToken()
                 .then(userData => {
                     dispatch(setUserData(userData))
+                    dispatch(setIsUserTryingToLogin(false))
                     dispatch(setIsAuth(true))
                     dispatch(setIsAuthSuccess(true))
                 })
@@ -147,5 +158,6 @@ export type InitialStateType = typeof initialState
 export type LoginDataFormType = typeof initialState.loginFormData
 type ActionsType = InferActionsTypes<typeof setUserData & typeof setIsAuth & 
                                      typeof setToken & typeof setLoginFormData & 
-                                     typeof clearLoginFormData>
+                                     typeof clearLoginFormData & typeof setIsAuthSuccess
+                                     & typeof setIsLogoutSuccess & typeof setIsUserTryingToLogin>
 type ThunkType = BaseThunkType<ActionsType>
