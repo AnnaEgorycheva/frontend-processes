@@ -90,7 +90,7 @@ const Students: React.FC = () => {
                         Найти
                     </Button>   
                 </Form.Item> */}
-                <Form.Item
+                {/* <Form.Item
                     name="group"
                     style={{ marginLeft: 50 }}
                 >
@@ -100,12 +100,12 @@ const Students: React.FC = () => {
                     <Button type="primary" title='Найти' onClick={onSearchGroup}>
                         Найти
                     </Button>   
-                </Form.Item>
-                <Form.Item>
+                </Form.Item> */}
+                {/* <Form.Item>
                     <Button title='Сбросить фильтр' onClick={onClear}>
                         Сбросить фильтр
                     </Button>   
-                </Form.Item>
+                </Form.Item> */}
             </Form>
             <Spin spinning={students === undefined}>
                 <List
