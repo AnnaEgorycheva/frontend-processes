@@ -42,7 +42,7 @@ const PracticeProfilePage: React.FC<PropsType> = (props) => {
                 {student.lastName} {student.firstName} {student?.patronym}
             </Title>
             <Title level={5} style={{ marginTop: 0, marginBottom: 8 }}>{practicePeriod.practicePeriodName}</Title>
-            <Title level={5} style={{ marginTop: 0, marginBottom: 30 }}>Приказ: {props.studentPracticeProfile?.practiceOrder}</Title>
+            <Title level={5} style={{ marginTop: 0, marginBottom: 30 }}>Приказ: {props.studentPracticeProfile.practicePeriodInfo.practiceOrder}</Title>
             <Title level={5} style={{ marginTop: 0, marginBottom: 8  }}>Компания: {company?.companyName}</Title>
             <Title level={5} style={{ marginTop: 0, marginBottom: 30  }}>Позиция: {props.studentPracticeProfile.position}</Title>
             <Title level={5} style={{ marginTop: 0, marginBottom: '0.15em', color: '#666666' }}>Ссылка на дневник практики:</Title>
@@ -90,8 +90,8 @@ const PracticeProfilePage: React.FC<PropsType> = (props) => {
             <Title level={5} style={{ marginTop: 0 }}>
                 {
                     props.studentPracticeProfile.characteristic === ''
-                    ?  props.studentPracticeProfile.characteristic
-                    : 'На данный момент нет характеристики студента от компании по итогам прохождения практики.'
+                    ?  'На данный момент нет характеристики студента от компании по итогам прохождения практики.'
+                    :  props.studentPracticeProfile.characteristic
                 }
             </Title>
         </>

@@ -31,6 +31,26 @@ export const practiceServiceAPI = {
                     }
             })
     },
+    updatePracticePeriod(
+        practicePeriodId: string,
+        startDate: string, endDate: string,
+        practiceOrder: string | null, practicePeriodName: string | null, 
+        groups: Array<PracticePeriodGroupType> | null
+    ) {
+        const body = {
+            startDate: startDate,
+            endDate: endDate,
+            practiceOrder: practiceOrder,
+            practicePeriodName: practicePeriodName,
+            groups: groups
+        }
+        return instanceWithAuth.put(`api/practicePeriod/edit/${practicePeriodId}`, body)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
     getPracticePeriodInfo(practicePeriodId: string) {
         return instanceWithAuth.get(`api/practicePeriod/info/${practicePeriodId}`)
             .then(response => {
