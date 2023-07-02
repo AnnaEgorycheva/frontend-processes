@@ -34,6 +34,14 @@ export const companyAPI = {
                     }
             })
     },
+    getCompanyStudents(id: number) {
+        return instanceWithAuth.get(`/api/company/${id}/students`)
+            .then(async response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    } 
+            })
+    },
     createCompany(companyName: string | null, companyDescription: string | null, companyContacts: string | null, companyAddress: string | null) {
         const body = {
             companyName: companyName,

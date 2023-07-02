@@ -1,6 +1,6 @@
 import { companyAPI } from 'API/company-api';
 import { userAPI } from 'API/user-api';
-import { selectUserRole } from 'Store/selectors/AuthSelector';
+import { selectCompanyId, selectUserRole } from 'Store/selectors/AuthSelector';
 import { IStudent } from 'Types/types';
 import { useSelector } from 'react-redux';
 import { Button, Form, Input, Layout, List, Spin, message } from 'antd';
@@ -15,6 +15,7 @@ const Students: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const role = useSelector(selectUserRole);
+    const companyId = useSelector(selectCompanyId);
     useEffect(() => {
         if (students === undefined) {
             api();
@@ -22,8 +23,15 @@ const Students: React.FC = () => {
     }, []);
 
     const api = useCallback( async () => {
-        const result = await userAPI.getUsersByRole('STUDENT');
-        setStudents(result);
+        if (role === 'SCHOOL') {
+            const result = await userAPI.getUsersByRole('STUDENT');
+            setStudents(result);
+        } else {
+            setStudents([]);
+            console.log(companyId);
+            const result = await companyAPI.getCompanyStudents(companyId as number);
+            setStudents(result);
+        }
     }, []);
 
     const onSearchName = useCallback(() => {
@@ -113,7 +121,7 @@ const Students: React.FC = () => {
                     header={
                         <div style={{ display: 'flex', justifyContent: 'space-between', paddingInline: 50, paddingBlock: 15, fontWeight: 'bold', fontSize: '18px'}}>
                             <div>ФИО</div>
-                            <div>Группа</div>
+                            <div>{role === 'SCHOOL' ? 'Группа' : 'Позиция'}</div>
                         </div>
                 }
                     dataSource={students}
@@ -123,7 +131,8 @@ const Students: React.FC = () => {
                     renderItem={(item) => (
                         <List.Item style={{ paddingInline: 50, cursor: 'pointer'  }} onClick={() => {onClick(item.userId)}}>
                             <div>{item.lastName} {item.firstName} {item.patronym}</div>
-                            <div>{item.groupNumber}</div>
+                            {/* <div>{item.groupNumber}</div> */}
+                            <div>{role === 'SCHOOL' ? item.groupNumber : item.position}</div>
                         </List.Item>
                     )}
                 />
