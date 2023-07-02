@@ -27,7 +27,6 @@ const Students: React.FC = () => {
             const result = await userAPI.getUsersByRole('STUDENT');
             setStudents(result);
         } else {
-            setStudents([]);
             console.log(companyId);
             const result = await companyAPI.getCompanyStudents(companyId as number);
             setStudents(result);

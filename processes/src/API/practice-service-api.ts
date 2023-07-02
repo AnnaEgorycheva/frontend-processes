@@ -31,6 +31,23 @@ export const practiceServiceAPI = {
                     }
             })
     },
+    createWorkPlaceInfo(
+        userId: string,
+        companyId: number, 
+        position: string,
+    ) {
+        const body = {
+            userId: userId,
+            companyId: companyId,
+            position: position,
+        }
+        return instanceWithAuth.post(`api/workPlaceInfo/create`, body)
+            .then(response => {
+                if (response.status === ResultCodesEnum.OK) {
+                        return response.data
+                    }
+            })
+    },
     getPracticePeriodInfo(practicePeriodId: string) {
         return instanceWithAuth.get(`api/practicePeriod/info/${practicePeriodId}`)
             .then(response => {

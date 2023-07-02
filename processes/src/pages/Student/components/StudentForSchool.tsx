@@ -6,6 +6,8 @@ import { IApplication, IPeriod, IStudent } from 'Types/types';
 import { userAPI } from 'API/user-api';
 import { useNavigate } from 'react-router-dom';
 import { applicationServiceAPI } from 'API/application-service-api';
+import { selectUserId } from 'Store/selectors/AuthSelector';
+import AddWorkPlaceInfoModal from './AddWorkPlaceInfoModal';
 
 const { Title } = Typography;
 const { Column } = Table;
@@ -36,6 +38,9 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
     const [ periods, setPeriods ] = useState<IPeriod[]>();
     const [ user, setUser ] = useState<IStudent>();
     const [ application, setApplication ] = useState<IApplication[]>();
+    const [ position, setPosition ] = useState<string>();
+    const [ company, setCompany ] = useState<string>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (periods === undefined || user === undefined || application === undefined) {
@@ -58,6 +63,23 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
             id: item.id,
         };});
         setApplication(res);
+
+        const position = await applicationServiceAPI.getStudentApplicationsById(id);
+        setPosition(position.position);
+        setCompany(position.companyName);
+    }, []);
+
+    const showModal = useCallback(() => {
+        setIsModalOpen(true);
+    }, []);
+
+    const handleOk = useCallback(() => {
+        setIsModalOpen(false);
+        api();
+    }, []);
+
+    const handleCancel = useCallback(() => {
+        setIsModalOpen(false);
     }, []);
 
     return (
@@ -73,8 +95,8 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                         </Col> */}
                     </Row>
                     <Title level={5} style={{ marginTop: 0 }}>Группа: {user?.groupNumber}</Title>
-                    <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {'пока нет'} </Title>
-                    <Title level={5} style={{ marginTop: 0 }}>Позиция: {'пока нет'} </Title>
+                    <Title level={5} style={{ marginTop: 0 }}>Место прохождения практики: {company ?? 'пока нет'} </Title>
+                    <Title level={5} style={{ marginTop: 0 }}>Позиция: {position ?? 'пока нет'} </Title>
                 </Card>
             </Spin>
             <Title level={5} style={{ marginTop: 20, marginLeft: 30 }}>Заявки на прохождения практики</Title>
@@ -115,6 +137,15 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
                 <Column dataIndex="endDate" key="endDate" title="Дата окончания" width="300px" />
             </Table>
             </Spin>
+            <div><Button style={{ marginLeft: 30, marginBottom: 50 }} title='Добавить место стажировки' type='primary' onClick={showModal}>
+                    Добавить место стажировки
+                </Button></div>
+            <AddWorkPlaceInfoModal
+                onCancel={handleCancel}
+                onOk={handleOk}
+                open={isModalOpen}
+                id={id}
+            />
         </>
     )
 };
