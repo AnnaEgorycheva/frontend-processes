@@ -14,7 +14,7 @@ const StudentsOnPracticePeriodList: React.FC<PropsType> = (props) => {
     const [isListOpen, setIsListOpen] = useState(false)
     const students = props.students
     const onItemClick = useCallback((studentId: string) => {
-        navigate(`/students/${studentId}`);
+        navigate(`/practiceProfiles/${studentId}`);
     }, []);
     return (
         <>
@@ -42,7 +42,7 @@ const StudentsOnPracticePeriodList: React.FC<PropsType> = (props) => {
                         dataSource={students}
                         renderItem={(item) => (
                             <List.Item style={{ paddingInline: 50, justifyContent: 'space-between', cursor: 'pointer'  }}
-                                onClick={() => {onItemClick(item.userId)}}>
+                                onClick={() => {onItemClick(item.practiceProfileId)}}>
                                 {item.lastName} {item.firstName} {item?.patronym}
                             </List.Item>
                         )}

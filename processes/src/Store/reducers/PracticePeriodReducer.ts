@@ -1,15 +1,27 @@
 import type {InferActionsTypes} from '../store';
-import type {PracticePeriod, StudentInPeriodInfoType, UserDtoType} from '../../Types/types';
+import type {PracticePeriod, StudentInPeriodInfoType, 
+    PracticePeriodGroupType, PracticePeriodCreateUpdate,
+    SelectOptionType,
+    GroupType} from '../../Types/types';
 import { practiceServiceAPI } from 'API/practice-service-api';
+import { userAPI } from 'API/user-api';
 
 let initialState = {
     practicePeriod: {} as PracticePeriod,
     studentsOnPracticePeriod: [] as Array<StudentInPeriodInfoType>,
     isPracticePeriodDataFetching: false as boolean,
-    isStudentListFetching: false as boolean
+    isStudentListFetching: false as boolean,
+    updatedPracticePeriodInfo: {
+        startDate: '',
+        endDate: '',
+        practiceOrder: '',
+        practicePeriodName: '',
+        groups: [] as Array<PracticePeriodGroupType>
+    } as PracticePeriodCreateUpdate,
+    groupsOptions: [] as Array<SelectOptionType>,
 }
 
-const PracticePeriodReducer = (state = initialState, action: ActionsType): InitialStateType => {
+const PracticePeriodReducer = (state = initialState, action: ActionsType | any): InitialStateType => {
     switch (action.type) {
         case 'SET_PRACTICE_PERIOD_INFO':
             return {
@@ -31,6 +43,27 @@ const PracticePeriodReducer = (state = initialState, action: ActionsType): Initi
                 ...state,
                 isStudentListFetching : action.isFetching
             };
+        case 'SET_UPDATED_PRACTICE_PERIOD_INFO':
+            return {
+                ...state,
+                updatedPracticePeriodInfo : action.updatedPracticePeriodInfo
+            };
+        case 'CLEAR_UPDATED_PRACTICE_PERIOD_INFO':
+            return {
+                ...state,
+                updatedPracticePeriodInfo : {
+                    startDate: '',
+                    endDate: '',
+                    practiceOrder: '',
+                    practicePeriodName: '',
+                    groups: []
+                }
+            };
+        case 'SET_GROUP_OPTIONS':
+            return {
+                ...state,
+                groupsOptions : action.options
+            };    
         default:
             return state;
     }
@@ -56,14 +89,37 @@ export const practicePeriodReducerActions = {
         {
             type: 'SET_IS_STUDENT_LIST_FETCHING', 
             isFetching
-        } as const)
+        } as const),
+    clearUpdatedPracticePeriodInfo: () => (
+        {
+            type: 'CLEAR_UPDATED_PRACTICE_PERIOD_INFO', 
+        } as const),
+    setGroupsOptions: (options: Array<SelectOptionType>) => (
+        {
+            type: 'SET_GROUP_OPTIONS', 
+            options
+        } as const),
 }
+
+export const setUpdatedPracticePeriodInfo = (updatedPracticePeriodInfo: PracticePeriodCreateUpdate) => {
+    return {
+        type: 'SET_UPDATED_PRACTICE_PERIOD_INFO', 
+        updatedPracticePeriodInfo
+    }
+};
 
 export const getPracticePeriodInfo = (practicePeriodId: string) => (dispatch: any) => {
     dispatch(practicePeriodReducerActions.setIsPracticePeriodDataFetching(true))
     practiceServiceAPI.getPracticePeriodInfo(practicePeriodId)
         .then((data) => {
             dispatch(practicePeriodReducerActions.setPracticePeriodInfo(data))
+            dispatch(setUpdatedPracticePeriodInfo({
+                startDate: data.startDate,
+                endDate: data.endDate,
+                practiceOrder: data.practiceOrder,
+                practicePeriodName: data.practicePeriodName,
+                groups: data.groups
+            }))
             dispatch(practicePeriodReducerActions.setIsPracticePeriodDataFetching(false))
         })
    
@@ -75,6 +131,53 @@ export const getStudentsOnPracticePeriod = (practicePeriodId: string) => (dispat
         .then(data => {
             dispatch(practicePeriodReducerActions.setStudentsOnPracticePeriod(data.studentInPeriodInfoDtos))
             dispatch(practicePeriodReducerActions.setIsStudentListFetching(false))
+        })
+}
+
+export const getGroupSelectOptions = () => (dispatch: any) => {
+    let options: Array<SelectOptionType> = []
+    userAPI.getAllGroups()
+        .then((groups: Array<GroupType>) => {
+            groups.map(group => {
+                options.push({
+                    value: group.groupNumber,
+                    label: group.groupNumber            
+                })
+            })
+            dispatch(practicePeriodReducerActions.setGroupsOptions(options))
+        })
+}
+
+export const updatePracticePeriod = (practicePeriodId: string) => (dispatch: any, getState: any) => {
+    const updatedPracticePeriod = getState().practicePeriod.updatedPracticePeriodInfo
+    practiceServiceAPI.updatePracticePeriod(
+        practicePeriodId, updatedPracticePeriod.startDate, updatedPracticePeriod.endDate,
+        updatedPracticePeriod.practiceOrder, updatedPracticePeriod.practicePeriodName,
+        updatedPracticePeriod.groups
+    )
+        .then(updatedData => {
+            dispatch(practicePeriodReducerActions.setIsPracticePeriodDataFetching(true))
+            dispatch(practicePeriodReducerActions.clearUpdatedPracticePeriodInfo())
+            practiceServiceAPI.getPracticePeriodInfo(practicePeriodId)
+                .then((data) => {
+                    dispatch(practicePeriodReducerActions.setPracticePeriodInfo(data))
+                    dispatch(setUpdatedPracticePeriodInfo({
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        practiceOrder: data.practiceOrder,
+                        practicePeriodName: data.practicePeriodName,
+                        groups: data.groups
+                    }))
+                    dispatch(practicePeriodReducerActions.setIsPracticePeriodDataFetching(false))
+                })
+        })
+        .then(() => {
+            dispatch(practicePeriodReducerActions.setIsStudentListFetching(true))
+            practiceServiceAPI.getPracticePeriodStudents(practicePeriodId)
+                .then(data => {
+                    dispatch(practicePeriodReducerActions.setStudentsOnPracticePeriod(data.studentInPeriodInfoDtos))
+                    dispatch(practicePeriodReducerActions.setIsStudentListFetching(false))
+                })
         })
 }
 
