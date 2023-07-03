@@ -84,7 +84,7 @@ const StudentForSchool: React.FC<IProps> = ({ id }) => {
 
     return (
         <>
-            <Spin spinning={user === undefined}>
+            <Spin spinning={user === undefined || company === undefined || position === undefined}>
                 <Card style={{ margin: 20 }}>
                     <Row>
                         <Col flex='auto'>

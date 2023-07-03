@@ -55,7 +55,7 @@ const StudentForCompany: React.FC<IProps> = ({ id }) => {
     
     return (
         <>
-            <Spin spinning={user === undefined}>
+            <Spin spinning={user === undefined || company === undefined || position === undefined}>
                 <Card style={{ margin: 20 }}>
                     <Title level={3} style={{ marginTop: 0 }}>ФИО: {user?.lastName} {user?.firstName} {user?.patronym}</Title>   
                     <Title level={5} style={{ marginTop: 0 }}>Группа: {user?.groupNumber}</Title>
