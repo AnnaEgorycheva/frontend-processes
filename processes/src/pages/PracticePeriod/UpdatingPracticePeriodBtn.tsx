@@ -104,7 +104,8 @@ const UpdatingPracticePeriodBtn: React.FC<PropsType> = (props) => {
                     </Form.Item>
                     <Form.Item label="Даты начала и окончания периода практики"
                                name='dates' 
-                               rules={[{ required: true }]}>
+                            //    rules={[{ required: true }]}
+                               >
                         <Space.Compact style={{ width: '100%' }}>
                             <Form.Item name="startDate" label="Дата начала" 
                                     rules={[{ required: true, message: 'Введите дату начала' }]}
